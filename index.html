@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BaccII Biology Flashcards - ជីវវិទ្យា ២០២៦</title>
+    <title>ជីវវិទ្យា ២០២៦ - Flashcards ថ្នាក់ទី១២</title>
     <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -16,13 +16,6 @@
             --border-dark: #334155;
             --text-dark: #f8fafc;
             --subtext-dark: #94a3b8;
-            
-            --bg-light: #f8fafc;
-            --card-light: #ffffff;
-            --border-light: #e2e8f0;
-            --text-light: #0f172a;
-            --subtext-light: #64748b;
-            
             --sidebar-bg: #0f172a;
             --sidebar-active-bg: #064e3b;
             --sidebar-active-text: #10b981;
@@ -38,20 +31,11 @@
         }
 
         body {
-            transition: background-color 0.3s ease, color 0.3s ease;
+            background-color: var(--bg-dark);
+            color: var(--text-dark);
             min-height: 100vh;
             display: flex;
             overflow-x: hidden;
-        }
-
-        body.dark-mode {
-            background-color: var(--bg-dark);
-            color: var(--text-dark);
-        }
-
-        body.light-mode {
-            background-color: var(--bg-light);
-            color: var(--text-light);
         }
 
         #particleCanvas {
@@ -84,7 +68,7 @@
             display: flex;
             flex-direction: column;
             padding: 24px 16px;
-            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
             z-index: 30;
             min-height: 100vh;
             position: sticky;
@@ -149,23 +133,13 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 14px 28px;
+            padding: 12px 24px;
             position: sticky;
             top: 0;
             z-index: 20;
             backdrop-filter: blur(12px);
-            border-bottom: 1px solid;
-            transition: border-color 0.3s, background-color 0.3s;
-        }
-
-        .dark-mode .top-bar {
-            background: rgba(15, 23, 42, 0.85);
-            border-color: #334155;
-        }
-
-        .light-mode .top-bar {
-            background: rgba(255, 255, 255, 0.85);
-            border-color: #e2e8f0;
+            background: rgba(15, 23, 42, 0.88);
+            border-bottom: 1px solid var(--border-dark);
         }
 
         .menu-toggle-btn {
@@ -174,7 +148,7 @@
             border: none;
             font-size: 1.6rem;
             cursor: pointer;
-            color: inherit;
+            color: #ffffff;
         }
 
         .user-section {
@@ -183,18 +157,8 @@
             gap: 10px;
             padding: 6px 14px;
             border-radius: 30px;
-            border: 1px solid;
-            transition: border-color 0.3s, background-color 0.3s;
-        }
-
-        .dark-mode .user-section {
             background: #1e293b;
-            border-color: #334155;
-        }
-
-        .light-mode .user-section {
-            background: #f1f5f9;
-            border-color: #cbd5e1;
+            border: 1px solid #334155;
         }
 
         .avatar-badge {
@@ -216,7 +180,7 @@
             outline: none;
             font-size: 0.9rem;
             font-weight: 600;
-            color: inherit;
+            color: #ffffff;
             max-width: 120px;
         }
 
@@ -245,7 +209,7 @@
         .progress-title {
             font-size: 0.78rem;
             font-weight: 600;
-            opacity: 0.8;
+            opacity: 0.85;
         }
 
         .progress-bar-track {
@@ -265,7 +229,7 @@
         }
 
         .content-body {
-            padding: 32px 28px;
+            padding: 28px 24px;
             max-width: 1280px;
             margin: 0 auto;
             width: 100%;
@@ -282,7 +246,7 @@
         }
 
         .section-header h1 {
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             font-weight: 700;
             display: flex;
             align-items: center;
@@ -290,7 +254,7 @@
         }
 
         .section-header p {
-            font-size: 0.92rem;
+            font-size: 0.9rem;
             opacity: 0.75;
             margin-top: 4px;
         }
@@ -298,7 +262,7 @@
         .filter-tabs {
             display: flex;
             gap: 8px;
-            background: rgba(100, 116, 139, 0.1);
+            background: rgba(100, 116, 139, 0.15);
             padding: 4px;
             border-radius: 12px;
         }
@@ -307,7 +271,7 @@
             padding: 8px 16px;
             border: none;
             background: transparent;
-            color: inherit;
+            color: #cbd5e1;
             font-size: 0.88rem;
             font-weight: 600;
             border-radius: 8px;
@@ -321,17 +285,17 @@
             box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
         }
 
-        /* 3D FLASHCARD GRID SYSTEM */
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
             gap: 22px;
         }
 
         .flashcard {
             perspective: 1000px;
-            height: 220px;
+            height: 240px;
             cursor: pointer;
+            user-select: none;
         }
 
         .flashcard-inner {
@@ -354,22 +318,13 @@
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
             border-radius: 18px;
-            padding: 20px;
+            padding: 22px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
-            border: 1px solid;
-            transition: border-color 0.3s, background-color 0.3s;
-        }
-
-        .dark-mode .card-front {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+            border: 1px solid var(--border-dark);
             background: var(--card-dark);
-            border-color: var(--border-dark);
-        }
-        .light-mode .card-front {
-            background: var(--card-light);
-            border-color: var(--border-light);
         }
 
         .card-back {
@@ -424,17 +379,18 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            font-size: 1.05rem;
+            font-size: 1.02rem;
             font-weight: 500;
             line-height: 1.6;
             padding: 10px 0;
             white-space: pre-line;
+            overflow-y: auto;
         }
 
         .card-footer-tip {
             font-size: 0.75rem;
             text-align: center;
-            opacity: 0.6;
+            opacity: 0.7;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -537,7 +493,6 @@
         .legal-links a { color: #64748b; text-decoration: none; transition: color 0.2s; }
         .legal-links a:hover { color: #cbd5e1; }
 
-        /* RESPONSIVE BREAKPOINTS */
         @media (max-width: 900px) {
             .left-sidebar {
                 position: fixed;
@@ -555,12 +510,13 @@
         }
     </style>
 </head>
-<body class="dark-mode">
+<body>
 
     <canvas id="particleCanvas"></canvas>
 
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
+    <!-- LEFT NAVIGATION SIDEBAR -->
     <aside class="left-sidebar" id="leftSidebar">
         <div class="brand-logo">
             <div class="logo-icon">🧬</div>
@@ -572,27 +528,22 @@
 
         <div class="menu-category">មុខងារចម្បង</div>
         
-        <div class="nav-item active" id="nav-flashcards" onclick="filterCards('all')">
+        <div class="nav-item active" id="nav-flashcards" onclick="setFilter('all')">
             <span class="icon">🎴</span>
             <span>Flashcards ទាំងអស់</span>
         </div>
 
-        <div class="nav-item" id="nav-pending" onclick="filterCards('pending')">
+        <div class="nav-item" id="nav-pending" onclick="setFilter('pending')">
             <span class="icon">⏳</span>
             <span>សំណួរមិនទាន់ឆ្លើយ</span>
         </div>
 
-        <div class="nav-item" id="nav-completed" onclick="filterCards('done')">
+        <div class="nav-item" id="nav-completed" onclick="setFilter('done')">
             <span class="icon">✅</span>
             <span>សំណួរឆ្លើយរួច</span>
         </div>
 
         <div class="menu-category">ប្រព័ន្ធ</div>
-
-        <div class="nav-item" id="theme-toggle-nav" onclick="toggleTheme()">
-            <span class="icon" id="theme-icon">🌙</span>
-            <span id="theme-text">Dark Mode</span>
-        </div>
 
         <div class="nav-item" onclick="resetProgress()">
             <span class="icon">🔄</span>
@@ -606,7 +557,7 @@
                 <button class="menu-toggle-btn" onclick="toggleSidebar()">☰</button>
                 <div class="user-section">
                     <div class="avatar-badge">👤</div>
-                    <div style="display: flex; flex-direction: column;">
+                    <div style="display: flex; align-items: center; gap: 6px;">
                         <input type="text" id="userName" value="សិស្ស A" placeholder="ឈ្មោះ..." onchange="updateUser()">
                         <span class="save-status" id="saveStatus">✓ រក្សាទុក</span>
                     </div>
@@ -623,11 +574,12 @@
             </div>
         </div>
 
+        <!-- MAIN BODY CONTENT -->
         <main class="content-body">
             <div class="section-header">
                 <div>
                     <h1>🎴 Flashcards ជីវវិទ្យា (៦៤ សំណួរ)</h1>
-                    <p>ចុចលើប័ណ្ណនីមួយៗដើម្បីឆែកមើលចម្លើយ និងកត់ត្រាការសិក្សា</p>
+                    <p>ចុចលើប័ណ្ណនីមួយៗដើម្បីមើលចម្លើយ និងកត់ត្រាការសិក្សា</p>
                 </div>
 
                 <div class="filter-tabs">
@@ -638,7 +590,7 @@
             </div>
 
             <div class="cards-grid" id="flashcardsGrid">
-                <!-- Cards injected dynamically -->
+                <!-- Cards rendered dynamically -->
             </div>
         </main>
 
@@ -784,7 +736,7 @@
 
         document.getElementById('userName').value = currentUser;
 
-        // Web Audio Context Synthesis
+        // Web Audio Synthesizer for Touch/Click Chimes
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         function playChime(freq = 600, duration = 0.12) {
             try {
@@ -833,20 +785,6 @@
                 document.getElementById('sidebarOverlay').classList.remove('active');
             }
 
-            renderCards();
-        }
-
-        function toggleCardCompletion(id, e) {
-            e.stopPropagation();
-            const index = completed.indexOf(id);
-            if (index > -1) {
-                completed.splice(index, 1);
-                playChime(400, 0.1);
-            } else {
-                completed.push(id);
-                playChime(800, 0.15);
-            }
-            updateProgress();
             renderCards();
         }
 
@@ -899,12 +837,15 @@
                     </div>
                 `;
 
+                // Interactive 3D flip handler
                 card.onclick = () => {
                     card.classList.toggle('flipped');
-                    playChime(600, 0.1);
+                    playChime(600, 0.12);
+                    
                     if (!completed.includes(item.id)) {
                         completed.push(item.id);
                         updateProgress();
+                        // Refresh status badges after short flip animation delay
                         setTimeout(renderCards, 600);
                     }
                 };
@@ -918,15 +859,6 @@
             document.getElementById('sidebarOverlay').classList.toggle('active');
         }
 
-        function toggleTheme() {
-            document.body.classList.toggle('dark-mode');
-            document.body.classList.toggle('light-mode');
-            const isDark = document.body.classList.contains('dark-mode');
-            document.getElementById('theme-icon').innerText = isDark ? '🌙' : '☀️';
-            document.getElementById('theme-text').innerText = isDark ? 'Dark Mode' : 'Light Mode';
-            localStorage.setItem('bio_theme', isDark ? 'dark' : 'light');
-        }
-
         function resetProgress() {
             if (confirm('តើអ្នកពិតជាចង់កំណត់ឡើងវិញនូវការរីកចម្រើនទាំងអស់មែនទេ?')) {
                 completed = [];
@@ -935,7 +867,6 @@
             }
         }
 
-        // Background particles
         const pCanvas = document.getElementById("particleCanvas");
         const pCtx = pCanvas.getContext("2d");
         let particles = [];
@@ -981,10 +912,6 @@
             requestAnimationFrame(animateParticles);
         }
         animateParticles();
-
-        // Restore Saved Theme
-        const savedTheme = localStorage.getItem('bio_theme');
-        if (savedTheme === 'light') toggleTheme();
 
         updateProgress();
         renderCards();
