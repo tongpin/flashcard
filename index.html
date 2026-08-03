@@ -14,17 +14,16 @@
       <h2>🧬 ជីវវិទ្យា ២០២៦</h2>
     </div>
     <nav class="nav-links">
-      <a href="#" class="active">🎡 Spin Wheel</a>
-      <a href="#">🎴 Flashcards</a>
+      <a href="#spin-section" class="active">🎡 Spin Wheel</a>
+      <a href="#flashcard-section">🎴 Flashcards</a>
     </nav>
   </aside>
 
   <!-- Main Content Area -->
   <main class="main-content">
     
-    <!-- Header Area -->
+    <!-- Top Header -->
     <header class="app-header">
-      <!-- Progress Bar Container -->
       <div class="progress-container">
         <div class="progress-labels">
           <span>ការរីកចម្រើន:</span>
@@ -35,26 +34,29 @@
         </div>
       </div>
 
-      <!-- Theme Switch Button -->
-      <button id="theme-toggle-btn" class="theme-btn">
-        🌙 Dark Mode
-      </button>
+      <button id="theme-toggle-btn" class="theme-btn">🌙 Dark Mode</button>
     </header>
 
-    <!-- Interactive Section -->
-    <section class="interactive-container">
-      <h1>រំលឹកមេរៀនជីវវិទ្យា</h1>
-      
-      <!-- Spin / Flashcard Action Controls -->
+    <!-- Spin Wheel Section -->
+    <section id="spin-section" class="interactive-container">
+      <h1>🎡 វិលកង់រំលឹកមេរៀន (Spin Wheel)</h1>
       <div class="controls">
         <button id="spin-btn" class="action-btn">Spin Wheel 🎡</button>
-        <button id="flip-btn" class="action-btn">Flip Flashcard 🎴</button>
+        <button id="flip-btn" class="action-btn">Flip Answer 🎴</button>
       </div>
-
-      <!-- Result / Question Display -->
       <div class="card-display" id="question-card">
-        <p id="card-text">ចុចប៊ូតុងខាងលើដើម្បីចាប់ផ្តើម!</p>
+        <p id="card-text">ចុចប៊ូតុង Spin Wheel ខាងលើដើម្បីចាប់ផ្តើម!</p>
       </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- Flashcards Grid Section -->
+    <section id="flashcard-section" class="flashcard-section">
+      <h2>🎴 Flashcards ជីវវិទ្យា (៦៤ សំណួរ)</h2>
+      <p class="subtitle">ចុចលើកាតនីមួយៗដើម្បីមើលចម្លើយ!</p>
+      
+      <div class="flashcards-grid" id="flashcards-container"></div>
     </section>
 
   </main>
