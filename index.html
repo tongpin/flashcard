@@ -56,9 +56,7 @@
             background: rgba(0, 0, 0, 0.5);
             z-index: 15;
         }
-        .sidebar-overlay.active {
-            display: block;
-        }
+        .sidebar-overlay.active { display: block; }
 
         /* --- LEFT SIDE NAVIGATION MENU --- */
         .left-sidebar {
@@ -130,7 +128,7 @@
             width: 100%;
         }
 
-        /* TOP BAR WITH MOBILE MENU BUTTON */
+        /* TOP BAR */
         .top-bar {
             display: flex;
             justify-content: space-between;
@@ -155,21 +153,53 @@
             padding: 4px;
         }
 
+        /* ENHANCED USER SECTION */
         .user-section {
             display: flex;
             align-items: center;
             gap: 8px;
-            flex-wrap: wrap;
+            background: #f1f5f9;
+            padding: 5px 12px;
+            border-radius: 30px;
+            border: 1px solid #cbd5e1;
+        }
+
+        .avatar-badge {
+            width: 26px;
+            height: 26px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .user-section input {
-            padding: 6px 12px;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
+            border: none;
+            background: transparent;
             outline: none;
             font-size: 0.9rem;
-            max-width: 140px;
+            font-weight: 600;
+            color: var(--text);
+            max-width: 110px;
         }
+
+        .save-status {
+            font-size: 0.7rem;
+            color: var(--success);
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .save-status.show { opacity: 1; }
 
         .stats-group {
             display: flex;
@@ -279,7 +309,7 @@
         }
         .view-section.active { display: flex; }
 
-        /* SPIN WHEEL RESPONSIVE */
+        /* SPIN WHEEL */
         .wheel-box {
             position: relative;
             width: 280px;
@@ -338,7 +368,7 @@
 
         .action-btns { display: flex; gap: 10px; margin-top: 10px; }
 
-        /* FLASHCARD RESPONSIVE */
+        /* FLASHCARD */
         .flashcard {
             width: 100%;
             min-height: 380px;
@@ -407,14 +437,101 @@
 
         .controls { display: flex; gap: 8px; margin-top: 15px; flex-wrap: wrap; justify-content: center; }
 
+        /* --- MODERN FOOTER STYLES --- */
         footer {
-            background: #1e293b;
+            width: 100%;
+            background: #090d16;
             color: #94a3b8;
-            padding: 15px 20px;
-            text-align: center;
-            font-size: 0.78rem;
+            padding: 40px 20px 20px 20px;
             margin-top: auto;
+            border-top: 1px solid #1e293b;
         }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 30px;
+            padding-bottom: 30px;
+        }
+
+        .footer-col h4 {
+            color: #ffffff;
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .footer-col ul { list-style: none; padding: 0; margin: 0; }
+        .footer-col ul li { margin-bottom: 10px; }
+        .footer-col ul li a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.88rem;
+            transition: color 0.2s ease;
+        }
+        .footer-col ul li a:hover { color: #ffffff; }
+
+        .brand-col .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .brand-col .footer-logo h2 { color: #ffffff; font-size: 1.2rem; font-weight: 700; }
+
+        .brand-desc {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #64748b;
+            max-width: 380px;
+        }
+
+        .contact-info {
+            font-size: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 18px;
+            color: #cbd5e1;
+        }
+
+        .social-title { font-size: 0.85rem; font-weight: 700; color: #ffffff; margin-bottom: 10px; }
+        .social-links { display: flex; gap: 8px; }
+
+        .social-btn {
+            width: 36px;
+            height: 36px;
+            background: #1e293b;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            border: 1px solid #334155;
+        }
+        .social-btn:hover { background: #334155; transform: translateY(-2px); }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 20px;
+            border-top: 1px solid #1e293b;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        .legal-links a { color: #64748b; text-decoration: none; transition: color 0.2s; }
+        .legal-links a:hover { color: #cbd5e1; }
 
         /* --- MOBILE MEDIA QUERIES --- */
         @media (max-width: 900px) {
@@ -425,31 +542,14 @@
                 height: 100vh;
                 transform: translateX(-100%);
             }
-
-            .left-sidebar.active {
-                transform: translateX(0);
-            }
-
-            .menu-toggle-btn {
-                display: block;
-            }
-
-            .sidebar-right {
-                width: 100%;
-                max-height: 400px;
-            }
-
-            .content-body {
-                padding: 15px;
-            }
-
-            .flashcard, .card-front, .card-back {
-                min-height: 350px;
-            }
-
-            .card-text {
-                font-size: 1rem;
-            }
+            .left-sidebar.active { transform: translateX(0); }
+            .menu-toggle-btn { display: block; }
+            .sidebar-right { width: 100%; max-height: 400px; }
+            .content-body { padding: 15px; }
+            .flashcard, .card-front, .card-back { min-height: 350px; }
+            .card-text { font-size: 1rem; }
+            .footer-container { grid-template-columns: 1fr; gap: 25px; }
+            .footer-bottom { flex-direction: column; text-align: center; }
         }
     </style>
 </head>
@@ -496,8 +596,11 @@
         <div class="top-bar">
             <button class="menu-toggle-btn" onclick="toggleSidebar()">☰</button>
             <div class="user-section">
-                <label for="userName"><strong>ឈ្មោះ៖</strong></label>
-                <input type="text" id="userName" value="សិស្ស A" placeholder="ឈ្មោះ..." onchange="updateUser()">
+                <div class="avatar-badge">👤</div>
+                <div class="input-wrapper">
+                    <input type="text" id="userName" value="សិស្ស A" placeholder="ឈ្មោះ..." onchange="updateUser()">
+                    <span class="save-status" id="saveStatus">✓ Saved</span>
+                </div>
             </div>
             <div class="stats-group">
                 <div class="stats-badge" id="statsBadge">
@@ -567,8 +670,71 @@
             </div>
         </div>
 
+        <!-- FULL MODERN FOOTER -->
         <footer>
-            &copy; 2026 Biology BaccII Preparation Tool. All rights reserved.
+            <div class="footer-container">
+                <div class="footer-col brand-col">
+                    <div class="footer-logo">
+                        <span class="logo-icon">🧬</span>
+                        <h2>ជីវវិទ្យា ២០២៦</h2>
+                    </div>
+                    <p class="brand-desc">
+                        កម្មវិធីរំលឹកមេរៀន និងស្វ័យសិក្សាជីវវិទ្យាថ្នាក់ទី១២ ត្រៀមប្រឡងបាក់ឌុប ប្រកបដោយប្រសិទ្ធភាព និងភាពងាយស្រួល។
+                    </p>
+                    <div class="contact-info">
+                        <div>📍 ភ្នំពេញ, កម្ពុជា</div>
+                        <div>✉️ ទំនាក់ទំនងគាំទ្រ</div>
+                    </div>
+                    <div class="social-title">តាមដានយើង</div>
+                    <div class="social-links">
+                        <a href="#" class="social-btn">💬</a>
+                        <a href="#" class="social-btn">✈️</a>
+                        <a href="#" class="social-btn">📘</a>
+                        <a href="#" class="social-btn">▶️</a>
+                        <a href="#" class="social-btn">🎵</a>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h4>ផលិតផល / មេរៀន</h4>
+                    <ul>
+                        <li><a href="#">Spin Wheel ជ្រើសរើសសំណួរ</a></li>
+                        <li><a href="#">Flashcard រំលឹកមេរៀន</a></li>
+                        <li><a href="#">សំណួរស្វ័យសិក្សា (៦៤)</a></li>
+                        <li><a href="#">មេរៀនសង្ខេបថ្នាក់ទី១២</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>ការគាំទ្រ</h4>
+                    <ul>
+                        <li><a href="#">សំបុត្រការគាំទ្រ</a></li>
+                        <li><a href="#">របៀបប្រើប្រាស់</a></li>
+                        <li><a href="#">រាយការណ៍បញ្ហា</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>អំពីយើង</h4>
+                    <ul>
+                        <li><a href="#">ទំព័រដើម</a></li>
+                        <li><a href="#">លក្ខខណ្ឌនៃការប្រើប្រាស់</a></li>
+                        <li><a href="#">គោលការណ៍ភាពឯកជន</a></li>
+                        <li><a href="#">អំពីកម្មវិធី</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="copyright">
+                    &copy; 2026 Biology BaccII Preparation. All rights reserved.
+                </div>
+                <div class="legal-links">
+                    <a href="#">លក្ខខណ្ឌ</a> • 
+                    <a href="#">ភាពឯកជន</a> • 
+                    <a href="#">ប្រើប្រាស់យុត្តិធម៌</a>
+                </div>
+            </div>
         </footer>
     </div>
 
@@ -657,7 +823,7 @@
             { q: "តើស្បែកមាននាទីដូចម្តេចខ្លះ?", a: "ការពារសារពាង្គកាយ, បង្ការការជ្រៀតចូលនៃមេរោគ, បង្ការការបាត់បង់ទឹក, ការពារកាំរស្មី UV, បណ្តូរឧស្ម័ន, បញ្ចេញកាកសំណល់តាមញើស, ទទួលរំញោចផ្សេងៗ, និងបន្ថយកម្ដៅ。" },
             { q: "តើឆួលវិញ្ញាណក្លិននិងជួលវិញ្ញាណរសជាតិមានទំនាក់ទំនងគ្នាយ៉ាងដូចម្តេច?", a: "រសជាតិអាហារទាក់ទងនឹងវិញ្ញាណរសជាតិ និងវិញ្ញាណក្លិន។ ក្លិនឈ្ងុយភោចឆួលក្លិន អាហារក្នុងមាត់ភោចឆួលរសជាតិ ទើបវិញ្ញាណទាំងពីរប្របំពេញគ្នាឱ្យអាហារមានរសជាតិឆ្ងាញ់。" },
             { q: "ក. ដូចម្តេចដែលហៅថា អង់ស៊ីលីយែ? ខ. តើបាតុភូតអ្វីដែលធ្វើឱ្យយើងអាចមើលឃើញវត្ថុផ្សេងៗស្ថិតនៅចម្ងាយខុសៗគ្នា?", a: "ក. អង្គស៊ីលីយែ៖ ជាសាច់ដុំរលីងជុំវិញកែវភ្នែក ភ្ជាប់កែវភ្នែកដោយសរសៃចំណង。\nខ. កម្លាំងសម្របតម្រូវ៖ បង្កើតកម្រាស់កែវភ្នែកត្រឹមត្រូវតាមរយៈការកន្ត្រាក់/បន្ធូរនៃអង្គស៊ីលីយែ。" },
-            { q: "ក. តើអង់ស៊ីមជាអ្វី? ខ. ហេតុអ្វីបានជានៅក្នុងកោសិកានៃសារពាង្គកាយមានអង់ស៊ីមច្រើនប្រភេទ? គ. អង់ស៊ីមទាំងអស់សុទ្ធតែប្រូតេអ៊ីនដែរឬទេ? ព្រោះអ្វី?", a: "ក. អង់ស៊ីម ជាប្រូតេអ៊ីនដែលជាកាតាលីករជីវៈជួយជំរុញល្បឿនប្រតិកម្មគីមី。\nខ. ព្រោះក្នុងកោសិកាមានប្រតិកម្មគីមីរាប់ពាន់ ហើយអង់ស៊ីមមួយមានអំពើលើប្រតិកម្មមួយប៉ុណ្ណោះ。\nគ. អង់ស៊ីមទាំងអស់ជាប្រូតេអ៊ីន ប៉ុន្តែមានមុខងារមិនដូចគ្នានឹងប្រូតេអ៊ីនទូទៅទេ。" },
+            { q: "ក. តើអង់ស៊ីមជាអ្វី? ខ. ហេតុអ្វីបានជានៅក្នុងកោសិកានៃសារពាង្គកាយមានអង់ស៊ីមច្រើនប្រភេទ? គ. អង់ស៊ីមទាំងអស់សុទ្ធតែប្រូតេអ៊ីនដែរឬទេ? ព្រោះអ្វី?", a: "ក. អង់ស៊ីម ជាប្រូតេអ៊ីនដែលជាកាតាលីករជីវៈជួយជំរុញល្បឿនប្រតិកម្មគីមី。\nខ. ព្រោះក្នុងកោសិកាមានប្រតិកម្មគីមីរាប់ពាន់ ហើយអង់ស៊ីមមួយមានអំពើលើប្រតិកម្មមួយប៉ុណោះ。\nគ. អង់ស៊ីមទាំងអស់ជាប្រូតេអ៊ីន ប៉ុន្តែមានមុខងារមិនដូចគ្នានឹងប្រូតេអ៊ីនទូទៅទេ。" },
             { q: "ហេតុអ្វីបានជាសីតុណ្ហភាពខ្ពស់ពេកឬទាបពេកធ្វើឱ្យអង់ស៊ីមបាត់បង់គុណភាព?", a: "ព្រោះអង់ស៊ីមជាប្រូតេអ៊ីន។ កាលណាសីតុណ្ហភាពខ្ពស់ពេក សម្ព័ន្ធអ៊ីដ្រូសែនត្រូវបានរលា ធ្វើឱ្យប្រូតេអ៊ីនខូចទ្រង់ទ្រាយ ទើបអង់ស៊ីមបាត់បង់គុណភាព。" },
             { q: "ហេតុអ្វីបានជាគេនិយាយថាអង់ស៊ីមជាប្រូតេអ៊ីនដែលមានសកម្មភាពបានខ្លាំងក្លា?", a: "ព្រោះអង់ស៊ីមមួយចំនួនតូច អាចបង្កើនល្បឿនប្រតិកម្មគីមីបានមួយចំនួនធំ。" },
             { q: "តើគេហៅឈ្មោះរបស់អង់ស៊ីមបានត្រឹមត្រូវដោយផ្អែកលើកត្តាអ្វីខ្លះ?", a: "- យថាប្រភេទនៃកាតាលីករដែលជំរុញល្បឿនប្រតិកម្ម\n- ឈ្មោះស៊ុបស្អាតដែលបញ្ចប់ដោយពាក្យ «អាស»" },
@@ -717,6 +883,12 @@
         function updateUser() {
             currentUser = document.getElementById("userName").value || "Anonymous";
             localStorage.setItem("bio_user_name", currentUser);
+            
+            const status = document.getElementById("saveStatus");
+            if(status) {
+                status.classList.add("show");
+                setTimeout(() => status.classList.remove("show"), 2000);
+            }
         }
 
         function resetAllData() {
@@ -783,8 +955,7 @@
                 updateCard();
             }
 
-            // Close mobile menu on tab click
-            if (window.innerWidth <= 900) {
+            if (window.innerWidth <= 900 && document.getElementById("leftSidebar").classList.contains("active")) {
                 toggleSidebar();
             }
         }
