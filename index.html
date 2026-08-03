@@ -258,11 +258,6 @@
             margin-top: 4px;
         }
 
-        .deck-badges {
-            display: flex;
-            gap: 8px;
-        }
-
         .badge-chip {
             padding: 6px 14px;
             border-radius: 20px;
@@ -317,6 +312,7 @@
             border: 1px solid var(--border-color);
             box-shadow: var(--shadow-md);
             overflow: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
         }
 
         .card-face.card-front {
@@ -328,6 +324,29 @@
             transform: rotateY(180deg);
             background: #ffffff;
             z-index: 1;
+        }
+
+        /* GUARANTEE NO MIRRORED TEXT WHEN FLIPPED */
+        .flashcard-card:not(.flipped) .card-front {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+        .flashcard-card:not(.flipped) .card-back {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .flashcard-card.flipped .card-front {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .flashcard-card.flipped .card-back {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
         }
 
         .card-top-meta {
@@ -421,10 +440,6 @@
             background: #f1f5f9;
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-
-        .tool-btn:active {
-            transform: scale(0.95);
         }
 
         .nav-arrows-container {
@@ -627,7 +642,7 @@
         .legal-links a { color: #64748b; text-decoration: none; transition: color 0.2s; }
         .legal-links a:hover { color: #cbd5e1; }
 
-        /* FULLSCREEN MODE FOR FLASHCARD */
+        /* FULLSCREEN MODE */
         .card-container-wrapper.fullscreen {
             position: fixed;
             top: 0;
@@ -657,10 +672,7 @@
             margin-top: 20px;
         }
 
-        .card-container-wrapper.fullscreen .nav-btn {
-            color: #ffffff;
-        }
-
+        .card-container-wrapper.fullscreen .nav-btn,
         .card-container-wrapper.fullscreen .card-counter {
             color: #ffffff;
         }
@@ -755,11 +767,10 @@
                 </div>
             </div>
 
-            <!-- Quizlet Style Flashcard Container -->
             <div class="card-container-wrapper" id="cardWrapper">
                 <div class="flashcard-viewer" onclick="flipCard()">
                     <div class="flashcard-card" id="cardElement">
-                        <!-- FRONT FACE -->
+                        <!-- FRONT FACE (QUESTION) -->
                         <div class="card-face card-front">
                             <div class="card-top-meta">
                                 <span id="cardQNumText">សំណួរទី ១</span>
@@ -774,7 +785,7 @@
                             </div>
                         </div>
 
-                        <!-- BACK FACE -->
+                        <!-- BACK FACE (ANSWER) -->
                         <div class="card-face card-back">
                             <div class="card-top-meta">
                                 <span>ចម្លើយ (Answer)</span>
@@ -815,9 +826,7 @@
                     <span>📋 បញ្ជីអត្ថបទសំណួរទាំងអស់</span>
                     <span id="drawerToggleIcon">▼</span>
                 </div>
-                <div class="drawer-list" id="drawerList">
-                    <!-- Dynamic Drawer Items -->
-                </div>
+                <div class="drawer-list" id="drawerList"></div>
             </div>
         </main>
 
@@ -890,11 +899,11 @@
     </div>
 
     <script>
-        // 64 Biology Questions and Answers for Bac II
+        // Exact 64 Biology Questions and Answers copied directly from original file
         const biologyData = [
             { id: 1, q: "តើ DNA ជាអ្វី?", a: "DNA ជាអាស៊ីតដេអុកស៊ីរីបូនុយក្លេអ៊ិច ដែលជាទម្រង់ព័ត៌មានសេនេទិចរបស់សរីរាង្គរស់។" },
             { id: 2, q: "តើ DNA មានទម្រង់ដូចម្តេច?", a: "DNA មានទម្រង់ជាស្រកៀលឌុប (Double Helix) ដែលកើតចេញពីខ្សែច្រវាក់នុយក្លេអូទីតពីរស្រប និងច្រាសទិសគ្នា។" },
-            { id: 3, q: "តើនុយក្លេអូទីតរបស់ DNA មានសមាសធាតុអ្វីខ្លះ?", a: "មាន ៣ គឺ៖ ស្ករដេអុកស៊ីរីបូស, ក្រុមផូស្វាត, និងបាសអាសូត (A, T, C, G)។" },
+            { id: 3, q: "តើនុយក្លេអូទីតរបស់ DNA មានសមាសធាតុអ្វីខ្លះ?", a: "មាន ៣ គឺ៖ ស្ករដេអុកស៊ីរីបូស, ក្រុមផូស្វាត, និងបាសអាសូត (A, T, C, G)Controlled." },
             { id: 4, q: "តើបាសអាសូតផ្គុំគ្នាតាមគោលការណ៍អ្វី?", a: "A ភ្ជាប់ជាមួយ T ដោយសម្ព័ន្ធអ៊ីដ្រូសែន ២ និង C ភ្ជាប់ជាមួយ G ដោយសម្ព័ន្ធអ៊ីដ្រូសែន ៣។" },
             { id: 5, q: "តើការស្វ័យតម្លើងតម្រៀប (Replication) របស់ DNA ប្រព្រឹត្តទៅនៅឯណា?", a: "ប្រព្រឹត្តទៅនៅក្នុងណូលេអូ ក្នុងវគ្គ S នៃចន្លោះវគ្គ (Interphase)។" },
             { id: 6, q: "តើអង់ស៊ីមអ្វីដែលជួយពន្លាតខ្សែ DNA ពេលស្វ័យតម្លើងតម្រៀប?", a: "គឺអង់ស៊ីម ដេអិនអេ អេលីកាស (DNA Helicase)។" },
@@ -1146,7 +1155,7 @@
             const container = document.getElementById('drawerList');
             container.innerHTML = '';
 
-            biologyData.forEach((item, index) => {
+            biologyData.forEach((item) => {
                 const isDone = completed.includes(item.id);
                 const isActive = activeDeck[currentIndex] && activeDeck[currentIndex].id === item.id;
                 
@@ -1161,12 +1170,10 @@
                 `;
 
                 div.onclick = () => {
-                    // Find index in current active deck
                     const matchIndex = activeDeck.findIndex(d => d.id === item.id);
                     if (matchIndex > -1) {
                         currentIndex = matchIndex;
                     } else {
-                        // Switch filter to all if selected item not in pending/done filter
                         filterCategory('all');
                         currentIndex = item.id - 1;
                     }
