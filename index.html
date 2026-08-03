@@ -1,66 +1,337 @@
 <!DOCTYPE html>
 <html lang="km">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ជីវវិទ្យា ២០២៦ - BaccII Revision</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BaccII Biology - Revision Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --bg-dark: #0f172a;
+            --card-dark: #1e293b;
+            --text-dark: #f1f5f9;
+            --bg-light: #f8fafc;
+            --card-light: #ffffff;
+            --text-light: #1e293b;
+        }
+
+        body {
+            font-family: 'Kantumruy Pro', 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        /* Theme Support */
+        body.dark-mode {
+            background-color: var(--bg-dark);
+            color: var(--text-dark);
+        }
+        body.light-mode {
+            background-color: var(--bg-light);
+            color: var(--text-light);
+        }
+
+        .flashcard {
+            perspective: 1000px;
+            height: 200px;
+            cursor: pointer;
+        }
+
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .flashcard.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-front, .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+
+        .dark-mode .flashcard-front { background-color: var(--card-dark); border: 1px solid #334155; }
+        .dark-mode .flashcard-back { background-color: var(--primary-dark); color: white; transform: rotateY(180deg); }
+        
+        .light-mode .flashcard-front { background-color: var(--card-light); border: 1px solid #e2e8f0; }
+        .light-mode .flashcard-back { background-color: var(--primary); color: white; transform: rotateY(180deg); }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #64748b; border-radius: 10px; }
+
+        .progress-bar-fill {
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
 </head>
-<body data-theme="dark">
+<body class="dark-mode min-h-screen">
 
-  <!-- Navigation Sidebar -->
-  <aside class="sidebar">
-    <div class="brand">
-      <h2>🧬 ជីវវិទ្យា ២០២៦</h2>
-    </div>
-    <nav class="nav-links">
-      <a href="#spin-section" class="active">🎡 Spin Wheel</a>
-      <a href="#flashcard-section">🎴 Flashcards</a>
+    <nav class="sticky top-0 z-50 backdrop-blur-md border-b border-slate-700 bg-opacity-80 p-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold text-emerald-500">🧬 BaccII Bio <span class="hidden sm:inline">Revision</span></h1>
+            
+            <div class="flex items-center gap-4">
+                <div class="hidden md:block w-48">
+                    <div class="flex justify-between text-xs mb-1">
+                        <span>ការរីកចម្រើន</span>
+                        <span id="progress-text">0%</span>
+                    </div>
+                    <div class="h-2 bg-slate-700 rounded-full overflow-hidden">
+                        <div id="progress-bar" class="progress-bar-fill h-full bg-emerald-500" style="width: 0%"></div>
+                    </div>
+                </div>
+                <button id="theme-toggle" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 transition-colors">
+                    🌙
+                </button>
+            </div>
+        </div>
     </nav>
-  </aside>
 
-  <!-- Main Content Area -->
-  <main class="main-content">
-    
-    <!-- Top Header -->
-    <header class="app-header">
-      <div class="progress-container">
-        <div class="progress-labels">
-          <span>ការរីកចម្រើន:</span>
-          <span id="progress-percent">0%</span>
-        </div>
-        <div class="progress-bar-bg">
-          <div class="progress-bar-fill" id="progress-fill"></div>
-        </div>
-      </div>
+    <main class="max-w-7xl mx-auto p-4 sm:p-8">
+        
+        <section class="mb-12 text-center">
+            <h2 class="text-2xl font-bold mb-6 flex items-center justify-center gap-2">
+                🎡 វិលកង់សំណួរចៃដន្យ
+            </h2>
+            <div class="max-w-2xl mx-auto bg-slate-800 dark:bg-slate-800 light:bg-white p-8 rounded-2xl shadow-xl border border-slate-700">
+                <div id="wheel-display" class="text-xl sm:text-2xl min-h-[120px] flex items-center justify-center mb-8 px-4 font-medium leading-relaxed">
+                    ចុចប៊ូតុងខាងក្រោមដើម្បីចាប់ផ្ដើម!
+                </div>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <button id="spin-btn" class="bg-emerald-600 hover:bg-emerald-500 text-white px-8 py-3 rounded-xl font-bold shadow-lg transition-all active:scale-95">
+                        វិលកង់ (Spin)
+                    </button>
+                    <button id="reveal-btn" class="bg-slate-700 hover:bg-slate-600 text-white px-8 py-3 rounded-xl font-bold shadow-lg transition-all active:scale-95">
+                        បង្ហាញចម្លើយ
+                    </button>
+                </div>
+            </div>
+        </section>
 
-      <button id="theme-toggle-btn" class="theme-btn">🌙 Dark Mode</button>
-    </header>
+        <section>
+            <div class="flex flex-col sm:flex-row justify-between items-end mb-8 gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold mb-2">🎴 Flashcards ជីវវិទ្យា (៦៤ សំណួរ)</h2>
+                    <p class="text-slate-400">ចុចលើកាតនីមួយៗដើម្បីឆែកមើលចម្លើយ</p>
+                </div>
+                <button id="reset-progress" class="text-sm text-red-400 hover:text-red-300 underline">
+                    លុបការរីកចម្រើន
+                </button>
+            </div>
+            
+            <div id="flashcards-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Cards will be injected here -->
+            </div>
+        </section>
+    </main>
 
-    <!-- Spin Wheel Section -->
-    <section id="spin-section" class="interactive-container">
-      <h1>🎡 វិលកង់រំលឹកមេរៀន (Spin Wheel)</h1>
-      <div class="controls">
-        <button id="spin-btn" class="action-btn">Spin Wheel 🎡</button>
-        <button id="flip-btn" class="action-btn">Flip Answer 🎴</button>
-      </div>
-      <div class="card-display" id="question-card">
-        <p id="card-text">ចុចប៊ូតុង Spin Wheel ខាងលើដើម្បីចាប់ផ្តើម!</p>
-      </div>
-    </section>
+    <script>
+        // 1. Data Source
+        const biologyData = [
+            { id: 1, q: "តើ DNA ជាអ្វី?", a: "DNA ជាអាស៊ីតដេអុកស៊ីរីបូនុយក្លេអ៊ិច ដែលជាទម្រង់ព័ត៌មានសេនេទិចរបស់សរីរាង្គរស់។" },
+            { id: 2, q: "តើ DNA មានទម្រង់ដូចម្តេច?", a: "DNA មានទម្រង់ជាស្រកៀលឌុប (Double Helix) ដែលកើតចេញពីខ្សែច្រវាក់នុយក្លេអូទីតពីរស្រប និងច្រាសទិសគ្នា។" },
+            { id: 3, q: "តើនុយក្លេអូទីតរបស់ DNA មានសមាសធាតុអ្វីខ្លះ?", a: "មាន ៣ គឺ៖ ស្ករដេអុកស៊ីរីបូស, ក្រុមផូស្វាត, និងបាសអាសូត (A, T, C, G)។" },
+            { id: 4, q: "តើបាសអាសូតផ្គុំគ្នាតាមគោលការណ៍អ្វី?", a: "A ភ្ជាប់ជាមួយ T ដោយសម្ព័ន្ធអ៊ីដ្រូសែន ២ និង C ភ្ជាប់ជាមួយ G ដោយសម្ព័ន្ធអ៊ីដ្រូសែន ៣។" },
+            { id: 5, q: "តើការស្វ័យតម្លើងតម្រៀប (Replication) របស់ DNA ប្រព្រឹត្តទៅនៅឯណា?", a: "ប្រព្រឹត្តទៅនៅក្នុងណូលេអូ ក្នុងវគ្គ S នៃចន្លោះវគ្គ (Interphase)។" },
+            { id: 6, q: "តើអង់ស៊ីមអ្វីដែលជួយពន្លាតខ្សែ DNA ពេលស្វ័យតម្លើងតម្រៀប?", a: "គឺអង់ស៊ីម ដេអិនអេ អេលីកាស (DNA Helicase)។" },
+            { id: 7, q: "តើអង់ស៊ីមអ្វីដែលភ្ជាប់នុយក្លេអូទីតថ្មីទៅនឹងខ្សែចាស់?", a: "គឺអង់ស៊ីម ដេអិនអេ ប៉ូលីមេរ៉ាស (DNA Polymerase)។" },
+            { id: 8, q: "តើ ARN ជាអ្វី?", a: "ARN ជាអាស៊ីតរីបូនុយក្លេអ៊ិច ដែលមានខ្សែច្រវាក់ទោល និងមានតួនាទីក្នុងការសំយោគប្រូតេអ៊ីន។" },
+            { id: 9, q: "តើនុយក្លេអូទីតរបស់ ARN ខុសពី DNA ត្រង់ណា?", a: "ARN មានស្កររីបូស និងបាសអ៊ុយរ៉ាស៊ីល (U) ជំនួសឱ្យបាសទីមីន (T)។" },
+            { id: 10, q: "តើ ARN មានប៉ុន្មានប្រភេទ? អ្វីខ្លះ?", a: "មាន ៣ ប្រភេទគឺ៖ mRNA, tRNA, និង rRNA។" },
+            { id: 11, q: "តើការចម្លងក្រម (Transcription) ជាអ្វី?", a: "ជាដំណើរការសំយោគ mRNA ចេញពីខ្សែពុម្ពរបស់ DNA នៅក្នុងណូលេអូ។" },
+            { id: 12, q: "តើអង់ស៊ីមអ្វីដែលដើរតួនាទីក្នុងការចម្លងក្រម?", a: "គឺអង់ស៊ីម អារអិនអេ ប៉ូលីមេរ៉ាស (RNA Polymerase)។" },
+            { id: 13, q: "តើការបកប្រែក្រម (Translation) ប្រព្រឹត្តទៅនៅឯណា?", a: "ប្រព្រឹត្តទៅនៅក្នុងស៊ីតូប្លាស ត្រង់រីបូសូម។" },
+            { id: 14, q: "តើកូដុង (Codon) ជាអ្វី?", a: "ជាបន្សំនៃ ៣ នុយក្លេអូទីតនៅលើ mRNA ដែលកំណត់អាស៊ីតអាមីនមួយ។" },
+            { id: 15, q: "តើកូដុងចាប់ផ្តើមសំយោគប្រូតេអ៊ីនមានឈ្មោះអ្វី?", a: "គឺកូដុង AUG (កំណត់អាស៊ីតអាមីន មេតយូនីន)។" },
+            { id: 16, q: "តើកូដុងឈប់ (Stop Codon) មានអ្វីខ្លះ?", a: "មាន ៣ គឺ៖ UAA, UAG, និង UGA។" },
+            { id: 17, q: "តើអង់ទីកូដុង (Anticodon) ស្ថិតនៅលើអ្វី?", a: "ស្ថិតនៅលើ tRNA ដែលមានតួនាទីទៅផ្គុំបំពេញជាមួយកូដុងលើ mRNA។" },
+            { id: 18, q: "តើប្រូតេអ៊ីនផ្គុំឡើងពីអ្វី?", a: "ផ្គុំឡើងពីអាស៊ីតអាមីនជាច្រើនភ្ជាប់គ្នាតាមសម្ព័ន្ធប៉ិបទីត។" },
+            { id: 19, q: "តើអង់ស៊ីមជាអ្វី?", a: "ជាប្រូតេអ៊ីនពិសេសដែលដើរតួនាទីជាកាតាលីករជីវៈ ជួយពន្លឿនល្បឿនប្រតិកម្មជីវគីមី។" },
+            { id: 20, q: "តែកាតាលីករជីវៈមានលក្ខណៈពិសេសអ្វី?", a: "វាមានលក្ខណៈប្រាក់ស្យុង (ចាក់លាក់) ចំពោះស៊ុបស្ត្រាត និងមិនផ្លាស់ប្តូរទម្រង់ក្រោយប្រតិកម្មឡើយ។" },
+            { id: 21, q: "តើកត្តាអ្វីខ្លះដែលជះឥទ្ធិពលលើសកម្មភាពអង់ស៊ីម?", a: "មាន៖ សីតុណ្ហភាព, pH, និងកំហាប់ស៊ុបស្ត្រាត/អង់ស៊ីម។" },
+            { id: 22, q: "តើការបែងចែកកោសិកាមីតូស បង្កើតបានកោសិកាប៉ុន្មាន?", a: "បង្កើតបានកោសិកាកូន ២ ដែលមានចំនួនក្រូម៉ូសូម 2n ដូចកោសិកាមេបេះបិទ។" },
+            { id: 23, q: "តើមីតូសមានប៉ុន្មានវគ្គ? អ្វីខ្លះ?", a: "មាន ៤ វគ្គគឺ៖ ប្រូហ្វាស, មេតាហ្វាស, អាណាហ្វាស, និងតេឡូហ្វាស។" },
+            { id: 24, q: "តើក្រូម៉ូសូមតម្រៀបគ្នានៅប្លង់អេក្វាទ័រក្នុងវគ្គណា?", a: "ក្នុងវគ្គមេតាហ្វាស (Metaphase)។" },
+            { id: 25, q: "តើការបែងចែកកោសិកាម៉េយ៉ូស កើតឡើងលើកោសិកាអ្វី?", a: "កើតឡើងលើកោសិកាបន្តពូជ (កោសិកាស៊ីមេទិច) ដើម្បីបង្កើតជាកាម៉ែត។" },
+            { id: 26, q: "តើម៉េយ៉ូសបង្កើតបានកោសិកាកូនប៉ុន្មាន?", a: "បង្កើតបានកោសិកាកូន ៤ ដែលមានចំនួនក្រូម៉ូសូម n (Haploid)។" },
+            { id: 27, q: "តើបាតុភូតពលាស់ប្តូរស្មើសាច់ (Crossing Over) កើតឡើងក្នុងវគ្គណា?", a: "កើតឡើងក្នុងវគ្គប្រូហ្វាស I នៃម៉េយ៉ូស I។" },
+            { id: 28, q: "តើបាតុភូត Crossing Over មានសារៈសំខាន់អ្វី?", a: "វាធ្វើឱ្យមានការផ្លាស់ប្តូរសេនេទិច រវាងក្រូម៉ូសូមដូចគ្នា បង្កើតបានជាលក្ខណៈចម្រុះ។" },
+            { id: 29, q: "តើអាឡែល (Allele) ជាអ្វី?", a: "ជាទម្រង់ផ្សេងៗគ្នានៃសែនតែមួយ ដែលកំណត់លក្ខណៈដូចគ្នា។" },
+            { id: 30, q: "តើហ្សេណូទីប (Genotype) ជាអ្វី?", a: "ជាសរុបសែនទាំងអស់ដែលកំណត់លក្ខណៈរបស់សរីរាង្គ។" },
+            { id: 31, q: "តើហ្វេណូទីប (Phenotype) ជាអ្វី?", a: "ជាលក្ខណៈក្រៅដែលស្តែងចេញឱ្យឃើញ ដែលជាលទ្ធផលរវាងហ្សេណូទីប និងបរិស្ថាន។" },
+            { id: 32, q: "តើសែនលុប (Dominant Gene) ជាអ្វី?", a: "ជាសែនដែលស្តែងលក្ខណៈចេញមកក្រៅ ទោះបីជាមានវត្តមានអាឡែលស្រុតក៏ដោយ។" },
+            { id: 33, q: "តើសែនស្រុត (Recessive Gene) ជាអ្វី?", a: "ជាសែនដែលស្តែងលក្ខណៈចេញមកបាន លុះត្រាតែវាជាទម្រង់អូម៉ូស៊ីហ្កុតស្រុត។" },
+            { id: 34, q: "តើច្បាប់ទី១ របស់ម៉ង់ដែននិយាយអំពីអ្វី?", a: "ច្បាប់ឯកសណ្ឋានភាពនៃកូនកាត់ជំនាន់ទី១ (F1)។" },
+            { id: 35, q: "តើច្បាប់ទី២ របស់ម៉ង់ដែននិយាយអំពីអ្វី?", a: "ច្បាប់ការបំបែកធាតុ ឬច្បាប់ភាពបរិសុទ្ធនៃកាម៉ែត។" },
+            { id: 36, q: "តើច្បាប់ទី៣ របស់ម៉ង់ដែននិយាយអំពីអ្វី?", a: "ច្បាប់ការបំបែកធាតុដោយឯករាជ្យនៃគូសែនខុសៗគ្នា។" },
+            { id: 37, q: "តើក្រូម៉ូសូមភេទរបស់មនុស្សប្រុសគឺអ្វី?", a: "គឺ XY។" },
+            { id: 38, q: "តើក្រូម៉ូសូមភេទរបស់មនុស្សស្រីគឺអ្វី?", a: "គឺ XX។" },
+            { id: 39, q: "តើមនុស្សមានក្រូម៉ូសូមសរុបប៉ុន្មាន?", a: "មាន ៤៦ ក្រូម៉ូសូម (ឬ ២៣ គូ)។" },
+            { id: 40, q: "តើជំងឺហេម៉ូហ្វីលី (Hemophilia) បណ្តាលមកពីអ្វី?", a: "បណ្តាលមកពីសែនស្រុតនៅលើក្រូម៉ូសូមភេទ X ដែលធ្វើឱ្យឈាមកកយឺត។" },
+            { id: 41, q: "តើមុយតាស៊ីយ៉ុង (Mutation) ជាអ្វី?", a: "ជាការផ្លាស់ប្តូរភ្លាមៗ និងជាអចិន្ត្រៃយ៍នៃសម្ភារសេនេទិច (DNA)។" },
+            { id: 42, q: "តើមុយតាស៊ីយ៉ុងមានប៉ុន្មានប្រភេទចម្បង?", a: "មាន ២ ប្រភេទគឺ៖ មុយតាស៊ីយ៉ុងសែន និងមុយតាស៊ីយ៉ុងក្រូម៉ូសូម។" },
+            { id: 43, q: "តើទ្រីស៊ូមី ២១ (Trisomy 21) បណ្តាលឱ្យកើតជំងឺអ្វី?", a: "បណ្តាលឱ្យកើតរោគសញ្ញាដោន (Down Syndrome)។" },
+            { id: 44, q: "តើប្រព័ន្ធប្រសាទមនុស្សចែកចេញជាប៉ុន្មានផ្នែក?", a: "ចែកជា ២ គឺ៖ ប្រព័ន្ធប្រសាទកណ្តាល និងប្រព័ន្ធប្រសាទបរិមណ្ឌល។" },
+            { id: 45, q: "តើកោសិកាប្រសាទមានឈ្មោះអ្វី?", a: "មានឈ្មោះថា ណឺរ៉ូន (Neuron)។" },
+            { id: 46, q: "តើណឺរ៉ូនមានសមាសធាតុសំខាន់ៗអ្វីខ្លះ?", a: "មាន៖ តួណឺរ៉ូន, ដង់ឌ្រីត, និងអាក់សូន។" },
+            { id: 47, q: "តើស៊ីណាប់ (Synapse) ជាអ្វី?", a: "ជាចន្លោះលំហរវាងណឺរ៉ូនពីរសម្រាប់បញ្ជូនព័ត៌មាន។" },
+            { id: 48, q: "តើសារធាតុគីមីបញ្ជូនប្រសាទណាខ្លះដែលល្បី?", a: "មាន៖ អាសេទីលកូលីន, ដូប៉ាមីន, និងសេរ៉ូថូនីន។" },
+            { id: 49, q: "តើអ័រម៉ូន (Hormone) ជាអ្វី?", a: "ជាសារធាតុគីមីផលិតដោយក្រពេញអង់ដូគ្រីន បញ្ជូនតាមចរន្តឈាម។" },
+            { id: 50, q: "តើក្រពេញមេក្នុងរាងកាយជាក្រពេញអ្វី?", a: "គឺក្រពេញអ៊ីប៉ូភីស (Pituitary Gland)។" },
+            { id: 51, q: "តើអ័រម៉ូនអាំងស៊ុយលីនផលិតចេញពីណា?", a: "ផលិតចេញពីកោសិកាបេតា (Beta) នៃកោះឡង់សេរ៉ង់ក្នុងលំពែង។" },
+            { id: 52, q: "តើអាំងស៊ុយលីនមានតួនាទីអ្វី?", a: "ជួយបន្ថយកម្រិតស្ករគ្លុយកូសក្នុងឈាម។" },
+            { id: 53, q: "តើអ័រម៉ូនគ្លុយកាកុងមានតួនាទីអ្វី?", a: "ជួយដំឡើងកម្រិតស្ករគ្លុយកូសក្នុងឈាម។" },
+            { id: 54, q: "តើអ៊ុយមីនីតេ (Immunity) ជាអ្វី?", a: "ជាសមត្ថភាពរបស់រាងកាយក្នុងការការពារប្រឆាំងនឹងភ្នាក់ងារបង្ករោគ។" },
+            { id: 55, q: "តើអង់ទីហ្សែន (Antigen) ជាអ្វី?", a: "ជាសារធាតុចម្លែកដែលចូលក្នុងរាងកាយ ហើយញ៉ាំងឱ្យមានឆ្លើយតបស៊ាំ។" },
+            { id: 56, q: "តើអង់ទីគ័រ (Antibody) ជាអ្វី?", a: "ជាប្រូតេអ៊ីនផលិតដោយលឹមហ្វូស៊ីត B ដើម្បីកម្ទេចអង់ទីហ្សែន។" },
+            { id: 57, q: "តើកោសិកាលឹមហ្វូស៊ីត T និង B បង្កើតនៅឯណា?", a: "បង្កើតនៅក្នុងខួរឆ្អឹង (Bone Marrow)។" },
+            { id: 58, q: "តើវ៉ាក់សាំង (Vaccine) ធ្វើការយ៉ាងដូចម្តេច?", a: "បញ្ជូនមេរោគខ្សោយដើម្បីឱ្យរាងកាយបង្កើតអង់ទីគ័រ និងកោសិកាចងចាំ។" },
+            { id: 59, q: "តើវីរុស HIV វាយប្រហារលើកោសិកាអ្វី?", a: "វាយប្រហារលើកោសិកាលឹមហ្វូស៊ីត T4 (CD4)។" },
+            { id: 60, q: "តើប្រព័ន្ធអេកូឡូស៊ីជាអ្វី?", a: "ជាទំនាក់ទំនងរវាងសហគមន៍ជីវៈ និងបរិស្ថានគ្មានជីវិត។" },
+            { id: 61, q: "តើអ្នកផលិតក្នុងខ្សែច្រវាក់អាហារជាអ្វី?", a: "ជារុក្ខជាតិបៃតងដែលអាចធ្វើរស្មីសំយោគបាន។" },
+            { id: 62, q: "តើអ្នកប្រើប្រាស់ចែកជាអ្វីខ្លះ?", a: "ចែកជា៖ អ្នកស៊ីរុក្ខជាតិ (ថ្នាក់១) និងអ្នកស៊ីសាច់ (ថ្នាក់២, ៣)។" },
+            { id: 63, q: "តើអ្នកបំបែកមានតួនាទីអ្វី?", a: "បំបែកសាកសពសរីរាង្គឱ្យទៅជាសារធាតុអសរីរាង្គ (បាក់តេរី, ផ្សិត)។" },
+            { id: 64, q: "តើឧស្ម័នផ្ទះកញ្ចក់មានអ្វីខ្លះ?", a: "សំខាន់ៗមាន កាបូនឌីអុកស៊ីត (CO2) និង មេតាន (CH4)។" }
+        ];
 
-    <hr class="divider">
+        let completed = JSON.parse(localStorage.getItem('bio_completed')) || [];
+        let currentRandom = null;
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-    <!-- Flashcards Grid Section -->
-    <section id="flashcard-section" class="flashcard-section">
-      <h2>🎴 Flashcards ជីវវិទ្យា (៦៤ សំណួរ)</h2>
-      <p class="subtitle">ចុចលើកាតនីមួយៗដើម្បីមើលចម្លើយ!</p>
-      
-      <div class="flashcards-grid" id="flashcards-container"></div>
-    </section>
+        function playBeep(freq, dur) {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + dur);
+            osc.start();
+            osc.stop(audioCtx.currentTime + dur);
+        }
 
-  </main>
+        function updateProgress() {
+            const percent = Math.round((completed.length / biologyData.length) * 100);
+            document.getElementById('progress-bar').style.width = percent + '%';
+            document.getElementById('progress-text').innerText = percent + '%';
+            localStorage.setItem('bio_completed', JSON.stringify(completed));
+        }
 
-  <script src="script.js"></script>
+        // Initialize Grid
+        const grid = document.getElementById('flashcards-grid');
+        biologyData.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'flashcard';
+            card.id = `card-${item.id}`;
+            
+            card.innerHTML = `
+                <div class="flashcard-inner">
+                    <div class="flashcard-front">
+                        <span class="text-xs font-bold text-emerald-500 mb-2 uppercase tracking-widest">សំណួរទី ${item.id}</span>
+                        <p class="font-medium">${item.q}</p>
+                    </div>
+                    <div class="flashcard-back">
+                        <span class="text-xs font-bold opacity-80 mb-2 uppercase tracking-widest">ចម្លើយ</span>
+                        <p class="font-medium">${item.a}</p>
+                    </div>
+                </div>
+            `;
+
+            card.onclick = () => {
+                card.classList.toggle('flipped');
+                playBeep(600, 0.1);
+                if (!completed.includes(item.id)) {
+                    completed.push(item.id);
+                    updateProgress();
+                }
+            };
+            grid.appendChild(card);
+        });
+
+        const wheelDisplay = document.getElementById('wheel-display');
+        const spinBtn = document.getElementById('spin-btn');
+        const revealBtn = document.getElementById('reveal-btn');
+
+        spinBtn.onclick = () => {
+            let counter = 0;
+            const max = 15;
+            spinBtn.disabled = true;
+            
+            const interval = setInterval(() => {
+                const temp = biologyData[Math.floor(Math.random() * biologyData.length)];
+                wheelDisplay.innerText = temp.q;
+                wheelDisplay.className = "text-xl sm:text-2xl flex items-center justify-center mb-8 px-4 font-medium opacity-50";
+                playBeep(400 + (counter * 20), 0.05);
+                counter++;
+                
+                if (counter > max) {
+                    clearInterval(interval);
+                    currentRandom = biologyData[Math.floor(Math.random() * biologyData.length)];
+                    wheelDisplay.innerText = `សំណួរ៖ ${currentRandom.q}`;
+                    wheelDisplay.className = "text-xl sm:text-2xl flex items-center justify-center mb-8 px-4 font-medium text-emerald-400 animate-bounce";
+                    spinBtn.disabled = false;
+                    
+                    if (!completed.includes(currentRandom.id)) {
+                        completed.push(currentRandom.id);
+                        updateProgress();
+                    }
+                }
+            }, 80);
+        };
+
+        revealBtn.onclick = () => {
+            if (!currentRandom) {
+                wheelDisplay.innerText = "សូមចុច Spin ជាមុនសិន!";
+                return;
+            }
+            playBeep(800, 0.1);
+            wheelDisplay.innerHTML = `<div class="text-center"><p class="text-sm opacity-60 mb-2">ចម្លើយ៖</p><p>${currentRandom.a}</p></div>`;
+            wheelDisplay.className = "text-xl flex items-center justify-center mb-8 px-4 font-medium text-white";
+        };
+
+        // Theme Toggle
+        const themeBtn = document.getElementById('theme-toggle');
+        themeBtn.onclick = () => {
+            document.body.classList.toggle('dark-mode');
+            document.body.classList.toggle('light-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            themeBtn.innerText = isDark ? '🌙' : '☀️';
+            localStorage.setItem('bio_theme', isDark ? 'dark' : 'light');
+        };
+
+        // Reset
+        document.getElementById('reset-progress').onclick = () => {
+            if (confirm('តើអ្នកពិតជាចង់លុបការរីកចម្រើនមែនទេ?')) {
+                completed = [];
+                updateProgress();
+                location.reload();
+            }
+        };
+
+        // Init Theme from storage
+        const savedTheme = localStorage.getItem('bio_theme');
+        if (savedTheme === 'light') themeBtn.click();
+
+        updateProgress();
+    </script>
 </body>
 </html>
