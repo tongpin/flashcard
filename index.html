@@ -3,39 +3,334 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BaccII Biology - Revision Tool</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <title>BaccII Biology Flashcards - ជីវវិទ្យា ២០២៦</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #10b981;
             --primary-dark: #059669;
-            --bg-dark: #0f172a;
+            --primary-light: #d1fae5;
+            --accent: #6366f1;
+            --bg-dark: #090d16;
             --card-dark: #1e293b;
-            --text-dark: #f1f5f9;
+            --border-dark: #334155;
+            --text-dark: #f8fafc;
+            --subtext-dark: #94a3b8;
+            
             --bg-light: #f8fafc;
             --card-light: #ffffff;
-            --text-light: #1e293b;
+            --border-light: #e2e8f0;
+            --text-light: #0f172a;
+            --subtext-light: #64748b;
+            
+            --sidebar-bg: #0f172a;
+            --sidebar-active-bg: #064e3b;
+            --sidebar-active-text: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Kantumruy Pro', 'Inter', sans-serif;
         }
 
         body {
-            font-family: 'Kantumruy Pro', 'Inter', sans-serif;
-            transition: all 0.3s ease;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            min-height: 100vh;
+            display: flex;
+            overflow-x: hidden;
         }
 
-        /* Theme Support */
         body.dark-mode {
             background-color: var(--bg-dark);
             color: var(--text-dark);
         }
+
         body.light-mode {
             background-color: var(--bg-light);
             color: var(--text-light);
         }
 
+        #particleCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 25;
+        }
+        .sidebar-overlay.active { display: block; }
+
+        .left-sidebar {
+            width: 270px;
+            background: var(--sidebar-bg);
+            color: #94a3b8;
+            display: flex;
+            flex-direction: column;
+            padding: 24px 16px;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.2);
+            z-index: 30;
+            min-height: 100vh;
+            position: sticky;
+            top: 0;
+            transition: transform 0.3s ease;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 28px;
+            padding: 0 8px;
+        }
+
+        .brand-logo .logo-icon { font-size: 2.2rem; }
+        .brand-logo div h2 { font-size: 1.15rem; color: #ffffff; font-weight: 700; }
+        .brand-logo div p { font-size: 0.78rem; color: #64748b; }
+
+        .menu-category {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin: 18px 0 10px 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            color: #cbd5e1;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 6px;
+            border: 1px solid transparent;
+        }
+
+        .nav-item:hover { background: #1e293b; color: #ffffff; }
+        .nav-item.active {
+            background: var(--sidebar-active-bg);
+            color: var(--sidebar-active-text);
+            border: 1px solid #059669;
+        }
+
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            width: 100%;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 28px;
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid;
+            transition: border-color 0.3s, background-color 0.3s;
+        }
+
+        .dark-mode .top-bar {
+            background: rgba(15, 23, 42, 0.85);
+            border-color: #334155;
+        }
+
+        .light-mode .top-bar {
+            background: rgba(255, 255, 255, 0.85);
+            border-color: #e2e8f0;
+        }
+
+        .menu-toggle-btn {
+            display: none;
+            background: transparent;
+            border: none;
+            font-size: 1.6rem;
+            cursor: pointer;
+            color: inherit;
+        }
+
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 14px;
+            border-radius: 30px;
+            border: 1px solid;
+            transition: border-color 0.3s, background-color 0.3s;
+        }
+
+        .dark-mode .user-section {
+            background: #1e293b;
+            border-color: #334155;
+        }
+
+        .light-mode .user-section {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        .avatar-badge {
+            width: 28px;
+            height: 28px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .user-section input {
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: inherit;
+            max-width: 120px;
+        }
+
+        .save-status {
+            font-size: 0.72rem;
+            color: var(--primary);
+            font-weight: 700;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .save-status.show { opacity: 1; }
+
+        .progress-box {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .progress-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+        }
+
+        .progress-title {
+            font-size: 0.78rem;
+            font-weight: 600;
+            opacity: 0.8;
+        }
+
+        .progress-bar-track {
+            width: 130px;
+            height: 8px;
+            border-radius: 10px;
+            overflow: hidden;
+            background: rgba(100, 116, 139, 0.2);
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #10b981, #059669);
+            border-radius: 10px;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .content-body {
+            padding: 32px 28px;
+            max-width: 1280px;
+            margin: 0 auto;
+            width: 100%;
+            flex: 1;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .section-header h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-header p {
+            font-size: 0.92rem;
+            opacity: 0.75;
+            margin-top: 4px;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            background: rgba(100, 116, 139, 0.1);
+            padding: 4px;
+            border-radius: 12px;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: none;
+            background: transparent;
+            color: inherit;
+            font-size: 0.88rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+        }
+
+        /* 3D FLASHCARD GRID SYSTEM */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 22px;
+        }
+
         .flashcard {
             perspective: 1000px;
-            height: 200px;
+            height: 220px;
             cursor: pointer;
         }
 
@@ -45,107 +340,377 @@
             height: 100%;
             transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             transform-style: preserve-3d;
+            border-radius: 18px;
         }
 
         .flashcard.flipped .flashcard-inner {
             transform: rotateY(180deg);
         }
 
-        .flashcard-front, .flashcard-back {
+        .card-front, .card-back {
             position: absolute;
             width: 100%;
             height: 100%;
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
+            border-radius: 18px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 1.5rem;
-            border-radius: 1rem;
-            text-align: center;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            justify-content: space-between;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            border: 1px solid;
+            transition: border-color 0.3s, background-color 0.3s;
         }
 
-        .dark-mode .flashcard-front { background-color: var(--card-dark); border: 1px solid #334155; }
-        .dark-mode .flashcard-back { background-color: var(--primary-dark); color: white; transform: rotateY(180deg); }
-        
-        .light-mode .flashcard-front { background-color: var(--card-light); border: 1px solid #e2e8f0; }
-        .light-mode .flashcard-back { background-color: var(--primary); color: white; transform: rotateY(180deg); }
+        .dark-mode .card-front {
+            background: var(--card-dark);
+            border-color: var(--border-dark);
+        }
+        .light-mode .card-front {
+            background: var(--card-light);
+            border-color: var(--border-light);
+        }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #64748b; border-radius: 10px; }
+        .card-back {
+            transform: rotateY(180deg);
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: white;
+            border-color: #059669;
+        }
 
-        .progress-bar-fill {
-            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        .card-header-badge {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .card-q-num {
+            color: var(--primary);
+            letter-spacing: 0.5px;
+        }
+
+        .card-back .card-q-num {
+            color: #a7f3d0;
+        }
+
+        .status-chip {
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 700;
+        }
+
+        .status-chip.done {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .status-chip.pending {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+
+        .card-back .status-chip {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .card-body-text {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 1.05rem;
+            font-weight: 500;
+            line-height: 1.6;
+            padding: 10px 0;
+            white-space: pre-line;
+        }
+
+        .card-footer-tip {
+            font-size: 0.75rem;
+            text-align: center;
+            opacity: 0.6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        footer {
+            width: 100%;
+            background: #090d16;
+            color: #94a3b8;
+            padding: 48px 28px 24px 28px;
+            margin-top: 60px;
+            border-top: 1px solid #1e293b;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 36px;
+            padding-bottom: 36px;
+        }
+
+        .footer-col h4 {
+            color: #ffffff;
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 12px; }
+        .footer-col ul li a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.88rem;
+            transition: color 0.2s ease;
+        }
+        .footer-col ul li a:hover { color: #ffffff; }
+
+        .brand-col .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+        .brand-col .footer-logo h2 { color: #ffffff; font-size: 1.25rem; font-weight: 700; }
+
+        .brand-desc {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            margin-bottom: 16px;
+            color: #64748b;
+            max-width: 380px;
+        }
+
+        .contact-info {
+            font-size: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+            color: #cbd5e1;
+        }
+
+        .social-title { font-size: 0.85rem; font-weight: 700; color: #ffffff; margin-bottom: 12px; }
+        .social-links { display: flex; gap: 10px; }
+
+        .social-btn {
+            width: 38px;
+            height: 38px;
+            background: #1e293b;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            border: 1px solid #334155;
+            color: white;
+        }
+        .social-btn:hover { background: #334155; transform: translateY(-2px); }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 24px;
+            border-top: 1px solid #1e293b;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            font-size: 0.82rem;
+            color: #64748b;
+        }
+
+        .legal-links a { color: #64748b; text-decoration: none; transition: color 0.2s; }
+        .legal-links a:hover { color: #cbd5e1; }
+
+        /* RESPONSIVE BREAKPOINTS */
+        @media (max-width: 900px) {
+            .left-sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100vh;
+                transform: translateX(-100%);
+            }
+            .left-sidebar.active { transform: translateX(0); }
+            .menu-toggle-btn { display: block; }
+            .content-body { padding: 20px 16px; }
+            .footer-container { grid-template-columns: 1fr; gap: 28px; }
+            .footer-bottom { flex-direction: column; text-align: center; }
+            .progress-bar-track { width: 90px; }
         }
     </style>
 </head>
-<body class="dark-mode min-h-screen">
+<body class="dark-mode">
 
-    <nav class="sticky top-0 z-50 backdrop-blur-md border-b border-slate-700 bg-opacity-80 p-4">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <h1 class="text-xl font-bold text-emerald-500">🧬 BaccII Bio <span class="hidden sm:inline">Revision</span></h1>
-            
-            <div class="flex items-center gap-4">
-                <div class="hidden md:block w-48">
-                    <div class="flex justify-between text-xs mb-1">
-                        <span>ការរីកចម្រើន</span>
-                        <span id="progress-text">0%</span>
-                    </div>
-                    <div class="h-2 bg-slate-700 rounded-full overflow-hidden">
-                        <div id="progress-bar" class="progress-bar-fill h-full bg-emerald-500" style="width: 0%"></div>
-                    </div>
-                </div>
-                <button id="theme-toggle" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 transition-colors">
-                    🌙
-                </button>
+    <canvas id="particleCanvas"></canvas>
+
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+    <aside class="left-sidebar" id="leftSidebar">
+        <div class="brand-logo">
+            <div class="logo-icon">🧬</div>
+            <div>
+                <h2>ជីវវិទ្យា ២០២៦</h2>
+                <p>ថ្នាក់ទី១២ - បាក់ឌុប</p>
             </div>
         </div>
-    </nav>
 
-    <main class="max-w-7xl mx-auto p-4 sm:p-8">
+        <div class="menu-category">មុខងារចម្បង</div>
         
-        <section class="mb-12 text-center">
-            <h2 class="text-2xl font-bold mb-6 flex items-center justify-center gap-2">
-                🎡 វិលកង់សំណួរចៃដន្យ
-            </h2>
-            <div class="max-w-2xl mx-auto bg-slate-800 dark:bg-slate-800 light:bg-white p-8 rounded-2xl shadow-xl border border-slate-700">
-                <div id="wheel-display" class="text-xl sm:text-2xl min-h-[120px] flex items-center justify-center mb-8 px-4 font-medium leading-relaxed">
-                    ចុចប៊ូតុងខាងក្រោមដើម្បីចាប់ផ្ដើម!
-                </div>
-                <div class="flex flex-wrap justify-center gap-4">
-                    <button id="spin-btn" class="bg-emerald-600 hover:bg-emerald-500 text-white px-8 py-3 rounded-xl font-bold shadow-lg transition-all active:scale-95">
-                        វិលកង់ (Spin)
-                    </button>
-                    <button id="reveal-btn" class="bg-slate-700 hover:bg-slate-600 text-white px-8 py-3 rounded-xl font-bold shadow-lg transition-all active:scale-95">
-                        បង្ហាញចម្លើយ
-                    </button>
-                </div>
-            </div>
-        </section>
+        <div class="nav-item active" id="nav-flashcards" onclick="filterCards('all')">
+            <span class="icon">🎴</span>
+            <span>Flashcards ទាំងអស់</span>
+        </div>
 
-        <section>
-            <div class="flex flex-col sm:flex-row justify-between items-end mb-8 gap-4">
-                <div>
-                    <h2 class="text-2xl font-bold mb-2">🎴 Flashcards ជីវវិទ្យា (៦៤ សំណួរ)</h2>
-                    <p class="text-slate-400">ចុចលើកាតនីមួយៗដើម្បីឆែកមើលចម្លើយ</p>
+        <div class="nav-item" id="nav-pending" onclick="filterCards('pending')">
+            <span class="icon">⏳</span>
+            <span>សំណួរមិនទាន់ឆ្លើយ</span>
+        </div>
+
+        <div class="nav-item" id="nav-completed" onclick="filterCards('done')">
+            <span class="icon">✅</span>
+            <span>សំណួរឆ្លើយរួច</span>
+        </div>
+
+        <div class="menu-category">ប្រព័ន្ធ</div>
+
+        <div class="nav-item" id="theme-toggle-nav" onclick="toggleTheme()">
+            <span class="icon" id="theme-icon">🌙</span>
+            <span id="theme-text">Dark Mode</span>
+        </div>
+
+        <div class="nav-item" onclick="resetProgress()">
+            <span class="icon">🔄</span>
+            <span>កំណត់ឡើងវិញ</span>
+        </div>
+    </aside>
+
+    <div class="main-wrapper">
+        <div class="top-bar">
+            <div style="display: flex; align-items: center; gap: 14px;">
+                <button class="menu-toggle-btn" onclick="toggleSidebar()">☰</button>
+                <div class="user-section">
+                    <div class="avatar-badge">👤</div>
+                    <div style="display: flex; flex-direction: column;">
+                        <input type="text" id="userName" value="សិស្ស A" placeholder="ឈ្មោះ..." onchange="updateUser()">
+                        <span class="save-status" id="saveStatus">✓ រក្សាទុក</span>
+                    </div>
                 </div>
-                <button id="reset-progress" class="text-sm text-red-400 hover:text-red-300 underline">
-                    លុបការរីកចម្រើន
-                </button>
             </div>
-            
-            <div id="flashcards-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                <!-- Cards will be injected here -->
+
+            <div class="progress-box">
+                <div class="progress-info">
+                    <span class="progress-title" id="progressText">បានឆ្លើយ 0 / 64</span>
+                    <div class="progress-bar-track">
+                        <div class="progress-bar-fill" id="progressBar" style="width: 0%;"></div>
+                    </div>
+                </div>
             </div>
-        </section>
-    </main>
+        </div>
+
+        <main class="content-body">
+            <div class="section-header">
+                <div>
+                    <h1>🎴 Flashcards ជីវវិទ្យា (៦៤ សំណួរ)</h1>
+                    <p>ចុចលើប័ណ្ណនីមួយៗដើម្បីឆែកមើលចម្លើយ និងកត់ត្រាការសិក្សា</p>
+                </div>
+
+                <div class="filter-tabs">
+                    <button class="filter-btn active" id="filter-all" onclick="setFilter('all')">ទាំងអស់</button>
+                    <button class="filter-btn" id="filter-pending" onclick="setFilter('pending')">មិនទាន់ឆ្លើយ</button>
+                    <button class="filter-btn" id="filter-done" onclick="setFilter('done')">ឆ្លើយរួច</button>
+                </div>
+            </div>
+
+            <div class="cards-grid" id="flashcardsGrid">
+                <!-- Cards injected dynamically -->
+            </div>
+        </main>
+
+        <footer>
+            <div class="footer-container">
+                <div class="footer-col brand-col">
+                    <div class="footer-logo">
+                        <span class="logo-icon">🧬</span>
+                        <h2>ជីវវិទ្យា ២០២៦</h2>
+                    </div>
+                    <p class="brand-desc">
+                        កម្មវិធីរំលឹកមេរៀន និងស្វ័យសិក្សាជីវវិទ្យាថ្នាក់ទី១២ ត្រៀមប្រឡងបាក់ឌុប ប្រកបដោយប្រសិទ្ធភាព និងភាពងាយស្រួល។
+                    </p>
+                    <div class="contact-info">
+                        <div>📍 ភ្នំពេញ, កម្ពុជា</div>
+                        <div>✉️ ទំនាក់ទំនងគាំទ្រ៖ info@biology2026.kh</div>
+                    </div>
+                    <div class="social-title">តាមដានយើង</div>
+                    <div class="social-links">
+                        <a href="#" class="social-btn" title="Discord">💬</a>
+                        <a href="#" class="social-btn" title="Telegram">✈️</a>
+                        <a href="#" class="social-btn" title="Facebook">📘</a>
+                        <a href="#" class="social-btn" title="YouTube">▶️</a>
+                        <a href="#" class="social-btn" title="TikTok">🎵</a>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h4>មេរៀន & ឧបករណ៍</h4>
+                    <ul>
+                        <li><a href="#" onclick="setFilter('all')">Flashcards ទាំង ៦៤ សំណួរ</a></li>
+                        <li><a href="#" onclick="setFilter('pending')">សំណួរត្រូវរំលឹក</a></li>
+                        <li><a href="#" onclick="setFilter('done')">សំណួរដែលចេះរួច</a></li>
+                        <li><a href="#">មេរៀនសង្ខេបថ្នាក់ទី១២</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>ការគាំទ្រ</h4>
+                    <ul>
+                        <li><a href="#">សំបុត្រការគាំទ្រ</a></li>
+                        <li><a href="#">របៀបប្រើប្រាស់</a></li>
+                        <li><a href="#">រាយការណ៍បញ្ហា</a></li>
+                        <li><a href="#">សំណួរញឹកញាប់ (FAQ)</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>អំពីយើង</h4>
+                    <ul>
+                        <li><a href="#">ទំព័រដើម</a></li>
+                        <li><a href="#">លក្ខខណ្ឌនៃការប្រើប្រាស់</a></li>
+                        <li><a href="#">គោលការណ៍ភាពឯកជន</a></li>
+                        <li><a href="#">អំពីកម្មវិធី</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="copyright">
+                    &copy; 2026 Biology BaccII Preparation. All rights reserved.
+                </div>
+                <div class="legal-links">
+                    <a href="#">លក្ខខណ្ឌ</a> • 
+                    <a href="#">ភាពឯកជន</a> • 
+                    <a href="#">ប្រើប្រាស់យុត្តិធម៌</a>
+                </div>
+            </div>
+        </footer>
+    </div>
 
     <script>
-        // 1. Data Source
         const biologyData = [
             { id: 1, q: "តើ DNA ជាអ្វី?", a: "DNA ជាអាស៊ីតដេអុកស៊ីរីបូនុយក្លេអ៊ិច ដែលជាទម្រង់ព័ត៌មានសេនេទិចរបស់សរីរាង្គរស់។" },
             { id: 2, q: "តើ DNA មានទម្រង់ដូចម្តេច?", a: "DNA មានទម្រង់ជាស្រកៀលឌុប (Double Helix) ដែលកើតចេញពីខ្សែច្រវាក់នុយក្លេអូទីតពីរស្រប និងច្រាសទិសគ្នា។" },
@@ -213,125 +778,216 @@
             { id: 64, q: "តើឧស្ម័នផ្ទះកញ្ចក់មានអ្វីខ្លះ?", a: "សំខាន់ៗមាន កាបូនឌីអុកស៊ីត (CO2) និង មេតាន (CH4)។" }
         ];
 
-        let completed = JSON.parse(localStorage.getItem('bio_completed')) || [];
-        let currentRandom = null;
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        let completed = JSON.parse(localStorage.getItem('bio_flashcard_completed')) || [];
+        let currentUser = localStorage.getItem('bio_user_name') || 'សិស្ស A';
+        let currentFilter = 'all';
 
-        function playBeep(freq, dur) {
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + dur);
-            osc.start();
-            osc.stop(audioCtx.currentTime + dur);
+        document.getElementById('userName').value = currentUser;
+
+        // Web Audio Context Synthesis
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playChime(freq = 600, duration = 0.12) {
+            try {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch (e) { console.log(e); }
+        }
+
+        function updateUser() {
+            currentUser = document.getElementById('userName').value || 'Anonymous';
+            localStorage.setItem('bio_user_name', currentUser);
+            const status = document.getElementById('saveStatus');
+            status.classList.add('show');
+            setTimeout(() => status.classList.remove('show'), 2000);
+            renderCards();
         }
 
         function updateProgress() {
             const percent = Math.round((completed.length / biologyData.length) * 100);
-            document.getElementById('progress-bar').style.width = percent + '%';
-            document.getElementById('progress-text').innerText = percent + '%';
-            localStorage.setItem('bio_completed', JSON.stringify(completed));
+            document.getElementById('progressBar').style.width = percent + '%';
+            document.getElementById('progressText').innerText = `បានឆ្លើយ ${completed.length} / ${biologyData.length}`;
+            localStorage.setItem('bio_flashcard_completed', JSON.stringify(completed));
         }
 
-        // Initialize Grid
-        const grid = document.getElementById('flashcards-grid');
-        biologyData.forEach(item => {
-            const card = document.createElement('div');
-            card.className = 'flashcard';
-            card.id = `card-${item.id}`;
+        function setFilter(filter) {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             
-            card.innerHTML = `
-                <div class="flashcard-inner">
-                    <div class="flashcard-front">
-                        <span class="text-xs font-bold text-emerald-500 mb-2 uppercase tracking-widest">សំណួរទី ${item.id}</span>
-                        <p class="font-medium">${item.q}</p>
+            document.getElementById(`filter-${filter}`).classList.add('active');
+            if (filter === 'all') document.getElementById('nav-flashcards').classList.add('active');
+            if (filter === 'pending') document.getElementById('nav-pending').classList.add('active');
+            if (filter === 'done') document.getElementById('nav-completed').classList.add('active');
+
+            if (window.innerWidth <= 900) {
+                document.getElementById('leftSidebar').classList.remove('active');
+                document.getElementById('sidebarOverlay').classList.remove('active');
+            }
+
+            renderCards();
+        }
+
+        function toggleCardCompletion(id, e) {
+            e.stopPropagation();
+            const index = completed.indexOf(id);
+            if (index > -1) {
+                completed.splice(index, 1);
+                playChime(400, 0.1);
+            } else {
+                completed.push(id);
+                playChime(800, 0.15);
+            }
+            updateProgress();
+            renderCards();
+        }
+
+        function renderCards() {
+            const grid = document.getElementById('flashcardsGrid');
+            grid.innerHTML = '';
+
+            const filteredData = biologyData.filter(item => {
+                const isDone = completed.includes(item.id);
+                if (currentFilter === 'pending') return !isDone;
+                if (currentFilter === 'done') return isDone;
+                return true;
+            });
+
+            if (filteredData.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 48px; opacity: 0.7;">
+                        <h3>🎉 គ្មានសំណួរនៅក្នុងផ្នែកនេះទេ!</h3>
                     </div>
-                    <div class="flashcard-back">
-                        <span class="text-xs font-bold opacity-80 mb-2 uppercase tracking-widest">ចម្លើយ</span>
-                        <p class="font-medium">${item.a}</p>
-                    </div>
-                </div>
-            `;
-
-            card.onclick = () => {
-                card.classList.toggle('flipped');
-                playBeep(600, 0.1);
-                if (!completed.includes(item.id)) {
-                    completed.push(item.id);
-                    updateProgress();
-                }
-            };
-            grid.appendChild(card);
-        });
-
-        const wheelDisplay = document.getElementById('wheel-display');
-        const spinBtn = document.getElementById('spin-btn');
-        const revealBtn = document.getElementById('reveal-btn');
-
-        spinBtn.onclick = () => {
-            let counter = 0;
-            const max = 15;
-            spinBtn.disabled = true;
-            
-            const interval = setInterval(() => {
-                const temp = biologyData[Math.floor(Math.random() * biologyData.length)];
-                wheelDisplay.innerText = temp.q;
-                wheelDisplay.className = "text-xl sm:text-2xl flex items-center justify-center mb-8 px-4 font-medium opacity-50";
-                playBeep(400 + (counter * 20), 0.05);
-                counter++;
-                
-                if (counter > max) {
-                    clearInterval(interval);
-                    currentRandom = biologyData[Math.floor(Math.random() * biologyData.length)];
-                    wheelDisplay.innerText = `សំណួរ៖ ${currentRandom.q}`;
-                    wheelDisplay.className = "text-xl sm:text-2xl flex items-center justify-center mb-8 px-4 font-medium text-emerald-400 animate-bounce";
-                    spinBtn.disabled = false;
-                    
-                    if (!completed.includes(currentRandom.id)) {
-                        completed.push(currentRandom.id);
-                        updateProgress();
-                    }
-                }
-            }, 80);
-        };
-
-        revealBtn.onclick = () => {
-            if (!currentRandom) {
-                wheelDisplay.innerText = "សូមចុច Spin ជាមុនសិន!";
+                `;
                 return;
             }
-            playBeep(800, 0.1);
-            wheelDisplay.innerHTML = `<div class="text-center"><p class="text-sm opacity-60 mb-2">ចម្លើយ៖</p><p>${currentRandom.a}</p></div>`;
-            wheelDisplay.className = "text-xl flex items-center justify-center mb-8 px-4 font-medium text-white";
-        };
 
-        // Theme Toggle
-        const themeBtn = document.getElementById('theme-toggle');
-        themeBtn.onclick = () => {
+            filteredData.forEach(item => {
+                const isDone = completed.includes(item.id);
+                const card = document.createElement('div');
+                card.className = 'flashcard';
+                card.id = `card-${item.id}`;
+
+                card.innerHTML = `
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-header-badge">
+                                <span class="card-q-num">សំណួរទី ${item.id}</span>
+                                <span class="status-chip ${isDone ? 'done' : 'pending'}">
+                                    ${isDone ? 'បានឆ្លើយរួច' : 'មិនទាន់ឆ្លើយ'}
+                                </span>
+                            </div>
+                            <div class="card-body-text">${item.q}</div>
+                            <div class="card-footer-tip">💡 ចុចលើប័ណ្ណដើម្បីមើលចម្លើយ</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-header-badge">
+                                <span>ចម្លើយ</span>
+                                <span class="status-chip">${isDone ? `ឆ្លើយដោយ៖ ${currentUser}` : 'ចម្លើយ'}</span>
+                            </div>
+                            <div class="card-body-text">${item.a}</div>
+                            <div class="card-footer-tip">💡 ចុចលើប័ណ្ណដើម្បីមើលសំណួរវិញ</div>
+                        </div>
+                    </div>
+                `;
+
+                card.onclick = () => {
+                    card.classList.toggle('flipped');
+                    playChime(600, 0.1);
+                    if (!completed.includes(item.id)) {
+                        completed.push(item.id);
+                        updateProgress();
+                        setTimeout(renderCards, 600);
+                    }
+                };
+
+                grid.appendChild(card);
+            });
+        }
+
+        function toggleSidebar() {
+            document.getElementById('leftSidebar').classList.toggle('active');
+            document.getElementById('sidebarOverlay').classList.toggle('active');
+        }
+
+        function toggleTheme() {
             document.body.classList.toggle('dark-mode');
             document.body.classList.toggle('light-mode');
             const isDark = document.body.classList.contains('dark-mode');
-            themeBtn.innerText = isDark ? '🌙' : '☀️';
+            document.getElementById('theme-icon').innerText = isDark ? '🌙' : '☀️';
+            document.getElementById('theme-text').innerText = isDark ? 'Dark Mode' : 'Light Mode';
             localStorage.setItem('bio_theme', isDark ? 'dark' : 'light');
-        };
+        }
 
-        // Reset
-        document.getElementById('reset-progress').onclick = () => {
-            if (confirm('តើអ្នកពិតជាចង់លុបការរីកចម្រើនមែនទេ?')) {
+        function resetProgress() {
+            if (confirm('តើអ្នកពិតជាចង់កំណត់ឡើងវិញនូវការរីកចម្រើនទាំងអស់មែនទេ?')) {
                 completed = [];
                 updateProgress();
-                location.reload();
+                renderCards();
             }
-        };
+        }
 
-        // Init Theme from storage
+        // Background particles
+        const pCanvas = document.getElementById("particleCanvas");
+        const pCtx = pCanvas.getContext("2d");
+        let particles = [];
+
+        function resizeCanvas() {
+            pCanvas.width = window.innerWidth;
+            pCanvas.height = window.innerHeight;
+        }
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * pCanvas.width;
+                this.y = Math.random() * pCanvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.speedY = Math.random() * 0.5 - 0.25;
+                this.opacity = Math.random() * 0.25 + 0.08;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < 0 || this.x > pCanvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > pCanvas.height) this.speedY *= -1;
+            }
+            draw() {
+                pCtx.fillStyle = `rgba(16, 185, 129, ${this.opacity})`;
+                pCtx.beginPath();
+                pCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                pCtx.fill();
+            }
+        }
+
+        for (let i = 0; i < 35; i++) particles.push(new Particle());
+
+        function animateParticles() {
+            pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        // Restore Saved Theme
         const savedTheme = localStorage.getItem('bio_theme');
-        if (savedTheme === 'light') themeBtn.click();
+        if (savedTheme === 'light') toggleTheme();
 
         updateProgress();
+        renderCards();
     </script>
 </body>
 </html>
