@@ -3,38 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ជីវវិទ្យា ២០២៦ - BaccII Flashcards</title>
-    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+    <title>ជីវវិទ្យា បាក់ឌុប - Flashcard ៦៣ សំណួរ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #10b981;
-            --primary-dark: #059669;
-            --accent-blue: #2563eb;
-            --banner-navy: #1e1b4b;
-            --bg-light: #f8fafc;
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg: #f8fafc;
             --card-bg: #ffffff;
             --sidebar-bg: #0f172a;
+            --sidebar-text: #94a3b8;
             --sidebar-active-bg: #064e3b;
             --sidebar-active-text: #10b981;
-            --text-main: #0f172a;
-            --text-sub: #64748b;
-            --border-color: #e2e8f0;
-            --shadow-md: 0 10px 30px -5px rgba(0, 0, 0, 0.08), 0 4px 12px -2px rgba(0, 0, 0, 0.04);
+            --text: #1e293b;
+            --success: #10b981;
+            --danger: #ef4444;
+            --banner-bg: #1e1b4b;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Kantumruy Pro', 'Inter', sans-serif;
+            font-family: 'Kantumruy Pro', sans-serif;
         }
 
         body {
-            background-color: var(--bg-light);
-            color: var(--text-main);
-            min-height: 100vh;
+            background-color: var(--bg);
+            color: var(--text);
             display: flex;
+            min-height: 100vh;
             overflow-x: hidden;
         }
 
@@ -48,6 +46,7 @@
             z-index: 0;
         }
 
+        /* --- OVERLAY FOR MOBILE SIDEBAR --- */
         .sidebar-overlay {
             display: none;
             position: fixed;
@@ -56,46 +55,43 @@
             width: 100vw;
             height: 100vh;
             background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
-            z-index: 25;
+            z-index: 15;
         }
         .sidebar-overlay.active { display: block; }
 
+        /* --- LEFT SIDE NAVIGATION MENU --- */
         .left-sidebar {
-            width: 270px;
+            width: 260px;
             background: var(--sidebar-bg);
-            color: #94a3b8;
+            color: var(--sidebar-text);
             display: flex;
             flex-direction: column;
-            padding: 24px 16px;
-            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
-            z-index: 30;
+            padding: 20px 15px;
+            box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+            z-index: 20;
             min-height: 100vh;
-            position: sticky;
-            top: 0;
             transition: transform 0.3s ease;
-            flex-shrink: 0;
         }
 
         .brand-logo {
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 28px;
-            padding: 0 8px;
+            margin-bottom: 30px;
+            padding: 0 10px;
         }
 
-        .brand-logo .logo-icon { font-size: 2.2rem; }
-        .brand-logo div h2 { font-size: 1.15rem; color: #ffffff; font-weight: 700; line-height: 1.2; }
-        .brand-logo div p { font-size: 0.78rem; color: #64748b; }
+        .brand-logo .logo-icon { font-size: 2rem; }
+        .brand-logo div h2 { font-size: 1.1rem; color: #ffffff; font-weight: 700; line-height: 1.2; }
+        .brand-logo div p { font-size: 0.75rem; color: #64748b; }
 
         .menu-category {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             font-weight: 700;
             color: #475569;
             text-transform: uppercase;
-            letter-spacing: 0.8px;
-            margin: 18px 0 10px 8px;
+            letter-spacing: 0.5px;
+            margin: 15px 0 10px 10px;
         }
 
         .nav-item {
@@ -103,7 +99,7 @@
             align-items: center;
             gap: 12px;
             padding: 12px 16px;
-            border-radius: 12px;
+            border-radius: 10px;
             color: #cbd5e1;
             font-weight: 600;
             font-size: 0.95rem;
@@ -119,60 +115,72 @@
             color: var(--sidebar-active-text);
             border: 1px solid #059669;
         }
+        .nav-item .icon { font-size: 1.2rem; }
 
+        /* --- MAIN CONTENT WRAPPER --- */
         .main-wrapper {
             flex: 1;
             display: flex;
             flex-direction: column;
             position: relative;
             z-index: 1;
-            min-height: 100vh;
+            max-height: 100vh;
+            overflow-y: auto;
             width: 100%;
         }
 
+        /* TOP BAR */
         .top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            padding: 12px 20px;
+            border-bottom: 1px solid #e2e8f0;
             position: sticky;
             top: 0;
-            z-index: 20;
-            backdrop-filter: blur(12px);
-            background: rgba(255, 255, 255, 0.9);
-            border-bottom: 1px solid var(--border-color);
+            z-index: 10;
+            gap: 10px;
         }
 
         .menu-toggle-btn {
             display: none;
             background: transparent;
             border: none;
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             cursor: pointer;
-            color: var(--text-main);
+            color: var(--text);
+            padding: 4px;
         }
 
+        /* USER SECTION */
         .user-section {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 6px 14px;
-            border-radius: 30px;
+            gap: 8px;
             background: #f1f5f9;
+            padding: 5px 12px;
+            border-radius: 30px;
             border: 1px solid #cbd5e1;
         }
 
         .avatar-badge {
-            width: 28px;
-            height: 28px;
+            width: 26px;
+            height: 26px;
             background: var(--primary);
             color: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.85rem;
-            font-weight: bold;
+            font-size: 0.8rem;
+        }
+
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .user-section input {
@@ -181,398 +189,339 @@
             outline: none;
             font-size: 0.9rem;
             font-weight: 600;
-            color: var(--text-main);
-            max-width: 120px;
+            color: var(--text);
+            max-width: 110px;
         }
 
         .save-status {
-            font-size: 0.72rem;
-            color: var(--primary);
-            font-weight: 700;
+            font-size: 0.7rem;
+            color: var(--success);
+            font-weight: bold;
             opacity: 0;
             transition: opacity 0.3s ease;
         }
         .save-status.show { opacity: 1; }
 
-        .progress-box {
+        .stats-group {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 10px;
         }
 
-        .progress-title {
-            font-size: 0.82rem;
+        .stats-badge {
             font-weight: 600;
-            color: var(--text-sub);
+            background: #e0e7ff;
+            color: var(--primary);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            white-space: nowrap;
         }
 
-        .progress-bar-track {
-            width: 120px;
+        .progress-bar-container {
+            width: 100px;
             height: 8px;
+            background: #e2e8f0;
             border-radius: 10px;
             overflow: hidden;
-            background: #e2e8f0;
         }
 
-        .progress-bar-fill {
+        .progress-fill {
             height: 100%;
             width: 0%;
-            background: linear-gradient(90deg, #10b981, #059669);
-            border-radius: 10px;
-            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--success);
+            transition: width 0.3s ease;
         }
 
+        /* BODY LAYOUT */
         .content-body {
-            padding: 32px 24px;
-            max-width: 1000px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            max-width: 800px;
             margin: 0 auto;
             width: 100%;
-            flex: 1;
+        }
+
+        /* FLASHCARD CONTAINER (QUIZLET STYLE) */
+        .flashcard-wrapper {
+            width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
+            gap: 15px;
+            transition: all 0.3s ease;
         }
 
-        .deck-header {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .deck-title h1 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-main);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .deck-title p {
-            font-size: 0.88rem;
-            color: var(--text-sub);
-            margin-top: 4px;
-        }
-
-        .badge-chip {
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            background: #e0e7ff;
-            color: #3730a3;
-        }
-
-        .card-container-wrapper {
-            width: 100%;
-            max-width: 820px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        .flashcard-viewer {
-            width: 100%;
-            min-height: 420px;
-            perspective: 1200px;
-            cursor: pointer;
-            user-select: none;
+        /* FULLSCREEN CONTAINER OVERLAY STYLE */
+        .flashcard-wrapper.fullscreen-mode {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #090d16;
+            z-index: 9999;
+            padding: 20px;
+            justify-content: center;
+            max-width: 100vw;
         }
 
         .flashcard-card {
+            width: 100%;
+            height: 420px;
+            position: relative;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .flashcard-inner {
             position: relative;
             width: 100%;
             height: 100%;
-            min-height: 420px;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
             transform-style: preserve-3d;
             border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
         }
 
-        .flashcard-card.flipped {
+        .flashcard-card.flipped .flashcard-inner {
             transform: rotateY(180deg);
         }
 
         .card-face {
             position: absolute;
-            top: 0;
-            left: 0;
             width: 100%;
             height: 100%;
-            -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            border-radius: 20px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            border-radius: 20px;
             background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow-md);
+            border: 2px solid #e2e8f0;
             overflow: hidden;
-            transition: opacity 0.25s ease, visibility 0.25s ease;
         }
 
-        .card-face.card-front {
-            transform: rotateY(0deg);
-            z-index: 2;
-        }
-
-        .card-face.card-back {
+        .card-face-back {
             transform: rotateY(180deg);
-            background: #ffffff;
-            z-index: 1;
+            background: #f0fdf4;
+            border-color: #bbf7d0;
         }
 
-        /* GUARANTEE NO MIRRORED TEXT WHEN FLIPPED */
-        .flashcard-card:not(.flipped) .card-front {
-            opacity: 1;
-            visibility: visible;
-            pointer-events: auto;
+        .flashcard-card:not(.flipped) .card-face-back {
+            display: none;
         }
-        .flashcard-card:not(.flipped) .card-back {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
+        .flashcard-card.flipped .card-face-front {
+            display: none;
         }
 
-        .flashcard-card.flipped .card-front {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
-        .flashcard-card.flipped .card-back {
-            opacity: 1;
-            visibility: visible;
-            pointer-events: auto;
-        }
-
-        .card-top-meta {
-            padding: 20px 28px 0 28px;
+        .card-header-bar {
+            padding: 16px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--text-sub);
         }
 
-        .card-status-indicator {
+        .q-tag {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #64748b;
+        }
+
+        .status-badge {
             padding: 4px 12px;
             border-radius: 20px;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             font-weight: 700;
         }
-        .card-status-indicator.pending { background: #fef3c7; color: #b45309; }
-        .card-status-indicator.done { background: #d1fae5; color: #047857; }
+        .status-badge.done { background: #d1fae5; color: #065f46; }
+        .status-badge.pending { background: #fef3c7; color: #92400e; }
 
-        .card-text-content {
-            flex: 1;
+        .card-body-content {
+            padding: 0 24px;
             display: flex;
             align-items: center;
             justify-content: center;
+            flex: 1;
             text-align: center;
-            padding: 30px 40px;
-            font-size: 1.4rem;
-            font-weight: 500;
-            line-height: 1.8;
-            color: #1e293b;
-            white-space: pre-line;
             overflow-y: auto;
         }
 
-        .card-bottom-banner {
+        .card-text-q {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #0f172a;
+            line-height: 1.6;
+        }
+
+        .card-text-a {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #065f46;
+            line-height: 1.7;
+            white-space: pre-line;
+            text-align: left;
             width: 100%;
-            background-color: var(--banner-navy);
+        }
+
+        .card-bottom-banner {
+            background: var(--banner-bg);
             color: #ffffff;
             text-align: center;
-            padding: 14px 20px;
-            font-size: 0.92rem;
+            padding: 14px 10px;
+            font-size: 0.88rem;
             font-weight: 600;
-            letter-spacing: 0.3px;
-            border-bottom-left-radius: 19px;
-            border-bottom-right-radius: 19px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
         }
 
-        .card-bottom-banner .banner-icon {
-            font-size: 1.1rem;
-        }
-
-        .card-toolbar {
+        /* TOOLBAR CONTROLS BELOW FLASHCARD */
+        .card-controls {
             width: 100%;
-            max-width: 820px;
-            margin-top: 24px;
+            background: rgba(15, 23, 42, 0.95);
+            padding: 10px 16px;
+            border-radius: 50px;
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: center;
-            padding: 0 10px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            gap: 6px;
         }
 
-        .toolbar-group {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .tool-btn {
-            background: #ffffff;
-            border: 1px solid var(--border-color);
-            width: 44px;
-            height: 44px;
+        .ctrl-btn {
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
+            background: #1e293b;
+            border: 1px solid #334155;
+            color: #ffffff;
+            font-size: 1rem;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            font-size: 1.1rem;
-            color: var(--text-main);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
             transition: all 0.2s ease;
+            flex-shrink: 0;
         }
 
-        .tool-btn:hover {
-            background: #f1f5f9;
+        .ctrl-btn:hover {
+            background: #334155;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
 
-        .nav-arrows-container {
-            display: flex;
-            align-items: center;
-            gap: 20px;
+        .ctrl-btn.active {
+            background: var(--primary);
+            border-color: #6366f1;
         }
 
-        .nav-btn {
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            font-size: 1.6rem;
-            color: #475569;
-            padding: 8px 12px;
-            border-radius: 12px;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .nav-btn:hover {
-            background: #e2e8f0;
-            color: var(--text-main);
+        .ctrl-btn.check-btn {
+            background: #065f46;
+            border-color: #059669;
+            color: #ffffff;
         }
 
         .card-counter {
-            font-size: 1rem;
+            color: #ffffff;
             font-weight: 700;
-            color: #334155;
-            min-width: 80px;
-            text-align: center;
+            font-size: 0.95rem;
+            padding: 0 8px;
+            white-space: nowrap;
         }
 
-        .drawer-section {
+        .ctrl-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* QUESTION LIST COLLAPSIBLE */
+        .list-section {
             width: 100%;
-            max-width: 820px;
-            margin-top: 40px;
-            background: #ffffff;
+            background: var(--card-bg);
             border-radius: 16px;
-            border: 1px solid var(--border-color);
-            padding: 20px;
-            box-shadow: var(--shadow-md);
+            border: 1px solid #e2e8f0;
+            padding: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
         }
 
-        .drawer-title {
+        .list-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 1.05rem;
-            font-weight: 700;
             cursor: pointer;
-            padding-bottom: 12px;
-            border-bottom: 1px solid var(--border-color);
+            font-weight: 700;
+            color: #1e293b;
+            font-size: 1rem;
         }
 
-        .drawer-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 12px;
-            margin-top: 16px;
-            max-height: 380px;
+        .q-accordion {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 450px;
             overflow-y: auto;
-            padding-right: 6px;
+            padding-right: 4px;
         }
 
-        .drawer-item {
+        .q-accordion-item {
             padding: 12px 14px;
             border-radius: 10px;
             background: #f8fafc;
             border: 1px solid #e2e8f0;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.2s;
             display: flex;
-            flex-direction: column;
-            gap: 6px;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
         }
 
-        .drawer-item:hover {
-            border-color: var(--primary);
-            background: #f0fdf4;
-        }
+        .q-accordion-item:hover { border-color: var(--primary); }
+        .q-accordion-item.active { border-color: var(--primary); outline: 2px solid var(--primary); }
+        .q-accordion-item.answered { background: #f0fdf4; border-color: #bbf7d0; }
 
-        .drawer-item.active {
-            border-color: var(--primary);
-            background: #d1fae5;
+        .acc-text {
+            font-size: 0.88rem;
             font-weight: 600;
-        }
-
-        .drawer-item .item-num {
-            font-size: 0.78rem;
-            font-weight: 700;
-            color: var(--primary-dark);
-        }
-
-        .drawer-item .item-q {
-            font-size: 0.85rem;
-            color: var(--text-main);
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+            color: var(--text);
             line-height: 1.4;
         }
 
+        /* --- FOOTER STYLES --- */
         footer {
             width: 100%;
             background: #090d16;
             color: #94a3b8;
-            padding: 48px 28px 24px 28px;
-            margin-top: 60px;
+            padding: 40px 20px 20px 20px;
+            margin-top: auto;
             border-top: 1px solid #1e293b;
         }
 
         .footer-container {
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
             display: grid;
             grid-template-columns: 2fr 1fr 1fr 1fr;
-            gap: 36px;
-            padding-bottom: 36px;
+            gap: 30px;
+            padding-bottom: 30px;
         }
 
         .footer-col h4 {
             color: #ffffff;
             font-size: 0.95rem;
             font-weight: 700;
-            margin-bottom: 18px;
+            margin-bottom: 16px;
         }
 
-        .footer-col ul { list-style: none; }
-        .footer-col ul li { margin-bottom: 12px; }
+        .footer-col ul { list-style: none; padding: 0; margin: 0; }
+        .footer-col ul li { margin-bottom: 10px; }
         .footer-col ul li a {
             color: #94a3b8;
             text-decoration: none;
@@ -585,14 +534,14 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
         }
-        .brand-col .footer-logo h2 { color: #ffffff; font-size: 1.25rem; font-weight: 700; }
+        .brand-col .footer-logo h2 { color: #ffffff; font-size: 1.2rem; font-weight: 700; }
 
         .brand-desc {
             font-size: 0.85rem;
             line-height: 1.6;
-            margin-bottom: 16px;
+            margin-bottom: 15px;
             color: #64748b;
             max-width: 380px;
         }
@@ -601,19 +550,19 @@
             font-size: 0.85rem;
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            margin-bottom: 20px;
+            gap: 6px;
+            margin-bottom: 18px;
             color: #cbd5e1;
         }
 
-        .social-title { font-size: 0.85rem; font-weight: 700; color: #ffffff; margin-bottom: 12px; }
-        .social-links { display: flex; gap: 10px; }
+        .social-title { font-size: 0.85rem; font-weight: 700; color: #ffffff; margin-bottom: 10px; }
+        .social-links { display: flex; gap: 8px; }
 
         .social-btn {
-            width: 38px;
-            height: 38px;
+            width: 36px;
+            height: 36px;
             background: #1e293b;
-            border-radius: 10px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -621,62 +570,27 @@
             font-size: 1rem;
             transition: all 0.2s ease;
             border: 1px solid #334155;
-            color: white;
         }
         .social-btn:hover { background: #334155; transform: translateY(-2px); }
 
         .footer-bottom {
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
-            padding-top: 24px;
+            padding-top: 20px;
             border-top: 1px solid #1e293b;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 16px;
-            font-size: 0.82rem;
+            gap: 12px;
+            font-size: 0.8rem;
             color: #64748b;
         }
 
         .legal-links a { color: #64748b; text-decoration: none; transition: color 0.2s; }
         .legal-links a:hover { color: #cbd5e1; }
 
-        /* FULLSCREEN MODE */
-        .card-container-wrapper.fullscreen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            max-width: 100vw;
-            background: #0f172a;
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 30px;
-        }
-
-        .card-container-wrapper.fullscreen .flashcard-viewer {
-            max-width: 900px;
-            height: 70vh;
-        }
-
-        .card-container-wrapper.fullscreen .card-toolbar {
-            max-width: 900px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 30px;
-            padding: 8px 24px;
-            margin-top: 20px;
-        }
-
-        .card-container-wrapper.fullscreen .nav-btn,
-        .card-container-wrapper.fullscreen .card-counter {
-            color: #ffffff;
-        }
-
+        /* RESPONSIVE FOR MOBILE */
         @media (max-width: 900px) {
             .left-sidebar {
                 position: fixed;
@@ -687,21 +601,40 @@
             }
             .left-sidebar.active { transform: translateX(0); }
             .menu-toggle-btn { display: block; }
-            .content-body { padding: 20px 16px; }
-            .flashcard-viewer, .flashcard-card { min-height: 360px; }
-            .card-text-content { font-size: 1.15rem; padding: 20px; }
-            .footer-container { grid-template-columns: 1fr; gap: 28px; }
+            .content-body { padding: 12px; }
+            .flashcard-card { height: 380px; }
+            .card-text-q { font-size: 1.1rem; }
+            .card-text-a { font-size: 1rem; }
+            .footer-container { grid-template-columns: 1fr; gap: 25px; }
             .footer-bottom { flex-direction: column; text-align: center; }
-            .progress-bar-track { width: 90px; }
+        }
+
+        @media (max-width: 480px) {
+            .card-controls {
+                padding: 8px 10px;
+                gap: 4px;
+            }
+            .ctrl-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 0.9rem;
+            }
+            .card-counter {
+                font-size: 0.85rem;
+                padding: 0 4px;
+            }
         }
     </style>
 </head>
 <body>
 
     <canvas id="particleCanvas"></canvas>
+
+    <!-- MOBILE OVERLAY -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
-    <aside class="left-sidebar" id="leftSidebar">
+    <!-- LEFT SIDEBAR NAVIGATION MENU -->
+    <div class="left-sidebar" id="leftSidebar">
         <div class="brand-logo">
             <div class="logo-icon">🧬</div>
             <div>
@@ -712,124 +645,108 @@
 
         <div class="menu-category">មុខងារចម្បង</div>
         
-        <div class="nav-item active" id="nav-flashcards" onclick="filterCategory('all')">
+        <div class="nav-item active">
             <span class="icon">🎴</span>
-            <span>Flashcards ទាំងអស់</span>
-        </div>
-
-        <div class="nav-item" id="nav-pending" onclick="filterCategory('pending')">
-            <span class="icon">⏳</span>
-            <span>សំណួរមិនទាន់ឆ្លើយ</span>
-        </div>
-
-        <div class="nav-item" id="nav-completed" onclick="filterCategory('completed')">
-            <span class="icon">✅</span>
-            <span>សំណួរឆ្លើយរួច</span>
+            <span>Flashcards (៦៣)</span>
         </div>
 
         <div class="menu-category">ប្រព័ន្ធ</div>
 
-        <div class="nav-item" onclick="resetProgress()">
+        <div class="nav-item" onclick="resetAllData()">
             <span class="icon">🔄</span>
             <span>កំណត់ឡើងវិញ</span>
         </div>
-    </aside>
+    </div>
 
-    <div class="main-wrapper">
+    <!-- MAIN CONTENT WRAPPER -->
+    <div class="main-wrapper" id="mainWrapper">
+        <!-- TOP CONTROL BAR -->
         <div class="top-bar">
-            <div style="display: flex; align-items: center; gap: 14px;">
-                <button class="menu-toggle-btn" onclick="toggleSidebar()">☰</button>
-                <div class="user-section">
-                    <div class="avatar-badge">👤</div>
-                    <div style="display: flex; align-items: center; gap: 6px;">
-                        <input type="text" id="userName" value="សិស្ស A" placeholder="ឈ្មោះ..." onchange="updateUser()">
-                        <span class="save-status" id="saveStatus">✓ រក្សាទុក</span>
-                    </div>
+            <button class="menu-toggle-btn" onclick="toggleSidebar()">☰</button>
+            <div class="user-section">
+                <div class="avatar-badge">👤</div>
+                <div class="input-wrapper">
+                    <input type="text" id="userName" value="សិស្ស A" placeholder="ឈ្មោះ..." onchange="updateUser()">
+                    <span class="save-status" id="saveStatus">✓ Saved</span>
                 </div>
             </div>
-
-            <div class="progress-box">
-                <span class="progress-title" id="progressText">0 / 64</span>
-                <div class="progress-bar-track">
-                    <div class="progress-bar-fill" id="progressBar" style="width: 0%;"></div>
+            <div class="stats-group">
+                <div class="stats-badge" id="statsBadge">
+                    0 / 63
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-fill" id="progressFill"></div>
                 </div>
             </div>
         </div>
 
-        <main class="content-body">
-            <div class="deck-header">
-                <div class="deck-title">
-                    <h1>🎴 Flashcards ជីវវិទ្យា</h1>
-                    <p>រំលឹកមេរៀនបាក់ឌុប - ចុចលើប័ណ្ណដើម្បីមើលចម្លើយ</p>
-                </div>
-                <div class="deck-badges">
-                    <span class="badge-chip" id="categoryChip">សំណួរទាំងអស់</span>
-                </div>
-            </div>
-
-            <div class="card-container-wrapper" id="cardWrapper">
-                <div class="flashcard-viewer" onclick="flipCard()">
-                    <div class="flashcard-card" id="cardElement">
+        <!-- MAIN BODY CONTENT -->
+        <div class="content-body">
+            <!-- FLASHCARD INTERACTIVE VIEWER -->
+            <div class="flashcard-wrapper" id="flashcardWrapper">
+                <div class="flashcard-card" id="flashcardCard" onclick="flipCard()">
+                    <div class="flashcard-inner" id="cardInner">
                         <!-- FRONT FACE (QUESTION) -->
-                        <div class="card-face card-front">
-                            <div class="card-top-meta">
-                                <span id="cardQNumText">សំណួរទី ១</span>
-                                <span class="card-status-indicator pending" id="cardStatusBadge">មិនទាន់ឆ្លើយ</span>
+                        <div class="card-face card-face-front">
+                            <div class="card-header-bar">
+                                <span class="q-tag" id="qTag">សំណួរទី 1</span>
+                                <span class="status-badge pending" id="statusBadgeFront">មិនទាន់ឆ្លើយ</span>
                             </div>
-                            <div class="card-text-content" id="cardFrontText">
-                                កំពុងទាញយកទិន្នន័យ...
+                            <div class="card-body-content">
+                                <div class="card-text-q" id="cardQuestionText">កំពុងទាញយកទិន្នន័យ...</div>
                             </div>
                             <div class="card-bottom-banner">
-                                <span class="banner-icon">💡</span>
-                                <span>ចុចលើប័ណ្ណដើម្បីមើលចម្លើយ (Click to show answer)</span>
+                                💡 ចុចលើប័ណ្ណដើម្បីមើលចម្លើយ (Click to show answer)
                             </div>
                         </div>
 
                         <!-- BACK FACE (ANSWER) -->
-                        <div class="card-face card-back">
-                            <div class="card-top-meta">
-                                <span>ចម្លើយ (Answer)</span>
-                                <span id="cardAnsweredBy" style="color: var(--primary-dark);"></span>
+                        <div class="card-face card-face-back">
+                            <div class="card-header-bar">
+                                <span class="q-tag" style="color:#065f46;">ចម្លើយត្រឹមត្រូវ</span>
+                                <span class="status-badge done" id="statusBadgeBack">បានឆ្លើយរួច</span>
                             </div>
-                            <div class="card-text-content" id="cardBackText">
-                                កំពុងទាញយកចម្លើយ...
+                            <div class="card-body-content">
+                                <div class="card-text-a" id="cardAnswerText">កំពុងទាញយកចម្លើយ...</div>
                             </div>
                             <div class="card-bottom-banner">
-                                <span class="banner-icon">💡</span>
-                                <span>ចុចលើប័ណ្ណដើម្បីមើលសំណួរវិញ (Click to show question)</span>
+                                💡 ចុចលើប័ណ្ណដើម្បីមើលសំណួរវិញ (Click to show question)
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="card-toolbar">
-                    <div class="toolbar-group">
-                        <button class="tool-btn" id="playBtn" onclick="toggleAutoplay()" title="Auto-play Flashcards">▶</button>
-                        <button class="tool-btn" onclick="shuffleCards()" title="Shuffle Deck">🔀</button>
+                <!-- TOOLBAR BELOW CARD -->
+                <div class="card-controls">
+                    <div class="ctrl-group">
+                        <button class="ctrl-btn" id="autoplayBtn" onclick="toggleAutoplay()" title="លេងស្វ័យប្រវត្តិ">▶</button>
+                        <button class="ctrl-btn" id="shuffleBtn" onclick="shuffleCards()" title="ច្របល់សំណួរ">🔀</button>
                     </div>
 
-                    <div class="nav-arrows-container">
-                        <button class="nav-btn" onclick="prevCard()" title="Previous Card">←</button>
-                        <span class="card-counter" id="cardCounter">1 / 64</span>
-                        <button class="nav-btn" onclick="nextCard()" title="Next Card">→</button>
+                    <div class="ctrl-group">
+                        <button class="ctrl-btn" onclick="prevCard()" title="ថយក្រោយ">←</button>
+                        <div class="card-counter" id="cardCounter">1 / 63</div>
+                        <button class="ctrl-btn" onclick="nextCard()" title="ទៅមុខ">→</button>
                     </div>
 
-                    <div class="toolbar-group">
-                        <button class="tool-btn" id="markDoneBtn" onclick="toggleCurrentDone()" title="Mark as Answered">✅</button>
-                        <button class="tool-btn" onclick="toggleFullscreen()" title="Fullscreen">⛶</button>
+                    <div class="ctrl-group">
+                        <button class="ctrl-btn check-btn" id="checkBtn" onclick="toggleAnswered()" title="សញ្ញាបានឆ្លើយ">✓</button>
+                        <button class="ctrl-btn" id="fullscreenBtn" onclick="toggleFullscreen()" title="ពេញអេក្រង់">⛶</button>
                     </div>
                 </div>
             </div>
 
-            <div class="drawer-section">
-                <div class="drawer-title" onclick="toggleDrawer()">
-                    <span>📋 បញ្ជីអត្ថបទសំណួរទាំងអស់</span>
-                    <span id="drawerToggleIcon">▼</span>
+            <!-- QUESTION LIST ACCORDION -->
+            <div class="list-section">
+                <div class="list-header" onclick="toggleAccordion()">
+                    <span>📋 បញ្ជីអត្ថបទសំណួរទាំង ៦៣</span>
+                    <span id="accIcon">▼</span>
                 </div>
-                <div class="drawer-list" id="drawerList"></div>
+                <div class="q-accordion" id="qAccordion"></div>
             </div>
-        </main>
+        </div>
 
+        <!-- FULL MODERN FOOTER -->
         <footer>
             <div class="footer-container">
                 <div class="footer-col brand-col">
@@ -842,24 +759,23 @@
                     </p>
                     <div class="contact-info">
                         <div>📍 ភ្នំពេញ, កម្ពុជា</div>
-                        <div>✉️ ទំនាក់ទំនងគាំទ្រ៖ info@biology2026.kh</div>
+                        <div>✉️ ទំនាក់ទំនងគាំទ្រ</div>
                     </div>
                     <div class="social-title">តាមដានយើង</div>
                     <div class="social-links">
-                        <a href="#" class="social-btn" title="Discord">💬</a>
-                        <a href="#" class="social-btn" title="Telegram">✈️</a>
-                        <a href="#" class="social-btn" title="Facebook">📘</a>
-                        <a href="#" class="social-btn" title="YouTube">▶️</a>
-                        <a href="#" class="social-btn" title="TikTok">🎵</a>
+                        <a href="#" class="social-btn">💬</a>
+                        <a href="#" class="social-btn">✈️</a>
+                        <a href="#" class="social-btn">📘</a>
+                        <a href="#" class="social-btn">▶️</a>
+                        <a href="#" class="social-btn">🎵</a>
                     </div>
                 </div>
 
                 <div class="footer-col">
-                    <h4>មេរៀន & ឧបករណ៍</h4>
+                    <h4>ផលិតផល / មេរៀន</h4>
                     <ul>
-                        <li><a href="#" onclick="filterCategory('all')">Flashcards ទាំង ៦៤ សំណួរ</a></li>
-                        <li><a href="#" onclick="filterCategory('pending')">សំណួរត្រូវរំលឹក</a></li>
-                        <li><a href="#" onclick="filterCategory('completed')">សំណួរដែលចេះរួច</a></li>
+                        <li><a href="#">Flashcard រំលឹកមេរៀន</a></li>
+                        <li><a href="#">សំណួរស្វ័យសិក្សា (៦៣)</a></li>
                         <li><a href="#">មេរៀនសង្ខេបថ្នាក់ទី១២</a></li>
                     </ul>
                 </div>
@@ -870,7 +786,6 @@
                         <li><a href="#">សំបុត្រការគាំទ្រ</a></li>
                         <li><a href="#">របៀបប្រើប្រាស់</a></li>
                         <li><a href="#">រាយការណ៍បញ្ហា</a></li>
-                        <li><a href="#">សំណួរញឹកញាប់ (FAQ)</a></li>
                     </ul>
                 </div>
 
@@ -880,7 +795,6 @@
                         <li><a href="#">ទំព័រដើម</a></li>
                         <li><a href="#">លក្ខខណ្ឌនៃការប្រើប្រាស់</a></li>
                         <li><a href="#">គោលការណ៍ភាពឯកជន</a></li>
-                        <li><a href="#">អំពីកម្មវិធី</a></li>
                     </ul>
                 </div>
             </div>
@@ -899,322 +813,88 @@
     </div>
 
     <script>
-        // Exact questions and answers formatted directly from Bacii Percantages.pdf
-        const biologyData = [
-            { id: 1, q: "តើអ្វីជាលក្ខណៈខុសគ្នារវាងរុក្ខជាតិម៉ូណូកូទីលេដូន និងឌីកូទីលេដូន?", a: "• រុក្ខជាតិម៉ូណូកូទីលេដូន៖ គ្រាប់មានកូទីលេដុង១, ស្លឹកមានទ្រនុងស្រប, ផ្កា៣ស្រទាប់ឬពហុគុណ៣, ដើមមានបាច់សរសៃនាំស្ថិតនៅរាយប៉ាយ, ឫសស្វែ។\n• រុក្ខជាតិឌីកូទីលេដូន៖ គ្រាប់មានកូទីលេដុង២, ស្លឹកមានទ្រនុងបែកខ្នែង, ផ្កា៤ឬ៥ស្រទាប់ឬពហុគុណនៃ៤ឬ៥, ដើមមានបាច់សរសៃនាំស្ថិតនៅជារង្វង់, ឫសកែវ។" },
-            { id: 2, q: "តើស្លឹករុក្ខជាតិឌីកូទីលេដូនបង្ហាញឱ្យឃើញស្រទាប់អ្វីខ្លះ? តើស្រទាប់នីមួយៗមាននាទីដូចម្តេច?", a: "• ស្រទាប់អេពីឌែមលើ-ក្រោម៖ មាននាទីការពារស្លឹករុក្ខជាតិ និងមានស្តូម៉ាតសម្រាប់បណ្តូរឧស្ម័ន និងបំភាយចំហាយទឹក។\n• ស្រទាប់ប៉ាលីសាត៖ មានក្លរ៉ូប្លាសផ្ទុកក្លរ៉ូភីល មាននាទីសំខាន់ក្នុងដំណើររស្មីសំយោគដើម្បីបង្កើតអាហារ។\n• ស្រទាប់ស្ពោត៖ មានផ្ទុកស៊ីឡែម ផ្លូអែម និងរន្ធខ្យល់។" },
-            { id: 3, q: "ហេតុអ្វីបានជាគ្រាប់លំអងមិនមែនជាកាម៉ែតឈ្មោល? ចូរពន្យល់។", a: "គ្រាប់លំអង ជាកោសិកាមានណៃយ៉ូអាប្លូអ៊ុតពីរ គឺណៃយ៉ូបន្តពូជ និងណៃយ៉ូលូតលាស់។ ណៃយ៉ូលូតលាស់ដឹកនាំដំណើរការលូតលាស់នៃបំពង់លំអង ឯណៃយ៉ូបន្តពូជចែកខ្លួនតាមមីតូស១ដង បង្កើតបានស្ពែម៉ាតូសូអ៊ុតពីរគ្មានផ្លាសែល។" },
-            { id: 4, q: "តើពោតជាម៉ូណូកូទីលេដូនឬឌីកូទីលេដូន? ព្រោះអ្វី? តើពោតមានដំណើរលំអងបែបណា?", a: "• ពោតជាម៉ូណូកូទីលេដូន ព្រោះ៖ គ្រាប់មានកូទីលេដុង១, ស្លឹកវែងមានទ្រនុងស្រប, ផ្កា៣ស្រទាប់ឬពហុគុណ៣, ដើមមានបាច់សរសៃនាំស្ថិតនៅរាយប៉ាយ, ឫសស្វែ, ដើមទោលត្រង់។\n• ពោតមានដំណើរលំអងកាត់ ព្រោះកញ្ចុំកេសរញី និងកញ្ចុំកេសរឈ្មោលមានទីតាំងផ្សេងគ្នា ប៉ុន្តែស្ថិតនៅលើដើមតែមួយ។" },
-            { id: 5, q: "ដូចម្តេចដែលហៅថាដំណើរលំអងសិប្បនិម្មិត? ហេតុអ្វីបានជាគេធ្វើដំណើរលំអងបែបសិប្បនិម្មិត?", a: "ដំណើរលំអងបែបសិប្បនិម្មិត គឺជាដំណើរលំអងដែលមនុស្សយកគ្រាប់លំអងពីរុក្ខជាតិមួយទៅដាក់លើស្ទីគម៉ាតរបស់រុក្ខជាតិមួយទៀត។ បានជាគេធ្វើដំណើរលំអងនេះឡើងព្រោះដើម្បីបង្កាត់រុក្ខជាតិឱ្យបានលក្ខណៈពិសេសៗដែលគេចង់បាន។" },
-            { id: 6, q: "តើការបង្កកំណើតទ្វេជាអ្វី? ហេតុអ្វីបានជារុក្ខជាតិអង់ស្យូស្ពែមមានការបង្កកំណើតទ្វេ?", a: "ការបង្កកំណើតទ្វេ គឺជាការបង្កកំណើតពីរដងក្នុងពេលតែមួយរបស់រុក្ខជាតិអង់ស្យូស្ពែម។ បានជារុក្ខជាតិអង់ស្យូស្ពែមមានការបង្កកំណើតទ្វេព្រោះ៖ ស្ពែម៉ាតូសូអ៊ុតមួយចូលរួមបង្កកំណើតជាមួយកាម៉ែតញីបង្កើតបានជាស៊ីកូតឌីប្លូអ៊ុត (2n) ហើយស្ពែម៉ាតូសូអ៊ុតមួយទៀតចូលរួមជាមួយណៃយ៉ូកណ្តាល (2n) បង្កើតបានជាអាល់ប៊ុយម៉ែន (3n) សម្រាប់ចិញ្ចឹមអំប្រ៊ីយ៉ុង។" },
-            { id: 7, q: "តើផ្ការុក្ខជាតិអង់ស្យូស្ពែមមាននាទីដូចម្តេច?", a: "ផ្កាមាននាទីដូចជា៖ ផលិតកោសិកាបន្តពូជញី, ផលិតកោសិកាបន្តពូជឈ្មោល, ទាក់ទាញសត្វល្អិតក្នុងដំណើរលំអង, និងធ្វើឱ្យមានការបង្កកំណើត។" },
-            { id: 8, q: "ហេតុអ្វីបានជាអ័រម៉ូនស្គាល់តែកោសិកាគោលដៅ?", a: "បានជាអ័រម៉ូនស្គាល់តែកោសិកាគោលដៅ ព្រោះកោសិកាគោលដៅមានទទួល (Receptor) នៅលើភ្នាសកោសិកា។ កោសិកាគោលដៅមានទម្រង់ត្រូវនឹងទម្រង់របស់អ័រម៉ូន ដែលបង្កើតបានជាសារធាតុចម្រុះទទួល-អ័រម៉ូន។ សារធាតុនេះហើយដែលធ្វើឱ្យកោសិកាគោលដៅឆ្លើយតបទៅនឹងអំពើរបស់អ័រម៉ូន។" },
-            { id: 9, q: "តើអ័រម៉ូនដែលបញ្ចេញដោយកោសិកាបេតា (β) និងកោសិកាអាល់ហ្វា (α) របស់លំពែងមានសកម្មភាពដូចម្តេចខ្លះ?", a: "• កោសិកាបេតា (β)៖ នៅពេលកម្រិតគ្លុយកូសកើនឡើងខ្ពស់ បញ្ចេញអាំងស៊ុយលីនប្រាប់កោសិកាគោលដៅឱ្យចាប់យកគ្លុយកូសប្រើប្រាស់ និងបំប្លែងគ្លុយកូសដែលនៅសល់ទៅជាគ្លីកូសែនស្តុកទុកក្នុងថ្លើម និងសាច់ដុំ។\n• កោសិកាអាល់ហ្វា (α)៖ នៅពេលគ្លុយកូសក្នុងឈាមធ្លាក់ចុះទាប បញ្ចេញគ្លុយកាកុងទៅក្នុងចរន្តឈាម ដើម្បីបំប្លែងគ្លីកូសែនក្នុងថ្លើមឱ្យទៅជាគ្លុយកូសវិញ។ បើអស់គ្លីកូសែន វាធ្វើឱ្យអាស៊ីតអាមីនេ និងអាស៊ីតខ្លាញ់បំប្លែងជាគ្លុយកូស។" },
-            { id: 10, q: "ចូរប្រៀបធៀបក្រពេញអង់ដូគ្រីន និងក្រពេញអ៊ិចសូគ្រីន។", a: "• លក្ខណៈដូចគ្នា៖ ជាសរីរាង្គកើតចេញពីកោសិកាអេពីតេស្យូម មាននាទីបញ្ចេញសារធាតុចាំបាច់សម្រាប់សារពាង្គកាយ។\n• លក្ខណៈខុសគ្នា៖\n- ក្រពេញអង់ដូគ្រីន៖ គ្មានបំពង់នាំ, ផលិតអ័រម៉ូន, បញ្ចេញទៅកាន់ចរន្តឈាមដោយផ្ទាល់, មានឥទ្ធិពលលើកោសិកាគោលដៅ។\n- ក្រពេញអ៊ិចសូគ្រីន៖ មានបំពង់នាំ, ផលិតរសរំលាយអាហារ/សំណល់មេតាបូលីស, បញ្ចេញតាមបំពង់នាំ។" },
-            { id: 11, q: "តើក្រពេញទីរ៉ូអ៊ុតស្ថិតនៅត្រង់ណា? វាផលិតអ័រម៉ូនអ្វីខ្លះ? ហើយមាននាទីដូចម្តេច?", a: "ក្រពេញទីរ៉ូអ៊ុតស្ថិតនៅត្រង់ក ចំពីក្រោមបំពង់សំឡេង ខាងមុខបំពង់ខ្យល់។ វាផលិតអ័រម៉ូនទីរ៉ុកស៊ីន (មាននាទីបង្កើនអត្រាមេតាបូលីសប្រូតេអ៊ីន គ្លុយស៊ីត និងខ្លាញ់) និងអ័រម៉ូនកាល់ស៊ីតូនីន (មាននាទីតម្រូវអត្រាកាល់ស្យូមក្នុងឈាម)។" },
-            { id: 12, q: "ដូចម្តេចដែលហៅថា ក្រពេញប៉ារ៉ាទីរ៉ូអ៊ុត? វាផលិតអ័រម៉ូនអ្វី? អ័រម៉ូននីមួយៗមាននាទីដូចម្តេច?", a: "ក្រពេញប៉ារ៉ាទីរ៉ូអ៊ុត ជាក្រពេញរាងពងក្រពើតូចៗចំនួន ៤ ដែលបង្កប់ក្នុងផ្នែកខាងក្រោយនៃក្រពេញទីរ៉ូអ៊ុត។ វាបញ្ចេញអ័រម៉ូនប៉ារ៉ាទីរ៉ូអ៊ុត ដែលមាននាទីតម្រូវមេតាបូលីសកាល់ស្យូម និងផូស្វាតនៅក្នុងសារពាង្គកាយ។" },
-            { id: 13, q: "ហេតុអ្វីបានជាគេថា ក្រពះ និងពោះវៀនតូចជាក្រពេញអង់ដូគ្រីន?", a: "ព្រោះក្រពះបញ្ចេញអ័រម៉ូនកាស្ត្រីនទៅកាន់ចរន្តឈាម ហើយពោះវៀនតូចបញ្ចេញអ័រម៉ូនសេក្រេទីនទៅកាន់ចរន្តឈាមដោយផ្ទាល់។" },
-            { id: 14, q: "តើអ័រម៉ូនមានប៉ុន្មានក្រុម? អ្វីខ្លះ? ចូររៀបរាប់។", a: "• អ័រម៉ូនប៉ិបទីត៖ កើតចេញពីច្រវ៉ាក់អាស៊ីតអាមីនេ មិនរលាយក្នុងស្រទាប់លីពីត មិនអាចឆ្លងកាត់ភ្នាសកោសិកាបាន។\n• អ័រម៉ូនស្តេរ៉ូអ៊ុត៖ ជាម៉ូលេគុលលីពីតតូចៗ រលាយក្នុងស្រទាប់លីពីត អាចឆ្លងកាត់ភ្នាសកោសិកាបាន។" },
-            { id: 15, q: "ដូចម្តេចដែលហៅថាក្រពេញអង់ដូគ្រីន? ចូររាប់ឈ្មោះក្រពេញអង់ដូគ្រីនសំខាន់ៗ។", a: "ក្រពេញអង់ដូគ្រីន គឺជាក្រពេញគ្មានបំពង់នាំ ផលិត និងបញ្ចេញអ័រម៉ូនទៅកាន់ចរន្តឈាមដោយផ្ទាល់។ ក្រពេញអង់ដូគ្រីនសំខាន់ៗរបស់មនុស្សមានដូចជា៖ ក្រពេញអ៊ីប៉ូតាឡាមុស, ក្រពេញអ៊ីប៉ូភីស, ក្រពេញទីរ៉ូអ៊ុត, ក្រពេញប៉ារ៉ាទីរ៉ូអ៊ុត, ក្រពេញទីមុស, លំពែង, ក្រពះ និងពោះវៀនតូច, ក្រពេញលើតម្រង់នោម, ក្រពេញភេទ។" },
-            { id: 16, q: "តើអ័រម៉ូនអុកស៊ីតូស៊ីន និងអ័រម៉ូនប្រូឡាក់ទីនមានលក្ខណៈខុសគ្នាដូចម្តេចខ្លះ?", a: "• អុកស៊ីតូស៊ីន៖ បញ្ចេញដោយអ៊ីប៉ូភីសក្រោយ (ផលិតដោយណឺរ៉ូនក្នុងអ៊ីប៉ូតាឡាមុស) បញ្ចេញពេលសម្រាលកូន ភ្ញោចក្រពេញទឹកដោះឱ្យបញ្ចេញទឹកដោះ និងភ្ញោចការកន្ត្រាក់សាច់ដុំស្បូន។\n• ប្រូឡាក់ទីន៖ បញ្ចេញដោយអ៊ីប៉ូភីសមុខ ផលិតដោយកោសិកាក្រពេញអ៊ីប៉ូភីសមុខ បញ្ចេញក្រោយសម្រាលកូន បណ្តាលឱ្យក្រពេញទឹកដោះលូតលាស់ និងផលិតទឹកដោះ។" },
-            { id: 17, q: "ហេតុអ្វីបានជាគេនិយាយថា លំពែងជាក្រពេញអង់ដូគ្រីនផង និងអ៊ិចសូគ្រីនផង?", a: "ព្រោះលំពែងជាក្រពេញអ៊ិចសូគ្រីន (បញ្ចេញរសលំពែងតាមបំពង់នាំ) និងជាក្រពេញអង់ដូគ្រីន (បញ្ចេញអ័រម៉ូនអាំងស៊ុយលីន និងអ័រម៉ូនគ្លុយកាកុងទៅកាន់ចរន្តឈាម)។" },
-            { id: 18, q: "ចូររកលក្ខណៈខុសគ្នាអ័រម៉ូនប៉ិបទីត និងស្តេរ៉ូអ៊ុត។", a: "• អ័រម៉ូនប៉ិបទីត៖ កើតពីច្រវ៉ាក់អាស៊ីតអាមីនេ, មិនរលាយក្នុងស្រទាប់លីពីត, មិនអាចឆ្លងកាត់ភ្នាសកោសិកាគោលដៅ, សកម្មភាពកើតក្នុងភ្នាស, មានឥទ្ធិពលរយៈពេលខ្លី។\n• អ័រម៉ូនស្តេរ៉ូអ៊ុត៖ កើតពីលីពីតតូចៗ (កូលេស្តេរ៉ូល), រលាយក្នុងស្រទាប់លីពីត, អាចឆ្លងកាត់ភ្នាសកោសិកាគោលដៅ, សកម្មភាពកើតក្នុងណូលេអូ និងស៊ីតូប្លាស, មានឥទ្ធិពលរយៈពេលយូរ។" },
-            { id: 19, q: "ក. តើលំពែងផលិតអ័រម៉ូនអ្វីខ្លះ? អ័រម៉ូននីមួយៗមាននាទីដូចម្តេច?\nខ. ហេតុអ្វីបានគេចាត់ទុកថា ក្រពះ និងពោះវៀនតូចជាក្រពេញអង់ដូគ្រីន?", a: "ក. លំពែងផលិតអាំងស៊ុយលីន (មាននាទីបន្ថយកម្រិតគ្លុយកូសក្នុងឈាម) និងគ្លុយកាកុង (មាននាទីបង្កើនកម្រិតគ្លុយកូសក្នុងឈាម)។\nខ. ព្រោះវាជាក្រពេញផលិត និងបញ្ចេញអ័រម៉ូនទៅកាន់ចរន្តឈាមដោយផ្ទាល់ (ក្រពះផលិតកាស្ត្រីន, ពោះវៀនតូចផលិតសេក្រេទីន)។" },
-            { id: 20, q: "ហេតុអ្វីបានជាត្រចៀកមានជំងឺឆ្លងបណ្តាលឱ្យបាត់បង់ថេរលំនឹង?", a: "ព្រោះមេរោគបង្កជំងឺឆ្លងបណ្តាលឱ្យត្រចៀកឡើងហើម ធ្វើឱ្យធាតុរាវនៅក្នុងត្រចៀកដាក់សម្ពាធលើបំពង់ពាក់កណ្តាលរង្វង់ នាំឱ្យរោមល្អិតៗលើកោសិកាទទួលនៅក្នុងបំពង់នេះបញ្ជូនសញ្ញាវិញ្ញាណតុល្យភាពទៅខួរក្បាលមិនត្រឹមត្រូវ។" },
-            { id: 21, q: "នៅពេលគ្រុនផ្តាសាយ ហេតុអ្វីបានជាអ្នកពិបាកក្នុងការភ្លក់រសជាតិនៃអាហារ?", a: "ព្រោះរសជាតិអាហារទាក់ទងនឹងវិញ្ញាណរសជាតិផង និងវិញ្ញាណក្លិនផង។ នៅពេលគ្រុន ស្រទាប់ភ្នាសរន្ធច្រមុះក្លាយជាខាប់ នាំឱ្យផ្នួលវិញ្ញាណក្លិនបំពេញនាទីមិនបានត្រឹមត្រូវ ទើបពិបាកដឹងរសជាតិ។" },
-            { id: 22, q: "ហេតុអ្វីបានជាពេលមានការប៉ះទង្គិច ឬរបួសដោយមុតដាច់ធ្វើឱ្យយើងមានការឈឺចាប់?", a: "ព្រោះនៅក្នុងស្រទាប់ក្រោមនៃអេពីឌែម (ដែម) មានទទួលវិញ្ញាណឈឺចាប់ ដែលបង្កើតបានជាអាំងភ្លុចប្រសាទ រួចបញ្ជូនតាមសរសៃប្រសាទវិញ្ញាណនាំទៅខួរឆ្អឹងខ្នង និងបន្តទៅខួរក្បាល ទើបខួរក្បាលបកស្រាយបណ្តាលឱ្យយើងឈឺចាប់។" },
-            { id: 23, q: "ដូចម្តេចដែលហៅថាពន្លកជីវ្ហាវិញ្ញាណ? ចូររៀបរាប់ទីតាំងនៃរសជាតិទាំង៤របស់អណ្តាត។", a: "ពន្លកជីវ្ហាវិញ្ញាណ គឺជាផ្នូលវិញ្ញាណរសជាតិ。\n• រសជាតិផ្អែម៖ ស្ថិតនៅផ្នែកចុងអណ្តាត\n• រសជាតិប្រៃ៖ ស្ថិតនៅផ្នែកចំហៀងសងខាង (ផ្នែកមុខ)\n• រសជាតិជូរ៖ ស្ថិតនៅផ្នែកចំហៀងសងខាង (ផ្នែកបន្ទាប់)\n• រសជាតិល្វីង៖ ស្ថិតនៅគល់អណ្តាត" },
-            { id: 24, q: "តើរលកសូរមានឥទ្ធិពលទៅលើផ្នែកផ្សេងៗនៃត្រចៀកយ៉ាងដូចម្តេច?", a: "ស្លឹកត្រចៀកប្រមូលផ្តុំរលកសូរ ហើយរន្ធត្រចៀកដឹកនាំរលកសូរទៅកាន់ត្រចៀកកណ្តាលដោយឆ្លងកាត់ក្រដាសត្រចៀក។ ក្រដាសត្រចៀកញ័រ រួចឆ្លងកាត់ឆ្អឹងតូចៗ៣។ ឆ្អឹងទី៣ញ័របណ្តាលឱ្យភ្នាសបង្អួចរាងពងក្រពើញ័រ ធ្វើឱ្យសារធាតុរាវក្នុងបំពង់រាងគូទខ្យងញ័រ ភ្ញោចរោមល្អិតៗនៃកោសិកាទទួលឱ្យបំប្លែងលំញ័រទៅជាអាំងភ្លុចប្រសាទ។" },
-            { id: 25, q: "តើស្បែកមាននាទីដូចម្តេចខ្លះ?", a: "• ការពារសារពាង្គកាយពីឥទ្ធិពលរូប និងគីមីនៃមជ្ឈដ្ឋានខាងក្រៅ\n• បង្ការការជ្រៀតចូលនៃមេរោគ និងការបាត់បង់ជាតិទឹក\n• ការពារកាំរស្មីស្វ័យអ៊ុលត្រា\n• ជាកន្លែងបណ្តូរឧស្ម័ន និងបញ្ចេញកាកសំណល់មេតាបូលីសតាមញើស\n• ថែរក្សាផ្ទៃសារពាង្គកាយឱ្យសើម និងបញ្ចេញជាតិខ្លាញ់\n• ស្រូបសារធាតុឱសថមួយចំនួន និងទទួលរំញោច (សីតុណ្ហភាព, ការប៉ះទង្គិច)\n• បន្ថយកម្ដៅដោយបញ្ចេញញើស" },
-            { id: 26, q: "តើឆួលវិញ្ញាណក្លិន និងឆួលវិញ្ញាណរសជាតិមានទំនាក់ទំនងគ្នាយ៉ាងដូចម្តេច?", a: "រសជាតិអាហារទាក់ទងនឹងវិញ្ញាណរសជាតិផង និងវិញ្ញាណក្លិនផង។ ក្លិនឈ្ងុយនៃអាហារភ្ញោចឆួលក្លិន ហើយអាហារក្នុងមាត់ភ្ញោចឆួលវិញ្ញាណរសជាតិ។ ដូចនេះ វិញ្ញាណទាំងពីរមានទំនាក់ទំនងបំពេញគ្នាដើម្បីឱ្យអាហារមានរសជាតិឆ្ងាញ់។" },
-            { id: 27, q: "ក. ដូចម្តេចដែលហៅថា អង្គស៊ីលីយែ?\nខ. តើបាតុភូតអ្វីដែលធ្វើឱ្យយើងអាចមើលឃើញវត្ថុផ្សេងៗស្ថិតនៅចម្ងាយខុសៗគ្នា?", a: "ក. អង្គស៊ីលីយែ គឺជាសាច់ដុំរលីងស្ថិតនៅជុំវិញកែវភ្នែក ហើយភ្ជាប់កែវភ្នែកដោយសរសៃចំណង។\nខ. គឺបាតុភូតកម្លាំងសម្របតម្រូវ។ បើមើលជិត៖ អង្គស៊ីលីយែកន្ត្រាក់រួមតូច, សរសៃចំណងរលុង, កែវភ្នែកឡើងក្រាស់។ បើមើលឆ្ងាយ៖ អង្គស៊ីលីយែបន្ធូរ, សរសៃចំណងតឹង, កែវភ្នែកស្តើង។" },
-            { id: 28, q: "ក. តើអង់ស៊ីមជាអ្វី?\nខ. ហេតុអ្វីបានជានៅក្នុងកោសិកានៃសារពាង្គកាយមានអង់ស៊ីមច្រើនប្រភេទ?\nគ. តើអង់ស៊ីមទាំងអស់សុទ្ធតែជាប្រូតេអ៊ីនដែរឬទេ? ព្រោះអ្វី?", a: "ក. អង់ស៊ីម ជាប្រូតេអ៊ីនដែលជាកាតាលីករជីវៈជួយជំរុញល្បឿនប្រតិកម្មគីមីផ្សេងៗ។\nខ. ព្រោះក្នុងកោសិកាមានប្រតិកម្មគីមីរាប់ពាន់ប្រភេទ ហើយអង់ស៊ីមមួយមានអំពើលើប្រតិកម្មគីមីមួយប៉ុណ្ណោះ។\nគ. អង់ស៊ីមទាំងអស់សុទ្ធតែជាប្រូតេអ៊ីន ព្រោះកើតចេញពីអាស៊ីតអាមីនេភ្ជាប់គ្នាដោយចំណងប៉ិបទីត។" },
-            { id: 29, q: "ហេតុអ្វីបានជាសីតុណ្ហភាពខ្ពស់ពេក ឬទាបពេកធ្វើឱ្យអង់ស៊ីមបាត់បង់គុណភាព?", a: "ព្រោះអង់ស៊ីមជាប្រូតេអ៊ីន។ កាលណាសីតុណ្ហភាពខ្ពស់ពេក សម្ព័ន្ធអ៊ីដ្រូសែនត្រូវបានរលា ធ្វើឱ្យប្រូតេអ៊ីនខូចទ្រង់ទ្រាយ នាំឱ្យបាត់បង់គុណភាព។" },
-            { id: 30, q: "ហេតុអ្វីបានជាគេនិយាយថាអង់ស៊ីមជាប្រូតេអ៊ីនដែលមានសកម្មភាពខ្លាំងក្លា?", a: "ព្រោះអង់ស៊ីមមួយចំនួនតូច អាចបង្កើនល្បឿនប្រតិកម្មគីមីបានមួយចំនួនធំ។" },
-            { id: 31, q: "តើគេហៅឈ្មោះរបស់អង់ស៊ីមបានត្រឹមត្រូវដោយផ្អែកលើកត្តាអ្វីខ្លះ?", a: "• យថាប្រភេទនៃកាតាលីករដែលជំរុញល្បឿនប្រតិកម្ម\n• ឈ្មោះស៊ុបស្ត្រាតដែលបញ្ចប់ដោយពាក្យ «អាស» (-ase)" },
-            { id: 32, q: "ចូរពណ៌នាពីលក្ខណៈរបស់អង់ស៊ីម?", a: "• ជាប្រូតេអ៊ីនមានសកម្មភាពខ្លាំងក្លា (បរិមាណតូចបង្កើនល្បឿនប្រតិកម្មធំ)\n• ប្រែប្រួលតាមសីតុណ្ហភាព, ឥទ្ធិពល pH និងកំហាប់ស៊ុបស្ត្រាត\n• ជាកាតាលីករមានប្រតិកម្មបញ្ច្រាសទៅវិញទៅមក\n• អង់ស៊ីមខ្លះជាកូអង់ស៊ីម" },
-            { id: 33, q: "ក. ចូរសរសេររូបមន្តទូទៅរបស់អាស៊ីតអាមីនេ។\nខ. រ៉ាឌីកាល់ R របស់អាឡានីនគឺ -CH3, រ៉ាឌីកាល់ R របស់សេរីនគឺ -CH2OH។ ចូរសរសេររូបមន្តគីមីនៃអាស៊ីតអាមីនេទាំងពីរ។\nគ. ចូរសរសេររូបមន្តឌីប៉ិបទីតរវាងអាស៊ីតអាមីនេទាំងពីរ។", a: "ក. H2N-CH(R)-COOH\nខ. អាឡានីន៖ H2N-CH(CH3)-COOH, សេរីន៖ H2N-CH(CH2OH)-COOH\nគ. H2N-CH(CH3)-CO-NH-CH(CH2OH)-COOH" },
-            { id: 34, q: "ក. តើអាស៊ីតអាមីនេពីរភ្ជាប់គ្នាដោយសារអ្វី? ចូរសរសេររូបមន្តស្ទើលាតនៃចំណងនោះ。\nខ. ចូរសរសេររូបមន្តទូទៅរបស់អាស៊ីតអាមីនេ ព្រមទាំងលើកឧទាហរណ៍បញ្ជាក់。\nគ. ចូរសរសេររូបមន្តទូទៅនៃឌីប៉ិបទីត。", a: "ក. ភ្ជាប់គ្នាដោយចំណងប៉ិបទីត (-CO-NH-)\nខ. រូបមន្តទូទៅ៖ H2N-CH(R)-COOH (ឧ. អាឡានីន H2N-CH(CH3)-COOH, សេរីន H2N-CH(CH2OH)-COOH)\nគ. H2N-CH(R1)-CO-NH-CH(R2)-COOH" },
-            { id: 35, q: "ហេតុអ្វីបានជាតំណលំដាប់អាស៊ីតអាមីនេកំណត់ទម្រង់ និងនាទីរបស់ប្រូតេអ៊ីន?", a: "ព្រោះប្រូតេអ៊ីនជាប៉ូលីមែនៃអាស៊ីតអាមីនេ ហើយការតម្រៀបតំណលំដាប់អាស៊ីតអាមីនេក្នុងម៉ូលេគុលធ្វើឱ្យម៉ូលេគុលមានទម្រង់ខុសៗគ្នា ដែលទម្រង់នោះជាអ្នកកំណត់នាទីរបស់ប្រូតេអ៊ីន。" },
-            { id: 36, q: "ក. តើនុយក្លេអូទីតជាអ្វី? តើវាផ្សំឡើងពីធាតុអ្វីខ្លះ?\nខ. នុយក្លេអូទីតមានតែបួនប្រភេទ ហេតុអ្វីអាចបង្កើតម៉ូលេគុល DNA ខុសគ្នាច្រើន?", a: "ក. នុយក្លេអូទីត គឺជាម៉ូណូមែនៃម៉ូលេគុល DNA ផ្សំពី៖ អាស៊ីតផូស្វ័រិច (H3PO4) ១, ស្ករដេអុកស៊ីរីបូស (C5H10O4) ១, និងបាសអាសូត (A, T, C, G) ១。\nខ. ព្រោះ DNA កើតឡើងពីនុយក្លេអូទីតរាប់ម៉ឺនទៅរាប់លានដែលតម្រៀបគ្នាតាមតំណលំដាប់ជាក់លាក់ ហើយម៉ូលេគុលនីមួយៗខុសគ្នាដោយសារចំនួន ប្រភេទ និងទីតាំងនុយក្លេអូទីត。" },
-            { id: 37, q: "ក. នៅក្នុងម៉ូលេគុល DNA តើមានសម្ព័ន្ធអ្វីខ្លះ? តើសម្ព័ន្ធនីមួយៗកើតឡើងនៅកន្លែងណា?\nខ. តើសម្ព័ន្ធណាដែលងាយដាច់ជាងគេ?", a: "ក. ក្នុង DNA មានសម្ព័ន្ធគីមី (កូវ៉ាឡង់) និងសម្ព័ន្ធអ៊ីដ្រូសែន。\n• សម្ព័ន្ធគីមី៖ កើតឡើងត្រង់អាស៊ីតផូស្វ័រិចនៃនុយក្លេអូទីត និងស្ករដេអុកស៊ីរីបូសនៃនុយក្លេអូទីតមួយទៀត。\n• សម្ព័ន្ធអ៊ីដ្រូសែន៖ កើតឡើងត្រង់បាសពីរបំពេញគ្នានៃច្រវ៉ាក់ទាំងពីរ (A-T, C-G)。\nខ. សម្ព័ន្ធដែលងាយដាច់ជាងគេគឺ សម្ព័ន្ធអ៊ីដ្រូសែន。" },
-            { id: 38, q: "តើចលនការស្វ័យដំឡើងទ្វេ DNA មានសារៈសំខាន់ដូចម្តេចខ្លះ?", a: "រក្សាចំនួនក្រូម៉ូសូមឱ្យនៅដដែលពេលកោសិកាចែកខ្លួនតាមមីតូស ធ្វើឱ្យកោសិកាមេ និងកោសិកាកូនមាន DNA ដូចគ្នា ធានាការបញ្ជូនព័ត៌មានសេនេទិចពីកោសិកាមេទៅកោសិកាកូន。" },
-            { id: 39, q: "ក្រោយពេលដំឡើងទ្វេហើយ ហេតុអ្វីបានជាម៉ូលេគុល DNA កូនដូចគ្នាបេះបិទទៅនឹងម៉ូលេគុល DNA មេ?", a: "ព្រោះពេលស្វ័យដំឡើងទ្វេ ច្រវាក់ទាំងពីរនៃ DNA មេ មាននាទីជាពុម្ពគំរូ ឯនុយក្លេអូទីតសេរីរត់ទៅបំពេញតាមគោលការណ៍បាស (A-T, C-G)。 ហេតុនេះ ម៉ូលេគុល DNA កូននីមួយៗមានច្រវាក់ម្ខាងជាពុម្ពគំរូ និងម្ខាងទៀតកើតថ្មី គឺវាដូចគ្នាបេះបិទនឹង DNA មេ。" },
-            { id: 40, q: "ចូរប្រៀបធៀប DNA និងប្រូតេអ៊ីន。", a: "• លក្ខណៈដូចគ្នា៖ ជាម៉ាក្រូម៉ូលេគុល, កើតពីម៉ូណូមែ, មានតំណលំដាប់ជាក់លាក់。\n• លក្ខណៈខុសគ្នា៖\n- DNA៖ បង្កពីនុយក្លេអូទីត៤ប្រភេទ, កើតពី២ច្រវ៉ាក់, ម៉ាសម៉ូលេគុលធំ, តំណលំដាប់នុយក្លេអូទីតកំណត់លំដាប់អាស៊ីតអាមីនេ。\n- ប្រូតេអ៊ីន៖ បង្កពីអាស៊ីតអាមីនេ២០ប្រភេទ, កើតពីច្រវ៉ាក់ទោល, ម៉ាសម៉ូលេគុលតូច, តំណលំដាប់អាស៊ីតអាមីនេត្រូវបានកំណត់ដោយតំណលំដាប់នុយក្លេអូទីត。" },
-            { id: 41, q: "ចូរពណ៌នាពីនាទីរបស់ tRNA ក្នុងចលនការសំយោគប្រូតេអ៊ីន。", a: "tRNA មាននាទីដឹកនាំអាស៊ីតអាមីនេពីស៊ីតូប្លាសទៅក្នុងរីបូសូម និងតម្រូវអង់ទីកូដុងជាមួយកូដុង mRNA ដើម្បីបកប្រែព័ត៌មានទៅជាប្រូតេអ៊ីន。" },
-            { id: 42, q: "ចូរពណ៌នាពីនាទីរបស់ DNA, mRNA, tRNA, rRNA ក្នុងចលនការសំយោគប្រូតេអ៊ីន。", a: "• DNA៖ ផ្ទុកព័ត៌មានសេនេទិចសម្រាប់កំណត់សំយោគ mRNA。\n• mRNA៖ ចម្លងតំណលំដាប់ពីអង្កត់ DNA ឱ្យទៅជាតំណលំដាប់រីបូនុយក្លេអូទីតដើម្បីសំយោគប្រូតេអ៊ីន。\n• tRNA៖ ដឹកនាំអាស៊ីតអាមីនេពីស៊ីតូប្លាសចូលរីបូសូម និងតម្រូវអង់ទីកូដុងជាមួយកូដុង mRNA。\n• rRNA៖ ចូលរួមជាមួយប្រូតេអ៊ីនបង្កើតជារីបូសូម ដែលជារោងជាងសាងសង់ប្រូតេអ៊ីន。" },
-            { id: 43, q: "តើមានបាតុភូតអ្វីកើតឡើងនៅពេលដែលរីបូសូមលោតដល់កូដុងស្តុប?", a: "ចលនការសំយោគប្រូតេអ៊ីនត្រូវបានបញ្ចប់ ដោយ mRNA, tRNA, រីបូសូម និងច្រវ៉ាក់ប៉ូលីប៉ិបទីតត្រូវបានបំបែកចេញពីគ្នា ហើយមេតយូនីនក៏ផ្តាច់ចេញពីច្រវ៉ាក់ប៉ូលីប៉ិបទីតដែរ。" },
-            { id: 44, q: "ហេតុអ្វីបានជាចាំបាច់មានការចម្លងក្រម mRNA?", a: "ព្រោះព័ត៌មានសេនេទិចស្ថិតនៅជានិច្ចក្នុងណូលេអូ ឯការសំយោគប្រូតេអ៊ីនស្ថិតនៅក្នុងស៊ីតូប្លាស。 ដូចនេះ ចាំបាច់ត្រូវមានម៉ូលេគុល mRNA ទៅចម្លងក្រម。" },
-            { id: 45, q: "ចូររៀបរាប់ពីតួនាទីរបស់អង់ស៊ីម RNA ប៉ូលីមេរ៉ាស。", a: "• ទទួលស្គាល់សញ្ញាសេនេទិចលើ DNA ដែលអាចចាប់ផ្តើម និងបញ្ចប់ការសំយោគ mRNA\n• បើកម៉ូលេគុល DNA ដោយផ្តាច់សម្ព័ន្ធអ៊ីដ្រូសែន\n• ធ្វើប៉ូលីមែរកម្មនៃរីបូនុយក្លេអូទីតសេរីរត់ទៅបំពេញតាមគោលការណ៍បំពេញបាស (A-U, T-A, C-G, G-C)" },
-            { id: 46, q: "ចូររកលក្ខណៈខុសគ្នារវាងការបង្កាត់ជិត និងការបង្កាត់ឆ្ងាយ。", a: "• ការបង្កាត់ជិត៖ រវាងកូនកើតចេញពីមេបាតែមួយ, សណ្ដានក្រោយមានកម្លាំងជីវិតខ្សោយ, លទ្ធភាពបន្តពូជថយចុះ, បង្កើតភាពមិនប្រក្រតីនៃក្រូម៉ូសូម, អាចបង្កើតនិងរក្សាពូជសុទ្ធចំពោះលក្ខណៈអន់。\n• ការបង្កាត់ឆ្ងាយ៖ រវាងពូជខុសគ្នាឬសែស្រឡាយឆ្ងាយពីគ្នា, អ៊ីប្រ៊ីតមានកម្លាំងជីវិតខ្លាំង, ធន់នឹងជំងឺ, ផ្តល់ទិន្នផលខ្ពស់, ប៉ុន្តែអាចអារមិនអាចបង្កកំណើតបានក្នុងករណីមេបាខុសប្រភេទ。" },
-            { id: 47, q: "តើវិស្វកម្មសេនេទិចផ្តល់ផលល្អ និងផលអាក្រក់ដូចម្តេចខ្លះ?", a: "• គុណសម្បត្តិ៖ ផលិតអាំងស៊ុយលីន វ៉ាក់សាំង អង់ទីគ័រ, រុក្ខជាតិទិន្នផលខ្ពស់ ធន់ជំងឺ ធន់ថ្នាំសម្លាប់ស្មៅ, ផលិតអាហារ/ស្រាបៀរ/ប្រូម៉ាស。\n• គុណវិបត្តិ៖ គ្រោះថ្នាក់ដល់បរិស្ថាន (បាត់បង់ជីវៈចម្រុះ, សត្វល្អិតធន់ថ្នាំ), គ្រោះថ្នាក់ដល់សុខភាព, ប៉ះពាល់សីលធម៌សង្គម និងសេដ្ឋកិច្ច (ក្រុមហ៊ុនការពារសិទ្ធិគ្រាប់ពូជ)。" },
-            { id: 48, q: "ក. តើអ្នកវិទ្យាសាស្ត្របានផលិតសារធាតុគីមីអ្វីខ្លះសម្រាប់ជាប្រយោជន៍ដល់មនុស្សតាមរយៈបច្ចេកវិទ្យាជីវៈ?\nខ. តើអង់ទីប៊ីយូទិកជាអ្វី?", a: "ក. ផលិតអាំងស៊ុយលីន, អាំងទែផេរ៉ូន, អាំងទែឡឺគីន, អ័រម៉ូនលូតលាស់, អង់ទីប៊ីយូទិក, អង់ទីគ័រ, វ៉ាក់សាំង... \nខ. អង់ទីប៊ីយូទិក ជាសារធាតុស៊ាំញ៉ាំដែលផលិតដោយមីក្រូសារពាង្គកាយ សម្រាប់ព្យាបាលជំងឺដែលបង្កឡើងដោយបាក់តេរី。" },
-            { id: 49, q: "តើផូស៊ីលជាអ្វី? ការកកើតផូស៊ីលមានប៉ុន្មានរបៀប? អ្វីខ្លះ?", a: "ផូស៊ីលជាស្នាមឬសំណល់ភាវរស់ដែលបន្សល់ទុកនៅសម័យយូរលង់ណាស់មកហើយ。 មាន៣របៀបគឺ៖ ដំណើរក្លាយជាថ្ម, ពុម្ពក្រៅនិងពុម្ពក្នុង, និងការរក្សាទុកសារពាង្គកាយទាំងមូល (កប់ក្នុងទឹកកកឬជ័ររុក្ខជាតិ)。" },
-            { id: 50, q: "តើការសិក្សាពីផូស៊ីលមានសារប្រយោជន៍ដូចម្តេច?", a: "ស្គាល់ពីប្រវត្តិនៃការវិវត្តរបស់ភាវរស់ (ការកកើត, ការរីកចម្រើន, និងការរលត់ផុតពូជ) និងស្គាល់ពីប្រវត្តិផែនដីនាសម័យកាលនីមួយៗ。" },
-            { id: 51, q: "តើកត្តាអ្វីខ្លះដែលបណ្តាលឱ្យកើតភាវរស់ប្រភេទថ្មី? ចូររៀបរាប់。", a: "• កត្តារបាំងភូមិសាស្ត្រ៖ ភ្នំ, ភ្នំទឹកកក, ភ្នំភ្លើង, ទន្លេ, សមុទ្រ, មហាសមុទ្រ\n• កត្តារបាំងជីវសាស្ត្រ៖ ទំហំប្រដាប់បន្តពូជខុសគ្នា, រដូវកាលបន្តពូជខុសគ្នា, ការទាក់ទាញដៃគូបន្តពូជខុសគ្នា" },
-            { id: 52, q: "តើភាវរស់បន្សល់ទុកអ្វីខ្លះជាផូស៊ីល?", a: "គ្រោងឆ្អឹង, សំបកសារពាង្គកាយ, ស្នាមជើង, សារពាង្គកាយទាំងមូលកប់ជាប់នឹងជ័ររុក្ខជាតិឬក្នុងទឹកកក。" },
-            { id: 53, q: "ពេលឮទូរស័ព្ទរោទិ៍អ្នកលើកដៃឡើងដើម្បីឆ្លើយតប。 ក្នុងករណីនេះមានណឺរ៉ូនអ្វីខ្លះចូលរួម? ចូររៀបរាប់ពីនាទីណឺរ៉ូននីមួយៗ。", a: "• ណឺរ៉ូនវិញ្ញាណនាំ៖ ដឹកនាំព័ត៌មានពីជួលវិញ្ញាណទៅកាន់មជ្ឈមណ្ឌលប្រសាទ (ខួរក្បាល)\n• ណឺរ៉ូនភ្ជាប់៖ បញ្ជូនបន្តព័ត៌មានពីណឺរ៉ូនវិញ្ញាណនាំទៅណឺរ៉ូនចលករ\n• ណឺរ៉ូនចលករ៖ ដឹកនាំព័ត៌មានពីមជ្ឈមណ្ឌលប្រសាទទៅកាន់សរីរាង្គប្រតិកម្ម (សាច់ដុំដៃ)" },
-            { id: 54, q: "ដូចម្តេចដែលហៅថាអាំងភ្លុចប្រសាទ? តើអាំងភ្លុចប្រសាទឆ្លងកាត់ស៊ីណាប់យ៉ាងដូចម្តេច?", a: "អាំងភ្លុចប្រសាទ គឺជាព័ត៌មានប្រសាទដែលដឹកនាំតាមបណ្តោយណឺរ៉ូន。 នៅចុងអាក់សូនមានថង់ផ្ទុកសារធាតុគីមី ពេលអាំងភ្លុចមកដល់ ថង់ផ្ទុះបែកបញ្ចេញសារធាតុគីមីសាយភាយឆ្លងកាត់ស៊ីណាប់ ទៅបង្កើតជាអាំងភ្លុចប្រសាទថ្មីក្នុងដង់ឌ្រីតនៃណឺរ៉ូនបន្ទាប់。" },
-            { id: 55, q: "តើប្រព័ន្ធប្រសាទមនុស្សមាននាទីអ្វីខ្លះ? ចូរពន្យល់ពីមុខងារនីមួយៗដោយលើកឧទាហរណ៍បញ្ជាក់。", a: "• ទទួលព័ត៌មាន (ឧ. ដឹងថាសត្វមូសហើរជិតត្រចៀក)\n• ឆ្លើយតបនឹងព័ត៌មាន/រំញោច (ឧ. ដេញទះមូស)\n• ថែរក្សាថេរលំនឹង (ឧ. បរិភោគអាហារពេលឃ្លាន)" },
-            { id: 56, q: "ក. តើណឺរ៉ូនជាអ្វី?\nខ. បើគិតលើនាទីរបស់វាតើគេចែកណឺរ៉ូនប៉ុន្មានបែប? អ្វីខ្លះ? តើណឺរ៉ូនបែបនីមួយៗមាននាទីធ្វើអ្វី?", a: "ក. ណឺរ៉ូន ជាកោសិកាឯកទេសនៃប្រព័ន្ធប្រសាទ មាននាទីបញ្ជូនព័ត៌មានពាសពេញសារពាង្គកាយ。\nខ. ចែកជា៣គឺ៖\n• ណឺរ៉ូនវិញ្ញាណនាំ៖ ដឹកនាំព័ត៌មានពីឆួលវិញ្ញាណទៅមជ្ឈមណ្ឌលប្រសាទ\n• ណឺរ៉ូនចលករ៖ ដឹកនាំព័ត៌មានពីមជ្ឈមណ្ឌលប្រសាទទៅសរីរាង្គប្រតិកម្ម (សាច់ដុំ/ក្រពេញ)\n• ណឺរ៉ូនភ្ជាប់៖ បញ្ជូនព័ត៌មានពីណឺរ៉ូនមួយទៅណឺរ៉ូនមួយទៀត" },
-            { id: 57, q: "តើផ្នែកសំខាន់ៗនៃប្រព័ន្ធប្រសាទសត្វឆ្អឹងកងមានអ្វីខ្លះ?", a: "មាន២ផ្នែកគឺ៖ មជ្ឈមណ្ឌលប្រសាទ (ខួរក្បាល និងខួរឆ្អឹងខ្នង) និងបរិមណ្ឌលប្រសាទ (ផ្លូវប្រសាទវិញ្ញាណនាំ និងផ្លូវប្រសាទចលករ)。" },
-            { id: 58, q: "តើខួរក្បាល និងខួរឆ្អឹងខ្នងមានទំនាក់ទំនងគ្នាយ៉ាងដូចម្តេច?", a: "ព័ត៌មានផ្នែកវិញ្ញាណនាំ និងចលករឆ្លងកាត់ពីខួរក្បាលទៅផ្នែកផ្សេងៗតាមរយៈខួរឆ្អឹងខ្នង。 សរសៃប្រសាទទាំងអស់ក្រោមកញ្ចឹងក ត្រូវតែឆ្លងកាត់តាមខួរឆ្អឹងខ្នងទៅកាន់ខួរក្បាល。" },
-            { id: 59, q: "តើខួរឆ្អឹងខ្នងមានសារៈសំខាន់ដូចម្តេចខ្លះ?", a: "ភ្ជាប់សរសៃប្រសាទបរិមណ្ឌលទៅនឹងខួរក្បាល, បញ្ជូនអាំងភ្លុចប្រសាទ, និងត្រួតពិនិត្យរ៉េផ្លិចខ្លះៗដែលជាតំណបស្វ័យប្រវត្តិ。" },
-            { id: 60, q: "ចូរប្រៀបធៀប៖ ក. ណឺរ៉ូនវិញ្ញាណនាំ និងណឺរ៉ូនចលករ, ខ. មជ្ឈមណ្ឌលប្រសាទ និងបរិមណ្ឌលប្រសាទ", a: "ក. ណឺរ៉ូនវិញ្ញាណនាំ vs ណឺរ៉ូនចលករ៖ ដូចគ្នាគឺជានាំព័ត៌មាន。 ខុសគ្នាគឺ វិញ្ញាណនាំដឹកពីទួលវិញ្ញាណទៅមជ្ឈមណ្ឌល (ឯកប៉ូល, ស្ថិតនៅខ្នែងខ្នង), ចលករដឹកពីមជ្ឈមណ្ឌលទៅសរីរាង្គប្រតិកម្ម (ពហុប៉ូល, ស្ថិតនៅខ្នែងពោះ)。\nខ. មជ្ឈមណ្ឌល vs បរិមណ្ឌល៖ មជ្ឈមណ្ឌលមានខួរក្បាល និងខួរឆ្អឹងខ្នង (ទទួល បកស្រាយ បញ្ជា), បរិមណ្ឌលមានសរសៃប្រសាទលលាដ៍១២គូ និងឆ្អឹងខ្នង៣១គូ (ដឹកនាំព័ត៌មានចូល-ចេញពីមជ្ឈមណ្ឌល)。" },
-            { id: 61, q: "ចូរប្រៀបធៀបប្រព័ន្ធប្រសាទសត្វឆ្អឹងកង និងឥតឆ្អឹងកង", a: "• ដូចគ្នា៖ ជាប្រព័ន្ធប្រសាទ ទទួល និងឆ្លើយតបនឹងព័ត៌មាន。\n• ខុសគ្នា៖ សត្វឥតឆ្អឹងកងមានសរីរាង្គវិញ្ញាណតិច, ខួរក្បាលតូច, គ្មានអឌ្ឍគោលខួរ/ខួរតូច。 សត្វមានឆ្អឹងកងមានសរីរាង្គវិញ្ញាណច្រើន, ខួរក្បាលធំ និងស្មុគស្មាញ, មានអឌ្ឍគោលខួរ និងខួរតូច。" },
-            { id: 62, q: "តើប្រូតេអ៊ីនជាអ្វី? តើប្រូតេអ៊ីនមាននាទីដូចម្តេច?", a: "ប្រូតេអ៊ីនជាប៉ូលីមែនៃអាស៊ីតអាមីនេដែលកើតចេញពីច្រវ៉ាក់ប៉ូលីប៉ិបទីតមួយឬច្រើន。 មាននាទីជា៖ កាតាលីករ (អង់ស៊ីម), ទម្រង់, អ្នកការពារ, អ្នកដឹកនាំ, អ្នកធ្វើចលនា, និងតម្រូវ (អ័រម៉ូន)。" },
-            { id: 63, q: "តើលក្ខខណ្ឌអ្វីខ្លះដែលធ្វើឱ្យប្រូតេអ៊ីនបាត់បង់គុណភាពបាន?", a: "អាស៊ីតខ្លាំង/បាសខ្លាំង, អង្គធាតុរំលាយ, លោហៈធ្ងន់, កំហាប់អំបិល, សាប៊ូ, អ៊ុយរ៉េ, បម្រែបម្រួលសីតុណ្ហភាព, ឥទ្ធិពល pH, កំហាប់ស៊ុបស្ត្រាត, និងចលនាមេកានិច。" }
+        // EXACT DATA FROM YOUR PDF DOCUMENT (63 QUESTIONS)
+        const pdfQuestions = [
+            { id: 1, q: "ចូររកលក្ខណៈខុសគ្នារវាងរុក្ខជាតិម៉ូណូកូទីលេដូននិងឌីកូទីលេដូន?", a: "• រុក្ខជាតិម៉ូណូកូទីលេដូន៖ គ្រាប់មានកូទីលេដុង១, ស្លឹកមានទ្រនុងស្រប, ផ្កា៣ស្រទាប់ឬពហុគុណ៣, ដើមមានបាច់សរសៃនាំស្ថិតនៅរាយប៉ាយ, ឬសស្វែ។\n• រុក្ខជាតិនីកូទីលេដូន៖ គ្រាប់មានកូទីលេដុង២, ស្លឹកមានទ្រនុងបែកខ្នែង, ផ្កា៤ឬ៥ស្រទាប់ឬពហុគុណនៃ៤ឬ៥, ដើមមានបាច់សរសៃនាំស្ថិតនៅជារង្វង់, ឬសកែវ។" },
+            { id: 2, q: "តើស្លឹករុក្ខជាតិនីកូទីលេដូនបង្ហាញឱ្យឃើញស្រទាប់អ្វីខ្លះ? តើស្រទាប់នីមួយៗមាននាទីដូចម្តេច?", a: "- ស្រទាប់អេពីឌែមលើក្រោម៖ មាននាទីការពារស្លឹករុក្ខជាតិ និងមានស្តូម៉ាតសម្រាប់បណ្តូរឧស្ម័ន និងបំភាយចំហាយទឹក។\n- ស្រទាប់ប៉ាលីសាត៖ មានក្លរ៉ូប្លាសផ្ទុកក្លរ៉ូភីល។ វាមាននាទីសំខាន់ក្នុងដំណើរស្មីសំយោគដើម្បីបង្កើតអាហារ។\n- ស្រទាប់ស្ប៉ោត៖ មានផ្ទុកស៊ីឡែមនិងផ្លូអែម និងរន្ធខ្យល់។" },
+            { id: 3, q: "ហេតុអ្វីបានជាគ្រាប់លំអងមិនមែនជាកាម៉ែតឈ្មោល? ចូរពន្យល់?", a: "គ្រាប់លំអង ជាកោសិកាមានណៃយ៉ូអាប្លូអ៊ុតពីរ គឺណៃយ៉ូបន្តពូជ និងណៃយ៉ូលូតលាស់។\n- ណៃយ៉ូលូតលាស់ នាំដំណើរការលូតលាស់នៃបំពង់លំអង។\n- ណៃយ៉ូបន្តពូជ ចែកខ្លួនតាមមីតូស ១ ដង បង្កើតបានស្ពែម៉ាតូសូអ៊ុតពីរគ្មានផ្លាសែល។" },
+            { id: 4, q: "តើពោតជាម៉ូណូកូទីលេដូនឬឌីកូទីលេដូន? ព្រោះអ្វី? តើពោតមានដំណើរលំអងបែបណា?", a: "→ ពោតជាម៉ូណូកូទីលេដូន ព្រោះ៖ គ្រាប់មានកូទីលេដុង១, ស្លឹកវែងមានទ្រនុងស្រប, ផ្កា៣ស្រទាប់ឬពហុគុណ៣, ដើមមានបាច់សរសៃនាំស្ថិតនៅរាយប៉ាយ, ឬសស្វែ, ដើមទោលត្រង់។\n→ ពោតមានដំណើរលំអងកាត់ ព្រោះកញ្ចុំកេសរញី និងកញ្ចុំកេសរឈ្មោលមានទីតាំងផ្សេងគ្នា ប៉ុន្តែវាស្ថិតនៅលើដើមតែមួយ។" },
+            { id: 5, q: "ដូចម្តេចដែលហៅថាដំណើរលំអងសិប្បនិម្មិត? ហេតុអ្វីបានជាគេធ្វើដំណើរលំអងបែបសិប្បនិម្មិត?", a: "→ ដំណើរលំអងបែបសិប្បនិម្មិត គឺជាដំណើរលំអងដែលមនុស្សយកគ្រាប់លំអងពីរុក្ខជាតិមួយទៅដាក់លើស្ទិចម៉ាតរបស់រុក្ខជាតិមួយទៀត។\n→ បានជាគេធ្វើដំណើរលំអងនេះឡើង ព្រោះដើម្បីបង្កាត់រុក្ខជាតិមានលក្ខណៈពិសេសៗដែលគេចង់បាន។" },
+            { id: 6, q: "តើការបង្កកំណើតទ្វេ? ហេតុអ្វីបានជារុក្ខជាតិអង់ស្យូស្ពែមមានការបង្កកំណើតទ្វេ?", a: "ការបង្កកំណើតទ្វេ គឺជាការបង្កកំណើតពីរដងក្នុងពេលតែមួយរបស់រុក្ខជាតិអង់ស្យូស្ពែម。\nបានជារុក្ខជាតិអង់ស្យូស្ពែមមានការបង្កកំណើតទ្វេ ព្រោះ៖ ស្ពែម៉ាតូសូអ៊ុតមួយចូលរួមបង្កកំណើតជាមួយកាម៉ែតញី បង្កើតបានជាស៊ីកូតឌីប្លូអ៊ុត (2n) មួយដែលលូតលាស់ទៅជាអំប្រ៊ីយ៉ុង ហើយស្ពែម៉ាតូសូអ៊ុតមួយទៀតបង្កកំណើតជាមួយណៃយ៉ូកណ្តាល (2n) បង្កើតជាអាល់ប៊ុយម៉ែន (3n)។" },
+            { id: 7, q: "តើផ្ការុក្ខជាតិអង់ស្យូស្ពៃមមាននាទីដូចម្តេច?", a: "→ ផ្កាមាននាទីដូចជា៖\n- ផលិតកោសិកាបន្តពូជញី\n- ផលិតកោសិកាបន្តពូជឈ្មោល\n- ទាក់ទាញសត្វល្អិតក្នុងដំណើរលំអង\n- ធ្វើឱ្យមានការបង្កកំណើត។" },
+            { id: 8, q: "ហេតុអ្វីបានជាអរម៉ូនភ្លេចតែកោសិកាគោលដៅ?", a: "បានជាអរម៉ូនភ្លេចតែកោសិកាគោលដៅ ព្រោះកោសិកាគោលដៅមានឆួលនៅលើភ្នាសកោសិកា។ កោសិកាគោលដៅមានទម្រង់ត្រូវនឹងទម្រង់របស់អរម៉ូន ដែលបង្កើតបានជាសារធាតុចម្រុះឆួល-អរម៉ូន។ សារធាតុនេះហើយដែលធ្វើឱ្យកោសិកាគោលដៅឆ្លើយតបទៅនឹងអំពើរបស់អរម៉ូន។" },
+            { id: 9, q: "តើអរម៉ូនដែលបញ្ចេញដោយកោសិកា (B) និង កោសិកាអាល់ហ្វា (a) របស់លំពែងមានសកម្មភាពដូចម្តេចខ្លះ?", a: "• សកម្មភាពកោសិកាបេតា (β)៖ នៅពេលកម្រិតគ្លុយកូសកើនឡើងខ្ពស់ បញ្ចេញអាំងស៊ុយលីន ភ្លេចកោសិកាគោលដៅ (ថ្លើម, សាច់ដុំ, ជាលិកាខ្លាញ់) ឱ្យចាប់យកគ្លុយកូសប្រើប្រាស់ជាប្រភពថាមពល។ គ្លុយកូសដែលសល់បំប្លែងទៅជាគ្លីកូសែនស្តុកទុក។\n• សកម្មភាពកោសិកាអាល់ហ្វា (α)៖ នៅពេលគ្លុយកូសធ្លាក់ចុះ បញ្ចេញគ្លុយកាកុង ជំរុញថ្លើមឱ្យបំប្លែងគ្លីកូសែនទៅជាគ្លុយកូសបញ្ចេញទៅក្នុងឈាមវិញ។" },
+            { id: 10, q: "ចូរប្រៀបធៀបក្រពេញអង់ដូគ្រីននិងក្រពេញអ៊ុចសូគ្រីន?", a: "→ លក្ខណៈដូចគ្នា៖ ជាសរីរាង្គកើតចេញពីកោសិកាអេពីតេស្យូម បញ្ចេញសារធាតុចាំបាច់សម្រាប់សារពាង្គកាយ。\n→ លក្ខណៈខុសគ្នា៖\n- អង់ដូគ្រីន៖ គ្មានបំពង់នាំ, ផលិតអរម៉ូន, បញ្ចេញអរម៉ូនទៅកាន់ចរន្តឈាមដោយផ្ទាល់។\n- អ៊ិចសូគ្រីន៖ មានបំពង់នាំ, ផលិតរសរំលាយអាហារ/សំណល់, បញ្ចេញតាមបំពង់នាំ។" },
+            { id: 11, q: "តើក្រពេញទីរ៉ូអ៊ុតស្ថិតនៅត្រង់ណា? វាផលិតអរម៉ូនអ្វីខ្លះ? ហើយមាននាទីដូចម្តេច?", a: "ក្រពេញទីរ៉ូអ៊ុតស្ថិតនៅត្រង់ក ចំពីក្រោមបំពង់សំឡេង ខាងមុខបំពង់ខ្យល់។ វាផលិតអរម៉ូនទីរ៉ុកស៊ីន (បង្កើនអត្រាមេតាបូលីសប្រូតេអ៊ីន, គ្លុយស៊ីត, ខ្លាញ់) និងកាល់ស៊ីតូនីន (តម្រូវអត្រាកាល់ស្យូមក្នុងឈាម)។" },
+            { id: 12, q: "ដូចម្តេចដែលហៅថា ក្រពេញប៉ារ៉ាទីរ៉ូអ៊ុត? វាផលិតអរម៉ូនអ្វី? អរម៉ូននីមួយៗមាននាទីដូចម្តេច?", a: "→ ក្រពេញប៉ារ៉ាទីរ៉ូអ៊ុត ជាក្រពេញរាងពងក្រពើតូចៗចំនួន ៤ បង្កប់ក្នុងផ្នែកខាងក្រោយនៃក្រពេញទីរ៉ូអ៊ុត。\n→ វាផលិតអរម៉ូនប៉ារ៉ាទីរ៉ូអ៊ុត ដែលមាននាទីតម្រូវមេតាបូលីសកាល់ស្យូម និងផូស្វាតនៅក្នុងសារពាង្គកាយ។" },
+            { id: 13, q: "ហេតុអ្វីបានជាគេថា ក្រពះនិងពោះវៀនតូចជាក្រពេញអង់ដូគ្រីន?", a: "ព្រោះក្រពះបញ្ចេញអរម៉ូនកាស្ទីន និងពោះវៀនតូចបញ្ចេញអរម៉ូនសេក្រេទីនទៅកាន់ចរន្តឈាមដោយផ្ទាល់។" },
+            { id: 14, q: "តើអរម៉ូនមានប៉ុន្មានក្រុម? អ្វីខ្លះ? ចូររៀបរាប់?", a: "- អរម៉ូនប៉ិបទីត៖ កើតពីច្រវ៉ាក់អាស៊ីតអាមីនេ មិនរលាយក្នុងស្រទាប់លីពីត មិនអាចឆ្លងកាត់ភ្នាសកោសិកាបាន។\n- អរម៉ូនស្តេរ៉ូអ៊ុត៖ ជាម៉ូលេគុលលីពីតតូចៗ រលាយក្នុងស្រទាប់លីពីត អាចឆ្លងកាត់ភ្នាសកោសិកាបាន។" },
+            { id: 15, q: "ដូចម្តេចដែលហៅថាក្រពេញអង់ដូគ្រីន? ចូររាប់ឈ្មោះក្រពេញអង់ដូគ្រីនសំខាន់ៗ?", a: "ជាក្រពេញគ្មានបំពង់នាំ ផលិត និងបញ្ចេញអរម៉ូនទៅកាន់ចរន្តឈាមដោយផ្ទាល់。\nក្រពេញសំខាន់ៗ៖ អីប៉ូតាឡាមុស, អីប៉ូភីស, ទីរ៉ូអ៊ុត, ប៉ារ៉ាទីរ៉ូអ៊ុត, ទីមុស, លំពែង, ក្រពះនិងពោះវៀនតូច, ក្រពេញលើតម្រង់នោម, ក្រពេញភេទ។" },
+            { id: 16, q: "តើអរម៉ូនអុកស៊ីតូស៊ីននិងអរម៉ូនប្រឡាក់ទីនមានលក្ខណៈខុសគ្នាដូចម្តេចខ្លះ?", a: "• អុកស៊ីតូស៊ីន៖ បញ្ចេញដោយអីប៉ូភីសក្រោយ, បញ្ចេញពេលសម្រាល, ជំរុញការកន្ត្រាក់ស្បូន និងបញ្ចេញទឹកដោះ។\n• ប្រូឡាក់ទីន៖ បញ្ចេញដោយអីប៉ូភីសមុខ, បញ្ចេញក្រោយសម្រាល, បណ្តាលឱ្យក្រពេញទឹកដោះលូតលាស់ និងផលិតទឹកដោះ។" },
+            { id: 17, q: "ហេតុអ្វីបានជាគេនិយាយថា លំពែងជាក្រពេញអង់ដូគ្រីនផងនិងស៊ិចសូគ្រីនផង?", a: "- ជាអ៊ិចសូគ្រីន៖ បញ្ចេញរសលំពែងតាមបំពង់នាំ。\n- ជាអង់ដូគ្រីន៖ បញ្ចេញអរម៉ូនអាំងស៊ុយលីន និងគ្លុយកាកុងទៅកាន់ចរន្តឈាម។" },
+            { id: 18, q: "ចូររកលក្ខណៈខុសគ្នាអរម៉ូនប៉ិបទីតនិងស្តេរ៉ូអ៊ុត?", a: "• ប៉ិបទីត៖ កើតពីអាស៊ីតអាមីនេ, មិនរលាយក្នុងលីពីត, មិនអាចឆ្លងភ្នាស, សកម្មភាពក្នុងណៃយូ, មានឥទ្ធិពលរយៈពេលខ្លី。\n• ស្តេរ៉ូអ៊ុត៖ កើតពីលីពីត, រលាយក្នុងលីពីត, អាចឆ្លងភ្នាស, សកម្មភាពក្នុងណៃយូនិងស៊ីតូប្លាស, មានឥទ្ធិពលរយៈពេលយូរ rhetoric" },
+            { id: 19, q: "ក. តើលំពែងផលិតអរម៉ូនអ្វីខ្លះ? អរម៉ូននីមួយៗមាននាទីដូចម្តេច? ខ. ហេតុអ្វីបានគេចាត់ទុកថា ក្រពះ និងពោះវៀនតូចជាក្រពេញអង់ដូគ្រីន?", a: "ក. លំពែងផលិតអាំងស៊ុយលីន (បន្ថយកម្រិតគ្លុយកូស) និងគ្លុយកាកុង (បង្កើនកម្រិតគ្លុយកូស)។\nខ. ព្រោះវាផលិត និងបញ្ចេញអរម៉ូនទៅកាន់ចរន្តឈាមដោយផ្ទាល់ (ក្រពះផលិតកាស្ទីន, ពោះវៀនតូចផលិតសេក្រេទីន)។" },
+            { id: 20, q: "ហេតុអ្វីបានជាត្រចៀកមានជំងឺឆ្លងបណ្តាលឱ្យបាត់បង់ថេរលំនឹង?", a: "ព្រោះមេរោគបណ្តាលឱ្យត្រចៀកឡើងហើម ធាតុរាវក្នុងត្រចៀកដាក់សម្ពាធលើបំពង់ពាក់កណ្តាលរង្វង់ ធ្វើឱ្យរោមល្អិតៗលើកោសិកាផ្នូលផ្ញើសញ្ញាវិញ្ញាណតុល្យភាពទៅខួរក្បាលមិនត្រឹមត្រូវ។" },
+            { id: 21, q: "នៅពេលគ្រុនផ្តាសាយ ហេតុអ្វីបានជាអ្នកពិបាកក្នុងការភ្លក់រសជាតិនៃអាហារ?", a: "ព្រោះរសជាតិអាហារទាក់ទងនឹងវិញ្ញាណរសជាតិផង និងក្លិនផង។ ពេលគ្រុន ស្រទាប់ក្នុងរន្ធច្រមុះក្លាយជាខាប់ ធ្វើឱ្យផ្នូលវិញ្ញាណបំពេញនាទីមិនបានល្អ។" },
+            { id: 22, q: "ហេតុអ្វីបានជាពេលមានការប៉ះទង្គិច ឬរបួសដោយមុតដាច់ធ្វើឱ្យយើងមានការឈឺចាប់?", a: "ព្រោះនៅស្រទាប់ក្រោមអេពីឌែមមានឆួលវិញ្ញាណឈឺចាប់ ដែលបង្កើតជាអាំងភ្លុចប្រសាទ បញ្ជូនតាមសរសៃប្រសាទវិញ្ញាណនាំទៅខួរឆ្អឹងខ្នង រួចបន្តទៅខួរក្បាលបកស្រាយឱ្យយើងឈឺចាប់។" },
+            { id: 23, q: "ដូចម្តេចដែលហៅថាពន្លកជីវ្ហាវិញ្ញាណ? ចូររៀបរាប់ទីតាំងនៃរសជាតិទាំង៤របស់អណ្តាត?", a: "ជាផ្នូលវិញ្ញាណរសជាតិ。\n- ផ្អែម៖ ចុងអណ្តាត\n- ប្រៃ៖ ចំហៀងសងខាង (ផ្នែកមុខ)\n- ជូរ៖ ចំហៀងសងខាង (ផ្នែកបន្ទាប់)\n- ល្វីង៖ គល់អណ្តាត" },
+            { id: 24, q: "តើរលកសូរមានឥទ្ធិពលទៅលើផ្នែកផ្សេងៗនៃត្រចៀកយ៉ាងដូចម្តេច?", a: "ស្លឹកត្រចៀកប្រមូលរលកសូរ -> រន្ធត្រចៀកនាំទៅក្រដាសត្រចៀក -> ឆ្អឹងតូចៗ៣ ញ័រ -> ភ្នាសបង្អួចរាងពងក្រពើញ័រ -> ធាតុរាវក្នុងបំពង់រាងគូទខ្យងញ័រ -> រោមល្អិតៗញ័រ -> ប្តូរជាអាំងភ្លុចប្រសាទ។" },
+            { id: 25, q: "តើស្បែកមាននាទីដូចម្តេចខ្លះ?", a: "ការពារសារពាង្គកាយ, បង្ការការជ្រៀតចូលនៃមេរោគ, បង្ការការបាត់បង់ទឹក, ការពារកាំរស្មី UV, បណ្តូរឧស្ម័ន, បញ្ចេញកាកសំណល់តាមញើស, ទទួលរំញោចផ្សេងៗ, និងបន្ថយកម្ដៅ។" },
+            { id: 26, q: "តើឆួលវិញ្ញាណក្លិននិងជួលវិញ្ញាណរសជាតិមានទំនាក់ទំនងគ្នាយ៉ាងដូចម្តេច?", a: "រសជាតិអាហារទាក់ទងនឹងវិញ្ញាណរសជាតិ និងវិញ្ញាណក្លិន។ ក្លិនឈ្ងុយភោចឆួលក្លិន អាហារក្នុងមាត់ភោចឆួលរសជាតិ ទើបវិញ្ញាណទាំងពីរប្របំពេញគ្នាឱ្យអាហារមានរសជាតិឆ្ងាញ់។" },
+            { id: 27, q: "ក. ដូចម្តេចដែលហៅថា អង់ស៊ីលីយែ? ខ. តើបាតុភូតអ្វីដែលធ្វើឱ្យយើងអាចមើលឃើញវត្ថុផ្សេងៗស្ថិតនៅចម្ងាយខុសៗគ្នា?", a: "ក. អង្គស៊ីលីយែ៖ ជាសាច់ដុំរលីងជុំវិញកែវភ្នែក ភ្ជាប់កែវភ្នែកដោយសរសៃចំណង。\nខ. កម្លាំងសម្របតម្រូវ៖ បង្កើតកម្រាស់កែវភ្នែកត្រឹមត្រូវតាមរយៈការកន្ត្រាក់/បន្ធូរនៃអង្គស៊ីលីយែ។" },
+            { id: 28, q: "ក. តើអង់ស៊ីមជាអ្វី? ខ. ហេតុអ្វីបានជានៅក្នុងកោសិកានៃសារពាង្គកាយមានអង់ស៊ីមច្រើនប្រភេទ? គ. អង់ស៊ីមទាំងអស់សុទ្ធតែប្រូតេអ៊ីនដែរឬទេ? ព្រោះអ្វី?", a: "ក. អង់ស៊ីម ជាប្រូតេអ៊ីនដែលជាកាតាលីករជីវៈជួយជំរុញល្បឿនប្រតិកម្មគីមី。\nខ. ព្រោះក្នុងកោសិកាមានប្រតិកម្មគីមីរាប់ពាន់ ហើយអង់ស៊ីមមួយមានអំពើលើប្រតិកម្មមួយប៉ុណោះ。\nគ. អង់ស៊ីមទាំងអស់ជាប្រូតេអ៊ីន ប៉ុន្តែមានមុខងារមិនដូចគ្នានឹងប្រូតេអ៊ីនទូទៅទេ..." },
+            { id: 29, q: "ហេតុអ្វីបានជាសីតុណ្ហភាពខ្ពស់ពេកឬទាបពេកធ្វើឱ្យអង់ស៊ីមបាត់បង់គុណភាព?", a: "ព្រោះអង់ស៊ីមជាប្រូតេអ៊ីន។ កាលណាសីតុណ្ហភាពខ្ពស់ពេក សម្ព័ន្ធអ៊ីដ្រូសែនត្រូវបានរលា ធ្វើឱ្យប្រូតេអ៊ីនខូចទ្រង់ទ្រាយ ទើបអង់ស៊ីមបាត់បង់គុណភាព។" },
+            { id: 30, q: "ហេតុអ្វីបានជាគេនិយាយថាអង់ស៊ីមជាប្រូតេអ៊ីនដែលមានសកម្មភាពបានខ្លាំងក្លា?", a: "ព្រោះអង់ស៊ីមមួយចំនួនតូច អាចបង្កើនល្បឿនប្រតិកម្មគីមីបានមួយចំនួនធំ។" },
+            { id: 31, q: "តើគេហៅឈ្មោះរបស់អង់ស៊ីមបានត្រឹមត្រូវដោយផ្អែកលើកត្តាអ្វីខ្លះ?", a: "- យថាប្រភេទនៃកាតាលីករដែលជំរុញល្បឿនប្រតិកម្ម\n- ឈ្មោះស៊ុបស្អាតដែលបញ្ចប់ដោយពាក្យ «អាស»" },
+            { id: 32, q: "ចូរពណ៌នាពីលក្ខណៈរបស់អង់ស៊ីម?", a: "- ជាប្រូតេអ៊ីនមានសកម្មភាពខ្លាំងក្លា\n- ប្រែប្រួលតាមទម្រង់/នាទី សីតុណ្ហភាព pH និងកំហាប់ស៊ុបស្អាត\n- ជាកាតាលីករមានប្រតិកម្មបញ្ច្រាសទៅវិញទៅមក\n- អង់ស៊ីមខ្លះជាកូអង់ស៊ីម" },
+            { id: 33, q: "ក. ចូរសរសេររូបមន្តទូទៅរបស់អាស៊ីតអាមីនេ។ ខ. រ៉ាឌីកាល់ R របស់អាឡានីនគឺ CH3 និងសេរីនគឺ CH2OH។ ចូរសរសេររូបមន្តគីមីនៃអាស៊ីតអាមីនេទាំងពីរ។ គ. ចូរសរសេររូបមន្តឌីប៉ិបទីតរវាងអាស៊ីតអាមីនេទាំងពីរ។", a: "ក. H2N-CH(R)-COOH\nខ. អាឡានីន៖ H2N-CH(CH3)-COOH | សេរីន៖ H2N-CH(CH2OH)-COOH\nគ. H2N-CH(CH3)-CO-NH-CH(CH2OH)-COOH" },
+            { id: 34, q: "ក. តើអាស៊ីតអាមីនេពីរភ្ជាប់គ្នាដោយសារអ្វី? ចូរសរសេររូបមន្តស្ទើលាតនៃចំណងដែលភ្ជាប់នោះ។ ខ. ចូរសរសេររូបមន្តទូទៅរបស់អាស៊ីតអាមីនេព្រមទាំងលើកឧទាហរណ៍បញ្ជាក់។ គ. ចូរសរសេររូបមន្តទូទៅនៃឌីប៉ិបទីត។", a: "ក. ភ្ជាប់ដោយចំណងប៉ិបទីត (-CO-NH-)\nខ. រូបមន្តទូទៅ H2N-CH(R)-COOH\nគ. H2N-CH(R1)-CO-NH-CH(R2)-COOH" },
+            { id: 35, q: "ហេតុអ្វីបានជាតំណលំដាប់អាស៊ីតអាមីនេកំណត់ទម្រង់និងនាទីរបស់ប្រូតេអ៊ុន?", a: "ព្រោះប្រូតេអ៊ីនជាប៉ូលីមែនៃអាស៊ីតអាមីនេ ហើយការតម្រៀបតំណលំដាប់អាស៊ីតអាមីនេធ្វើឱ្យម៉ូលេគុលមានទម្រង់ខុសៗគ្នា ដែលទម្រង់នោះជាអ្នកកំណត់នាទី។" },
+            { id: 36, q: "ក. តើនុយក្លេអូទីតជាអ្វី? តើវាផ្សំឡើងពីធាតុអ្វីខ្លះ? ខ. នុយក្លេអូទីតមានតែបួនប្រភេទ ហេតុអ្វីអាចបង្កើតម៉ូលេគុល ADN ខុសគ្នាច្រើន?", a: "ក. ជាម៉ូណូមែនៃ ADN ផ្សំពី៖ អាស៊ីតផូស្វ័រិច ១, ស្ករដេអុកស៊ីរីបូស ១, បាសអាស៊ូត ១។\nខ. ព្រោះកើតពីនុយក្លេអូទីតរាប់ម៉ឺនទៅរាប់លាន ដែលតម្រៀបគ្នាតាមតំណលំដាប់ ចំនួន និងប្រភេទខុសៗគ្នា។" },
+            { id: 37, q: "ក. នៅក្នុងម៉ូលេគុល ADN តើមានសម្ព័ន្ធអ្វីខ្លះ? តើសម្ព័ន្ធនីមួយៗកើតឡើងនៅកន្លែងណា? ខ. តើសម្ព័ន្ធណាដែលងាយដាច់ជាងគេ?", a: "ក. សម្ព័ន្ធកូវ៉ាឡង់រវាងអាស៊ីតផូស្វ័រិចនិងស្ករ, សម្ព័ន្ធអ៊ីដ្រូសែនរវាងបាសបំពេញគ្នា (A-T, C-G)។\nខ. សម្ព័ន្ធអ៊ីដ្រូសែនងាយដាច់ជាងគេ។" },
+            { id: 38, q: "តើចលនការស្វ័យដំឡើងទ្វេ ADN មានសារៈសំខាន់ដូចម្តេចខ្លះ?", a: "រក្សាចំនួនក្រូម៉ូសូមឱ្យនៅដដែលពេលកោសិកាចែកខ្លួន ហើយធានាការបញ្ជូនព័ត៌មានសេនេទិចពីកោសិកាមេទៅកោសិកាកូន។" },
+            { id: 39, q: "ក្រោយពេលដំឡើងទ្វេហើយ ហេតុអ្វីបានជាម៉ូលេគុល ADN កូនដូចគ្នាបេះបិទទៅនឹងម៉ូលេគុល ADN មេ?", a: "ព្រោះច្រវាក់ទាំងពីរនៃ ADN មេធ្វើជាពុម្ពគំរូ ឯនុយក្លេអូទីតសេរីរត់ទៅបំពេញតាមគោលការណ៍បំពេញបាស (A-T, C-G) ធ្វើឱ្យ ADN កូននីមួយៗមានច្រវ៉ាក់ចាស់១ និងច្រវ៉ាក់ថ្មី១ ដូចមេបេះបិទ។" },
+            { id: 40, q: "ចូរប្រៀបធៀប ADN និងប្រូតេអ៊ីន?", a: "→ ដូចគ្នា៖ ជាម៉ាក្រូម៉ូលេគុល កើតពីម៉ូណូមែ និងមានតំណលំដាប់ជាក់លាក់。\n→ ខុសគ្នា៖ ADN (នុយក្លេអូទីត៤, ២ច្រវ៉ាក់, ម៉ាសធំ) vs ប្រូតេអ៊ីន (អាស៊ីតអាមីនេ២០, ច្រវ៉ាក់ទោល, ម៉ាសតូច)។" },
+            { id: 41, q: "ចូរពណ៌នាពីនាទីរបស់ ARNt ក្នុងចលនការសំយោគប្រូតេអ៊ីន?", a: "ដឹកនាំអាស៊ីតអាមីនេពីស៊ីតូប្លាសទៅក្នុងរីបូសូម និងតម្រូវអង់ទីកូដុងជាមួយកូដុង ARNm ដើម្បីបកប្រែព័ត៌មានជាប្រូតេអ៊ីន。" },
+            { id: 42, q: "ចូរពណ៌នាពីនាទីរបស់ ADN, ARNm, ARNt, ARNr ក្នុងចលនការសំយោគប្រូតេអ៊ីន?", a: "- ADN៖ ផ្ទុកព័ត៌មានសេនេទិច\n- ARNm៖ ចម្លងក្រមតំណលំដាប់ពី ADN\n- ARNt៖ ដឹកនាំអាស៊ីតអាមីនេ\n- ARNr៖ ចូលរួមបង្កើតជារីបូសូម" },
+            { id: 43, q: "តើមានបាតុភូតអ្វីកើតឡើងនៅពេលដែលរីបូសូមលោតដល់កូដុងស្តុប?", a: "ចលនការសំយោគប្រូតេអ៊ីនត្រូវបានបញ្ចប់ ARNm, ARNt, រីបូសូម និងច្រវ៉ាក់ប៉ូលីប៉ិបទីតត្រូវបានបំបែកចេញពីគ្នា។" },
+            { id: 44, q: "ហេតុអ្វីបានជាចាំបាច់មានការចម្លងក្រម ARNm?", a: "ព្រោះព័ត៌មានសេនេទិចស្ថិតនៅជានិច្ចក្នុងណៃយូ ឯការសំយោគប្រូតេអ៊ីនស្ថិតនៅក្នុងស៊ីតូប្លាស ទើបចាំបាច់មាន ARNm ទៅចម្លងក្រម។" },
+            { id: 45, q: "ចូររៀបរាប់ពីតួនាទីរបស់អង់ស៊ីម ARN ប៉ូលីមេរ៉ាស?", a: "ទទួលស្គាល់សញ្ញាសេនេទិចលើ ADN, បើកម៉ូលេគុល ADN ដោយផ្ដាច់សម្ព័ន្ធអ៊ីដ្រូសែន, ធ្វើប៉ូលីមែរកម្មរីបូនុយក្លេអូទីតសេរីរត់ទៅបំពេញតាមគោលការណ៍បំពេញបាស (A-U, T-A, C-G, G-C)។" },
+            { id: 46, q: "ចូររកលក្ខណៈខុសគ្នារវាងការបង្កាត់ជិតនិងការបង្កាត់ឆ្ងាយ?", a: "• បង្កាត់ជិត៖ រវាងកូនកើតពីមេបាតែមួយ, កម្លាំងជីវិតខ្សោយ, បន្តពូជថយចុះ, អាចរក្សាពូជសុទ្ធ។\n• បង្កាត់ឆ្ងាយ៖ រវាងពូជ/ប្រភេទខុសគ្នា, អីប្រ៊ីតមានកម្លាំងជីវិតខ្លាំង, ធន់ជំងឺ, ទិន្នផលខ្ពស់ (ករណីមេបាខុសប្រភេទអាចអារ)។" },
+            { id: 47, q: "តើវិស្វកម្មសេនេទិចផ្តល់ផលអាក្រក់ដល់មនុស្សជាតិដូចម្តេចខ្លះ?", a: "គ្រោះថ្នាក់បរិស្ថាន (បាត់បង់ជីវៈចម្រុះ), គ្រោះថ្នាក់សុខភាព (សារធាតុពុល/ធន់អង់ទីប៊ីយូទិច), ប៉ះពាល់សីលធម៌ និងសេដ្ឋកិច្ចកសិករ។" },
+            { id: 48, q: "ក. តើអ្នកវិទ្យាសាស្ត្របានផលិតសារធាតុគីមីអ្វីខ្លះសម្រាប់ជាប្រយោជន៍ដល់មនុស្សតាមរយៈបច្ចេកវិទ្យាជីវៈ? ខ. តើអង់ទីប៊ីយូទិចជាអ្វី?", a: "ក. ផលិតអាំងស៊ុយលីន, អាំងទែផេរ៉ូន, អាំងទែឡីគីន, អរម៉ូនលូតលាស់, អង់ទីប៊ីយូទិច, វ៉ាក់សាំង...\nខ. សារធាតុស៊ាំញ៉ាំផលិតដោយមីក្រូសារពាង្គកាយសម្រាប់ព្យាបាលជំងឺបង្កដោយបាក់តេរី។" },
+            { id: 49, q: "តើផូស៊ីលជាអ្វី? ការកកើតផូស៊ីលមានប៉ុន្មានរបៀប? អ្វីខ្លះ?", a: "ផូស៊ីល ជាស្នាមឬសំណល់ភាវរស់ពីសម័យបុរាណ។ កកើត ៣ របៀប៖ ដំណើរក្លាយជាថ្ម, ពុម្ពក្រៅនិងពុម្ពក្នុង, និងការរក្សាទុកសារពាង្គកាយទាំងមូល។" },
+            { id: 50, q: "តើការសិក្សាពីផូស៊ីលមានសារប្រយោជន៍ដូចម្តេច?", a: "- ស្គាល់ពីប្រវត្តិនៃវិវត្តន៍របស់ភាវរស់\n- ស្គាល់ពីប្រវត្តិផែនដី និងអាកាសធាតុនាសម័យកាលនីមួយៗ" },
+            { id: 51, q: "តើកត្តាអ្វីខ្លះដែលបណ្តាលឱ្យកើតភាវៈរស់ប្រភេទថ្មី? ចូររៀបរាប់?", a: "- កត្តារបាំងភូមិសាស្ត្រ (ភ្នំ, ដៃសមុទ្រ, មហាសមុទ្រ)\n- កត្តារបាំងជីវសាស្ត្រ (ទំហំប្រដាប់បន្តពូជ, រដូវបង្កកំណើត, ភាពទាក់ទាញដៃគូ)" },
+            { id: 52, q: "តើភាវរស់បន្សល់ទុកអ្វីខ្លះជាផូស៊ីល?", a: "គ្រោងឆ្អឹង, គម្របសារពាង្គកាយកប់ក្នុងសិលា, សំបក, ឬសារពាង្គកាយទាំងមូលកប់ក្នុងជ័រឈើ/ទឹកកក។" },
+            { id: 53, q: "ពេលឮទូរសព្ទរោទិ៍អ្នកលើកដៃឡើងដើម្បីឆ្លើយតប។ ក្នុងករណីនេះមានណឺរ៉ូនអ្វីខ្លះចូលរួម? ចូររៀបរាប់ពីនាទីណឺរ៉ូននីមួយៗ?", a: "- ណឺរ៉ូនវិញ្ញាណនាំ៖ ដឹកនាំព័ត៌មានពីឆួលវិញ្ញាណទៅខួរក្បាល\n- ណឺរ៉ូនភ្ជាប់៖ បញ្ជូនបន្តព័ត៌មាន\n- ណឺរ៉ូនចលករ៖ ដឹកនាំព័ត៌មានពីខួរក្បាលទៅសរីរាង្គប្រតិកម្ម (សាច់ដុំដៃ)" },
+            { id: 54, q: "ដូចម្តេចដែលហៅថាអាំងភ្លុចប្រសាទ? តើអាំងភ្លុចប្រសាទឆ្លងកាត់ស៊ីណាប់យ៉ាងដូចម្តេច?", a: "អាំងភ្លុចប្រសាទ គឺជាព័ត៌មានប្រសាទដែលដឹកនាំតាមបណ្តោយណឺរ៉ូន។\nឆ្លងកាត់ស៊ីណាប់ដោយចុងអាក់សូនបញ្ចេញសារធាតុគីមីសាយភាយឆ្លងស៊ីណាប់ ទៅបង្កើតអាំងភ្លុចប្រសាទថ្មីក្នុងដង់ឌ្រីតបន្ទាប់។" },
+            { id: 55, q: "តើប្រព័ន្ធប្រសាទមនុស្សមាននាទីអ្វីខ្លះ? ចូរពន្យល់ពីមុខងារនីមួយៗដោយលើកឧទាហរណ៍បញ្ជាក់?", a: "១. ទទួលព័ត៌មាន (ឧ. ដឹងថាសត្វហោះជិតត្រចៀក)\n២. ឆ្លើយតបនឹងព័ត៌មាន (ឧ. ដេញទះមូស)\n៣. តំហែរក្សាថេរលំនឹង (ឧ. រៀបចំខ្លួនទះមូស ឬញ៉ាំអាហារពេលឃ្លាន)" },
+            { id: 56, q: "ក. តើណឺរ៉ូនជាអ្វី? ខ. បើគិតលើនាទីរបស់វាតើគេចែកណឺរ៉ូនប៉ុន្មានបែប? អ្វីខ្លះ? តើណឺរ៉ូនបែបនីមួយៗមាននាទីធ្វើអ្វី?", a: "ក. ជាកោសិកាឯកទេសនៃប្រព័ន្ធប្រសាទ។\nខ. ចែកជា ៣៖ ណឺរ៉ូនវិញ្ញាណនាំ (នាំចូល), ណឺរ៉ូនចលករ (នាំចេញ), ណឺរ៉ូនភ្ជាប់ (បញ្ជូនរវាងណឺរ៉ូន)។" },
+            { id: 57, q: "តើផ្នែកសំខាន់ៗនៃប្រព័ន្ធប្រសាទសត្វឆ្អឹងកងមានអ្វីខ្លះ?", a: "មាន ២ ផ្នែក៖ មជ្ឈមណ្ឌលប្រសាទ (ខួរក្បាល, ខួរឆ្អឹងខ្នង) និងបរិមណ្ឌលប្រសាទ (ផ្លូវប្រសាទវិញ្ញាណនាំ, ផ្លូវប្រសាទចលករ)។" },
+            { id: 58, q: "តើខួរក្បាលនិងខួរឆ្អឹងខ្នងមានទំនាក់ទំនងគ្នាយ៉ាងដូចម្តេច?", a: "ព័ត៌មានផ្នែកវិញ្ញាណនាំ និងចលករឆ្លងកាត់ពីខួរក្បាលទៅផ្នែកផ្សេងៗតាមខួរឆ្អឹងខ្នង ហើយសរសៃប្រសាទក្រោមកញ្ចឹងកត្រូវឆ្លងកាត់ខួរឆ្អឹងខ្នងទៅខួរក្បាល។" },
+            { id: 59, q: "តើខួរឆ្អឹងខ្នងមានសារៈសំខាន់ដូចម្តេចខ្លះ?", a: "ភ្ជាប់សរសៃប្រសាទបរិមណ្ឌលទៅខួរក្បាល និងត្រួតពិនិត្យរ៉េផ្លិចស្វ័យប្រវត្តិមួយចំនួន។" },
+            { id: 60, q: "ចូរប្រៀបធៀប៖ ក. ណឺរ៉ូនវិញ្ញាណនាំនិងណឺរ៉ូនចលករ ខ. មជ្ឈមណ្ឌលប្រសាទនិងបរិមណ្ឌលប្រសាទ?", a: "ក. វិញ្ញាណនាំ (នាំព័ត៌មានចូល, ឯកប៉ូល) vs ចលករ (នាំបញ្ជាចេញ, ពហុប៉ូល)\nខ. មជ្ឈមណ្ឌល (ខួរក្បាល+ខួរឆ្អឹងខ្នង) vs បរិមណ្ឌល (សរសៃប្រសាទលលាដ៍១២គូ + ឆ្អឹងខ្នង៣១គូ)" },
+            { id: 61, q: "ចូរប្រៀបធៀបប្រព័ន្ធប្រសាទសត្វឆ្អឹងកងនិងឥតឆ្អឹងកង?", a: "• ឥតឆ្អឹងកង៖ សរីរាង្គវិញ្ញាណតិច, ខួរក្បាលតូច, គ្មានអឌ្ឍគោលខួរនិងខួរតូច。\n• មានឆ្អឹងកង៖ សរីរាង្គវិញ្ញាណច្រើន, ខួរក្បាលធំស្មុគស្មាញ, មានអឌ្ឍគោលខួរនិងខួរតូច។" },
+            { id: 62, q: "តើប្រូតេអ៊ីនជាអ្វី? តើប្រូតេអ៊ីនមាននាទីដូចម្តេច?", a: "ជាប៉ូលីមែនៃអាស៊ីតអាមីនេ។ មាននាទីជាកាតាលីករ, ទម្រង់, អ្នកការពារ, អ្នកដឹកនាំ, អ្នកធ្វើចលនា, និងតម្រូវ (អរម៉ូន)។" },
+            { id: 63, q: "តើលក្ខខណ្ឌអ្វីខ្លះដែលធ្វើឱ្យប្រូតេអ៊ីនបាត់បង់គុណភាពបាន?", a: "អាស៊ីត/បាសខ្លាំង, អង់គធាតុរំលាយ, លោហៈធ្ងន់, កំហាប់អំបិល, សាប៊ូ, អ៊ុយរេ, បម្រែបម្រួលសីតុណ្ហភាព, pH, និងចលនាមេកានិច។" }
         ];
 
-        let completed = JSON.parse(localStorage.getItem('bio_flashcard_completed')) || [];
-        let currentUser = localStorage.getItem('bio_user_name') || 'សិស្ស A';
-        let currentCategory = 'all';
-        let activeDeck = [...biologyData];
+        let savedQaData = localStorage.getItem("bio_qa_data_63");
+        let qaData = savedQaData ? JSON.parse(savedQaData) : pdfQuestions.map(item => ({
+            ...item,
+            isAnswered: false,
+            answeredBy: ""
+        }));
+
+        let currentUser = localStorage.getItem("bio_user_name") || "សិស្ស A";
+        document.getElementById("userName").value = currentUser;
+
         let currentIndex = 0;
-        let isFlipped = false;
         let autoplayInterval = null;
+        let isFlipped = false;
 
-        document.getElementById('userName').value = currentUser;
-
-        // Audio Chime Synthesizer
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        function playSound(freq = 600, duration = 0.1) {
-            try {
-                if (audioCtx.state === 'suspended') audioCtx.resume();
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-                gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start();
-                osc.stop(audioCtx.currentTime + duration);
-            } catch (e) { console.log(e); }
-        }
-
-        function updateUser() {
-            currentUser = document.getElementById('userName').value || 'Anonymous';
-            localStorage.setItem('bio_user_name', currentUser);
-            const status = document.getElementById('saveStatus');
-            status.classList.add('show');
-            setTimeout(() => status.classList.remove('show'), 2000);
-            renderCard();
-        }
-
-        function updateProgress() {
-            const percent = Math.round((completed.length / biologyData.length) * 100);
-            document.getElementById('progressBar').style.width = percent + '%';
-            document.getElementById('progressText').innerText = `${completed.length} / ${biologyData.length}`;
-            localStorage.setItem('bio_flashcard_completed', JSON.stringify(completed));
-        }
-
-        function filterCategory(cat) {
-            currentCategory = cat;
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            
-            if (cat === 'all') {
-                document.getElementById('nav-flashcards').classList.add('active');
-                document.getElementById('categoryChip').innerText = 'សំណួរទាំងអស់ (៦៤)';
-                activeDeck = [...biologyData];
-            } else if (cat === 'pending') {
-                document.getElementById('nav-pending').classList.add('active');
-                document.getElementById('categoryChip').innerText = 'មិនទាន់ឆ្លើយ';
-                activeDeck = biologyData.filter(item => !completed.includes(item.id));
-            } else if (cat === 'completed') {
-                document.getElementById('nav-completed').classList.add('active');
-                document.getElementById('categoryChip').innerText = 'បានឆ្លើយរួច';
-                activeDeck = biologyData.filter(item => completed.includes(item.id));
-            }
-
-            if (window.innerWidth <= 900) {
-                document.getElementById('leftSidebar').classList.remove('active');
-                document.getElementById('sidebarOverlay').classList.remove('active');
-            }
-
-            currentIndex = 0;
-            renderCard();
-            renderDrawer();
-        }
-
-        function renderCard() {
-            const cardEl = document.getElementById('cardElement');
-            
-            if (activeDeck.length === 0) {
-                document.getElementById('cardFrontText').innerText = "🎉 គ្មានសំណួរនៅក្នុងផ្នែកនេះទេ!";
-                document.getElementById('cardBackText').innerText = "🎉 គ្មានសំណួរនៅក្នុងផ្នែកនេះទេ!";
-                document.getElementById('cardQNumText').innerText = "0 / 0";
-                document.getElementById('cardCounter').innerText = "0 / 0";
-                return;
-            }
-
-            const current = activeDeck[currentIndex];
-            const isDone = completed.includes(current.id);
-
-            // Unflip if card was flipped previously
-            if (isFlipped) {
-                cardEl.classList.remove('flipped');
-                isFlipped = false;
-            }
-
-            document.getElementById('cardQNumText').innerText = `សំណួរទី ${current.id}`;
-            document.getElementById('cardFrontText').innerText = current.q;
-            document.getElementById('cardBackText').innerText = current.a;
-            document.getElementById('cardCounter').innerText = `${currentIndex + 1} / ${activeDeck.length}`;
-
-            const badge = document.getElementById('cardStatusBadge');
-            badge.innerText = isDone ? 'បានឆ្លើយរួច' : 'មិនទាន់ឆ្លើយ';
-            badge.className = `card-status-indicator ${isDone ? 'done' : 'pending'}`;
-
-            document.getElementById('cardAnsweredBy').innerText = isDone ? `ឆ្លើយដោយ៖ ${currentUser}` : '';
-            renderDrawer();
-        }
-
-        function flipCard() {
-            if (activeDeck.length === 0) return;
-            const cardEl = document.getElementById('cardElement');
-            isFlipped = !isFlipped;
-            cardEl.classList.toggle('flipped', isFlipped);
-            playSound(550, 0.12);
-
-            // Automatically mark as completed when flipped for first time
-            const current = activeDeck[currentIndex];
-            if (!completed.includes(current.id)) {
-                completed.push(current.id);
-                updateProgress();
-            }
-        }
-
-        function nextCard() {
-            if (activeDeck.length <= 1) return;
-            currentIndex = (currentIndex + 1) % activeDeck.length;
-            playSound(700, 0.08);
-            renderCard();
-        }
-
-        function prevCard() {
-            if (activeDeck.length <= 1) return;
-            currentIndex = (currentIndex - 1 + activeDeck.length) % activeDeck.length;
-            playSound(450, 0.08);
-            renderCard();
-        }
-
-        function toggleCurrentDone() {
-            if (activeDeck.length === 0) return;
-            const current = activeDeck[currentIndex];
-            const idx = completed.indexOf(current.id);
-            if (idx > -1) {
-                completed.splice(idx, 1);
-            } else {
-                completed.push(current.id);
-            }
-            updateProgress();
-            renderCard();
-        }
-
-        function shuffleCards() {
-            for (let i = activeDeck.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [activeDeck[i], activeDeck[j]] = [activeDeck[j], activeDeck[i]];
-            }
-            currentIndex = 0;
-            playSound(800, 0.15);
-            renderCard();
-        }
-
-        function toggleAutoplay() {
-            const btn = document.getElementById('playBtn');
-            if (autoplayInterval) {
-                clearInterval(autoplayInterval);
-                autoplayInterval = null;
-                btn.innerText = '▶';
-                btn.style.background = '#ffffff';
-                btn.style.color = '#0f172a';
-            } else {
-                btn.innerText = '⏸';
-                btn.style.background = '#10b981';
-                btn.style.color = '#ffffff';
-                autoplayInterval = setInterval(() => {
-                    if (!isFlipped) {
-                        flipCard();
-                    } else {
-                        nextCard();
-                    }
-                }, 3000);
-            }
-        }
-
-        function toggleFullscreen() {
-            const wrapper = document.getElementById('cardWrapper');
-            wrapper.classList.toggle('fullscreen');
-        }
-
-        function renderDrawer() {
-            const container = document.getElementById('drawerList');
-            container.innerHTML = '';
-
-            biologyData.forEach((item) => {
-                const isDone = completed.includes(item.id);
-                const isActive = activeDeck[currentIndex] && activeDeck[currentIndex].id === item.id;
-                
-                const div = document.createElement('div');
-                div.className = `drawer-item ${isActive ? 'active' : ''}`;
-                div.innerHTML = `
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <span class="item-num">សំណួរទី ${item.id}</span>
-                        <span style="font-size: 0.75rem;">${isDone ? '✅' : '⏳'}</span>
-                    </div>
-                    <div class="item-q">${item.q}</div>
-                `;
-
-                div.onclick = () => {
-                    const matchIndex = activeDeck.findIndex(d => d.id === item.id);
-                    if (matchIndex > -1) {
-                        currentIndex = matchIndex;
-                    } else {
-                        filterCategory('all');
-                        currentIndex = item.id - 1;
-                    }
-                    renderCard();
-                };
-
-                container.appendChild(div);
-            });
-        }
-
-        function toggleDrawer() {
-            const list = document.getElementById('drawerList');
-            const icon = document.getElementById('drawerToggleIcon');
-            if (list.style.display === 'none') {
-                list.style.display = 'grid';
-                icon.innerText = '▼';
-            } else {
-                list.style.display = 'none';
-                icon.innerText = '▲';
-            }
-        }
-
-        function toggleSidebar() {
-            document.getElementById('leftSidebar').classList.toggle('active');
-            document.getElementById('sidebarOverlay').classList.toggle('active');
-        }
-
-        function resetProgress() {
-            if (confirm('តើអ្នកពិតជាចង់កំណត់ឡើងវិញនូវការរីកចម្រើនទាំងអស់មែនទេ?')) {
-                completed = [];
-                updateProgress();
-                renderCard();
-            }
-        }
-
-        // Keyboard Arrow Key Support for Flashcards
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight') nextCard();
-            if (e.key === 'ArrowLeft') prevCard();
-            if (e.key === ' ' || e.key === 'Spacebar') { e.preventDefault(); flipCard(); }
-        });
-
+        // PARTICLE CANVAS BACKGROUND
         const pCanvas = document.getElementById("particleCanvas");
         const pCtx = pCanvas.getContext("2d");
         let particles = [];
@@ -1231,9 +911,9 @@
                 this.x = Math.random() * pCanvas.width;
                 this.y = Math.random() * pCanvas.height;
                 this.size = Math.random() * 3 + 1;
-                this.speedX = Math.random() * 0.5 - 0.25;
-                this.speedY = Math.random() * 0.5 - 0.25;
-                this.opacity = Math.random() * 0.25 + 0.08;
+                this.speedX = Math.random() * 0.6 - 0.3;
+                this.speedY = Math.random() * 0.6 - 0.3;
+                this.opacity = Math.random() * 0.3 + 0.1;
             }
             update() {
                 this.x += this.speedX;
@@ -1242,27 +922,214 @@
                 if (this.y < 0 || this.y > pCanvas.height) this.speedY *= -1;
             }
             draw() {
-                pCtx.fillStyle = `rgba(16, 185, 129, ${this.opacity})`;
+                pCtx.fillStyle = `rgba(79, 70, 229, ${this.opacity})`;
                 pCtx.beginPath();
                 pCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 pCtx.fill();
             }
         }
 
-        for (let i = 0; i < 35; i++) particles.push(new Particle());
+        for (let i = 0; i < 30; i++) particles.push(new Particle());
 
         function animateParticles() {
             pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height);
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
+            particles.forEach(p => { p.update(); p.draw(); });
             requestAnimationFrame(animateParticles);
         }
         animateParticles();
 
-        // Initial setup
-        updateProgress();
+        // APP CORE FUNCTIONS
+        function toggleSidebar() {
+            document.getElementById("leftSidebar").classList.toggle("active");
+            document.getElementById("sidebarOverlay").classList.toggle("active");
+        }
+
+        function updateUser() {
+            currentUser = document.getElementById("userName").value || "សិស្ស A";
+            localStorage.setItem("bio_user_name", currentUser);
+            const status = document.getElementById("saveStatus");
+            status.classList.add("show");
+            setTimeout(() => status.classList.remove("show"), 2000);
+        }
+
+        function saveData() {
+            localStorage.setItem("bio_qa_data_63", JSON.stringify(qaData));
+            updateStats();
+        }
+
+        function updateStats() {
+            const doneCount = qaData.filter(i => i.isAnswered).length;
+            document.getElementById("statsBadge").innerText = `${doneCount} / ${qaData.length}`;
+            const pct = Math.round((doneCount / qaData.length) * 100);
+            document.getElementById("progressFill").style.width = `${pct}%`;
+            renderAccordion();
+        }
+
+        function renderCard() {
+            const item = qaData[currentIndex];
+            isFlipped = false;
+            document.getElementById("flashcardCard").classList.remove("flipped");
+
+            document.getElementById("qTag").innerText = `សំណួរទី ${currentIndex + 1}`;
+            document.getElementById("cardQuestionText").innerText = item.q;
+            document.getElementById("cardAnswerText").innerText = item.a;
+            document.getElementById("cardCounter").innerText = `${currentIndex + 1} / ${qaData.length}`;
+
+            const badgeFront = document.getElementById("statusBadgeFront");
+            const badgeBack = document.getElementById("statusBadgeBack");
+            const checkBtn = document.getElementById("checkBtn");
+
+            if (item.isAnswered) {
+                badgeFront.innerText = "បានឆ្លើយរួច";
+                badgeFront.className = "status-badge done";
+                badgeBack.innerText = `ឆ្លើយដោយ៖ ${item.answeredBy || currentUser}`;
+                checkBtn.classList.add("active");
+            } else {
+                badgeFront.innerText = "មិនទាន់ឆ្លើយ";
+                badgeFront.className = "status-badge pending";
+                badgeBack.innerText = "បានឆ្លើយរួច";
+                checkBtn.classList.remove("active");
+            }
+        }
+
+        function flipCard() {
+            isFlipped = !isFlipped;
+            document.getElementById("flashcardCard").classList.toggle("flipped");
+        }
+
+        function nextCard() {
+            currentIndex = (currentIndex + 1) % qaData.length;
+            renderCard();
+        }
+
+        function prevCard() {
+            currentIndex = (currentIndex - 1 + qaData.length) % qaData.length;
+            renderCard();
+        }
+
+        function toggleAnswered() {
+            qaData[currentIndex].isAnswered = !qaData[currentIndex].isAnswered;
+            qaData[currentIndex].answeredBy = qaData[currentIndex].isAnswered ? currentUser : "";
+            saveData();
+            renderCard();
+        }
+
+        function shuffleCards() {
+            for (let i = qaData.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [qaData[i], qaData[j]] = [qaData[j], qaData[i]];
+            }
+            currentIndex = 0;
+            renderCard();
+            document.getElementById("shuffleBtn").classList.toggle("active");
+        }
+
+        function toggleAutoplay() {
+            const btn = document.getElementById("autoplayBtn");
+            if (autoplayInterval) {
+                clearInterval(autoplayInterval);
+                autoplayInterval = null;
+                btn.innerText = "▶";
+                btn.classList.remove("active");
+            } else {
+                btn.innerText = "⏸";
+                btn.classList.add("active");
+                autoplayInterval = setInterval(() => {
+                    nextCard();
+                }, 3500);
+            }
+        }
+
+        // FULLSCREEN TOGGLE FUNCTION
+        function toggleFullscreen() {
+            const wrapper = document.getElementById("flashcardWrapper");
+            const btn = document.getElementById("fullscreenBtn");
+
+            if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+                if (wrapper.requestFullscreen) {
+                    wrapper.requestFullscreen().catch(() => {
+                        wrapper.classList.toggle("fullscreen-mode");
+                    });
+                } else if (wrapper.webkitRequestFullscreen) {
+                    wrapper.webkitRequestFullscreen();
+                } else {
+                    wrapper.classList.toggle("fullscreen-mode");
+                }
+                btn.classList.add("active");
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                }
+                wrapper.classList.remove("fullscreen-mode");
+                btn.classList.remove("active");
+            }
+        }
+
+        document.addEventListener("fullscreenchange", () => {
+            const btn = document.getElementById("fullscreenBtn");
+            const wrapper = document.getElementById("flashcardWrapper");
+            if (!document.fullscreenElement) {
+                wrapper.classList.remove("fullscreen-mode");
+                btn.classList.remove("active");
+            }
+        });
+
+        function resetAllData() {
+            if (confirm("តើអ្នកពិតជាចង់កំណត់ទិន្នន័យឡើងវិញមែនទេ?")) {
+                localStorage.removeItem("bio_qa_data_63");
+                qaData = pdfQuestions.map(item => ({ ...item, isAnswered: false, answeredBy: "" }));
+                currentIndex = 0;
+                saveData();
+                renderCard();
+            }
+        }
+
+        // ACCORDION
+        function toggleAccordion() {
+            const acc = document.getElementById("qAccordion");
+            const icon = document.getElementById("accIcon");
+            if (acc.style.display === "none") {
+                acc.style.display = "flex";
+                icon.innerText = "▼";
+            } else {
+                acc.style.display = "none";
+                icon.innerText = "▲";
+            }
+        }
+
+        function renderAccordion() {
+            const container = document.getElementById("qAccordion");
+            container.innerHTML = "";
+            qaData.forEach((item, index) => {
+                const el = document.createElement("div");
+                el.className = `q-accordion-item ${item.isAnswered ? 'answered' : ''} ${index === currentIndex ? 'active' : ''}`;
+                el.innerHTML = `
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <span style="font-weight:bold; color:var(--primary); font-size:0.85rem;">#${index + 1}</span>
+                        <span class="acc-text">${item.q}</span>
+                    </div>
+                    <span>${item.isAnswered ? '✅' : '⚪'}</span>
+                `;
+                el.onclick = () => {
+                    currentIndex = index;
+                    renderCard();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                };
+                container.appendChild(el);
+            });
+        }
+
+        // KEYBOARD SHORTCUTS
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "ArrowLeft") prevCard();
+            if (e.key === "ArrowRight") nextCard();
+            if (e.key === " ") { e.preventDefault(); flipCard(); }
+        });
+
+        // INIT
+        updateStats();
         renderCard();
     </script>
 </body>
