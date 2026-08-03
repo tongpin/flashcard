@@ -320,11 +320,34 @@
             justify-content: space-between;
             border-radius: 20px;
             background: var(--card-bg);
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+            transform-style: preserve-3d;
+        }
+
+        .card-face.card-front {
+            transform: rotateY(0deg);
+            z-index: 2;
+            opacity: 1;
+            visibility: visible;
         }
 
         .card-face.card-back {
             transform: rotateY(180deg);
             background: #f8fafc;
+            z-index: 1;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .flashcard-card.flipped .card-front {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .flashcard-card.flipped .card-back {
+            opacity: 1;
+            visibility: visible;
+            z-index: 3;
         }
 
         .card-top-meta {
