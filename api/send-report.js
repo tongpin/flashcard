@@ -1,16 +1,41 @@
+// កន្លែងសម្រាប់ទប់ស្កាត់ IP ដែល Spam ក្នុងរយៈពេលខ្លី (Simple In-Memory Rate Limiter)
+const ipRequestLog = new Map();
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
+  // ១. ទាញយក IP របស់អ្នកប្រើប្រាស់
+  const clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown';
+  const now = Date.now();
+
+  // ពិនិត្យថាតើ IP នេះធ្លាប់ផ្ញើសារក្នុងរយៈពេល ៣០ វិនាទីចុងក្រោយនេះដែរឬទេ?
+  if (ipRequestLog.has(clientIp)) {
+    const lastRequestTime = ipRequestLog.get(clientIp);
+    if (now - lastRequestTime < 30000) { // 30 វិនាទី
+      return res.status(429).json({ 
+        success: false, 
+        error: 'អ្នកបានផ្ញើច្រើនដងពេកហើយ។ សូមរង់ចាំបន្តិចសិនមុនពេលផ្ញើម្តងទៀត!' 
+      });
+    }
+  }
+
   const { student, category, page, questionNumber, description, timestamp } = req.body;
 
-  // 🔒 ទាញយក Token និង Chat ID ពី Environment Variables របស់ Vercel ដោយសុវត្ថិភាព
+  // ២. ការពារការផ្ញើសារទទេរ ឬសារដែលមានលក្ខណៈជា Spam ខ្លីពេក
+  if (!description || description.trim().length < 5) {
+    return res.status(400).json({ success: false, error: 'សូមសរសេរការពណ៌នាឱ្យបានច្បាស់លាស់បន្តិច។' });
+  }
+
+  // កត់ត្រាเวลาដែល IP នេះបានផ្ញើចុងក្រោយ
+  ipRequestLog.set(clientIp, now);
+
   const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
   const CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 
   if (!BOT_TOKEN || !CHAT_ID) {
-    return res.status(500).json({ error: 'Server environment variables not configured' });
+    return res.status(500).json({ error: 'Server configuration error' });
   }
 
   const messageText = `🚨 *របាយការណ៍បញ្ហា - ជីវវិទ្យា ២០២៦* 🚨\n\n` +
@@ -18,6 +43,7 @@ export default async function handler(req, res) {
                       `📌 *ប្រភេទ:* ${category}\n` +
                       `📍 *ទំព័រ:* ${page} (សំណួរទី #${questionNumber})\n` +
                       `📝 *ការរៀបរាប់:* ${description}\n` +
+                      `🌐 *IP:* ${clientIp}\n` +
                       `⏰ *កាលបរិច្ឆេទ:* ${new Date(timestamp).toLocaleString('km-KH')}`;
 
   try {
@@ -39,6 +65,6 @@ export default async function handler(req, res) {
       return res.status(400).json({ success: false, error: tgResult.description });
     }
   } catch (err) {
-    return res.status(500).json({ error: 'Failed to connect to Telegram API' });
+    return res.status(500).json({ error: 'Failed to connect to Telegram' });
   }
 }
