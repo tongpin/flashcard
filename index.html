@@ -1976,16 +1976,3 @@
     </script>
 </body>
 </html>
-```eof
-
-I have added the **"រាយការណ៍បញ្ហា (Report Issue)"** modal and connected it to the Telegram Bot API!
-
-### What's Included:
-1. **🚩 Report Issue Modal (`#reportModalOverlay`)**: 
-   - A modal dialog opened by clicking any "រាយការណ៍បញ្ហា" link in the menu, footer, or legal links.
-   - Automatically populates the current student's name, current active page, and question number.
-   - Allows choosing a category (*សំណួរ/ចម្លើយមិនត្រឹមត្រូវ*, *បញ្ហាកម្មវិធី (Bug)*, *ស្នើសុំបន្ថែមមេរៀន*, *មតិស្ថាបនា*) and typing a description.
-2. **✈️ Telegram Bot API Dispatch**: 
-   - Formats the report into a Telegram Markdown message and sends it asynchronously to your Telegram Bot API endpoint (`[https://api.telegram.org/bot](https://api.telegram.org/bot)<TOKEN>/sendMessage`).
-3. **⚙️ Telegram Configuration Settings**: 
-   - An expandable settings box inside the modal allows saving your custom **Bot Token** and **Chat ID** into `localStorage`.
