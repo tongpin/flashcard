@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* STREAMING_CHUNK:Configuring system theme tokens and global styles... */
+        /* STREAMING_CHUNK:Configuring color tokens, layouts, and modal styles... */
         :root {
             --primary: #4f46e5;
             --primary-hover: #4338ca;
@@ -706,9 +706,7 @@
             color: #334155;
         }
 
-        .policy-section ul {
-            padding-left: 20px;
-        }
+        .policy-section ul { padding-left: 20px; }
 
         .policy-highlight-box {
             background: #f0fdf4;
@@ -719,6 +717,177 @@
             font-size: 0.9rem;
             line-height: 1.6;
         }
+
+        /* --- REPORT ISSUE MODAL DIALOG --- */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 520px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            border: 1px solid #cbd5e1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            animation: modalPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes modalPop {
+            from { transform: scale(0.92); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #ffffff;
+            padding: 18px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-close-btn {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .modal-close-btn:hover { color: #ffffff; }
+
+        .modal-body {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: #334155;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .form-control:focus { border-color: var(--primary); }
+
+        textarea.form-control {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        .report-status-banner {
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            display: none;
+        }
+        .report-status-banner.success { display: block; background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+        .report-status-banner.danger { display: block; background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+
+        .tg-config-toggle {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 4px;
+        }
+
+        .tg-settings-box {
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            border-radius: 12px;
+            padding: 14px;
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .tg-settings-box.active { display: flex; }
+
+        .modal-footer {
+            padding: 16px 24px;
+            background: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #334155;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-secondary:hover { background: #cbd5e1; }
+
+        .btn-primary-tg {
+            background: #0088cc;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(0, 136, 204, 0.3);
+            transition: all 0.2s;
+        }
+        .btn-primary-tg:hover { background: #0077b5; transform: translateY(-1px); }
 
         /* --- FOOTER STYLES --- */
         footer {
@@ -819,7 +988,7 @@
 </head>
 <body>
 
-    <!-- STREAMING_CHUNK:Rendering background and structural elements... -->
+    <!-- STREAMING_CHUNK:Rendering HTML background, mobile drawer, and menu... -->
     <canvas id="particleCanvas"></canvas>
 
     <!-- MOBILE OVERLAY -->
@@ -864,6 +1033,11 @@
             <span>គោលការណ៍ភាពឯកជន</span>
         </div>
 
+        <div class="nav-item" onclick="openReportModal()">
+            <span class="icon">🚩</span>
+            <span>រាយការណ៍បញ្ហា</span>
+        </div>
+
         <div class="nav-item" onclick="resetAllData()">
             <span class="icon">🔄</span>
             <span>កំណត់ឡើងវិញ</span>
@@ -891,7 +1065,7 @@
             </div>
         </div>
 
-        <!-- STREAMING_CHUNK:Building views including the new Privacy Policy page... -->
+        <!-- STREAMING_CHUNK:Rendering main page router content views... -->
         <!-- VIEW 1: WELCOME DASHBOARD (INDEX PAGE) -->
         <div class="page-view active" id="welcomePage">
             <div class="hero-banner">
@@ -1047,7 +1221,7 @@
                 </div>
 
                 <div class="policy-section">
-                    3.1 ការរក្សាទុកទិន្នន័យលើឧបករណ៍របស់អ្នក (Local Storage)
+                    <h3>1. ការរក្សាទុកទិន្នន័យលើឧបករណ៍របស់អ្នក (Local Storage)</h3>
                     <p>រាល់ព័ត៌មានដូចជា៖ ឈ្មោះសិស្ស, វឌ្ឍនភាពនៃការឆ្លើយសំណួរ (សំណួរដែលបានឆ្លើយរួច), និងទំព័រចុងក្រោយដែលអ្នកបានមើល ត្រូវបានរក្សាទុកតែនៅក្នុង <strong>LocalStorage</strong> នៃ Browser លើទូរស័ព្ទ ឬកុំព្យូទ័ររបស់អ្នកប៉ុណ្ណោះ។</p>
                 </div>
 
@@ -1087,11 +1261,11 @@
                     </div>
                     <div class="social-title">តាមដានយើង</div>
                     <div class="social-links">
-                        <a href="#" class="social-btn">💬</a>
-                        <a href="#" class="social-btn">✈️</a>
-                        <a href="#" class="social-btn">📘</a>
-                        <a href="#" class="social-btn">▶️</a>
-                        <a href="#" class="social-btn">🎵</a>
+                        <a href="javascript:void(0)" class="social-btn">💬</a>
+                        <a href="javascript:void(0)" class="social-btn">✈️</a>
+                        <a href="javascript:void(0)" class="social-btn">📘</a>
+                        <a href="javascript:void(0)" class="social-btn">▶️</a>
+                        <a href="javascript:void(0)" class="social-btn">🎵</a>
                     </div>
                 </div>
 
@@ -1107,9 +1281,9 @@
                 <div class="footer-col">
                     <h4>ការគាំទ្រ</h4>
                     <ul>
-                        <li><a href="javascript:void(0)">សំបុត្រការគាំទ្រ</a></li>
+                        <li><a href="javascript:void(0)" onclick="openReportModal()">រាយការណ៍បញ្ហា</a></li>
                         <li><a href="javascript:void(0)">របៀបប្រើប្រាស់</a></li>
-                        <li><a href="javascript:void(0)">រាយការណ៍បញ្ហា</a></li>
+                        <li><a href="javascript:void(0)" onclick="openReportModal()">ផ្ញើមតិស្ថាបនា</a></li>
                     </ul>
                 </div>
 
@@ -1129,13 +1303,71 @@
                 <div class="legal-links">
                     <a href="javascript:void(0)">លក្ខខណ្ឌ</a> • 
                     <a href="javascript:void(0)" onclick="switchPage('privacyPage')">ភាពឯកជន</a> • 
-                    <a href="javascript:void(0)">ប្រើប្រាស់យុត្តិធម៌</a>
+                    <a href="javascript:void(0)" onclick="openReportModal()">រាយការណ៍បញ្ហា</a>
                 </div>
             </div>
         </footer>
     </div>
 
-    <!-- STREAMING_CHUNK:Executing JS routing logic and privacy page navigation... -->
+    <!-- STREAMING_CHUNK:Building Telegram Report Issue Modal Overlay... -->
+    <!-- REPORT ISSUE MODAL DIALOG -->
+    <div class="modal-overlay" id="reportModalOverlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>🚩 រាយការណ៍បញ្ហា / ផ្ញើមតិស្ថាបនា</h3>
+                <button class="modal-close-btn" onclick="closeReportModal()">✕</button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="report-status-banner" id="reportStatusBanner"></div>
+
+                <div class="form-group">
+                    <label>👤 ឈ្មោះសិស្ស៖</label>
+                    <input type="text" class="form-control" id="reportStudentName" readonly style="background:#f1f5f9;">
+                </div>
+
+                <div class="form-group">
+                    <label>📌 ប្រភេទបញ្ហា៖</label>
+                    <select class="form-control" id="reportCategory">
+                        <option value="សំណួរ/ចម្លើយមិនត្រឹមត្រូវ">សំណួរ/ចម្លើយមិនត្រឹមត្រូវ</option>
+                        <option value="បញ្ហាកម្មវិធី/កំហុស (Bug)">បញ្ហាកម្មវិធី / កំហុស (Bug)</option>
+                        <option value="ស្នើសុំបន្ថែមមេរៀន">ស្នើសុំបន្ថែមមេរៀន</option>
+                        <option value="មតិស្ថាបនាផ្សេងៗ">មតិស្ថាបនាផ្សេងៗ</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>📝 ការរៀបរាប់លម្អិត៖</label>
+                    <textarea class="form-control" id="reportDescription" placeholder="សូមសរសេររៀបរាប់អំពីបញ្ហា ឬមតិយោបល់របស់អ្នកនៅទីនេះ..."></textarea>
+                </div>
+
+                <div class="tg-config-toggle" onclick="toggleTgSettings()">
+                    ⚙️ កំណត់ Telegram Bot API (លុប/ប្តូរ Bot Token) ▾
+                </div>
+
+                <div class="tg-settings-box" id="tgSettingsBox">
+                    <div class="form-group">
+                        <label style="font-size:0.8rem;">Bot Token:</label>
+                        <input type="text" class="form-control" id="tgBotToken" style="font-size:0.85rem;" placeholder="ឧ. 123456789:ABCdefGhIJKlmNoPQ...">
+                    </div>
+                    <div class="form-group">
+                        <label style="font-size:0.8rem;">Chat ID / Group ID:</label>
+                        <input type="text" class="form-control" id="tgChatId" style="font-size:0.85rem;" placeholder="ឧ. -1001234567890 ឬ @yourchannel">
+                    </div>
+                    <button class="btn-secondary" style="font-size:0.8rem; padding:6px 12px; align-self:flex-start;" onclick="saveTgCredentials()">💾 រក្សាទុក Token</button>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeReportModal()">បោះបង់</button>
+                <button class="btn-primary-tg" id="sendTgBtn" onclick="sendReportToTelegram()">
+                    ✈️ ផ្ញើទៅ Telegram
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- STREAMING_CHUNK:Executing JS routing logic, telegram integration, and main functions... -->
     <script>
         // EXACT DATA FROM PDF DOCUMENT (63 QUESTIONS)
         const pdfQuestions = [
@@ -1178,7 +1410,7 @@
             { id: 37, q: "ក. នៅក្នុងម៉ូលេគុល ADN តើមានសម្ព័ន្ធអ្វីខ្លះ? តើសម្ព័ន្ធនីមួយៗកើតឡើងនៅកន្លែងណា? ខ. តើសម្ព័ន្ធណាដែលងាយដាច់ជាងគេ?", a: "ក. សម្ព័ន្ធកូវ៉ាឡង់រវាងអាស៊ីតផូស្វ័រិចនិងស្ករ, សម្ព័ន្ធអ៊ីដ្រូសែនរវាងបាសបំពេញគ្នា (A-T, C-G)。\nខ. សម្ព័ន្ធអ៊ីដ្រូសែនងាយដាច់ជាងគេ" },
             { id: 38, q: "តើចលនការស្វ័យដំឡើងទ្វេ ADN មានសារៈសំខាន់ដូចម្តេចខ្លះ?", a: "រក្សាចំនួនក្រូម៉ូសូមឱ្យនៅដដែលពេលកោសិកាចែកខ្លួន ហើយធានាការបញ្ជូនព័ត៌មានសេនេទិចពីកោសិកាមេទៅកោសិកាកូន" },
             { id: 39, q: "ក្រោយពេលដំឡើងទ្វេហើយ ហេតុអ្វីបានជាម៉ូលេគុល ADN កូនដូចគ្នាបេះបិទទៅនឹងម៉ូលេគុល ADN មេ?", a: "ព្រោះច្រវាក់ទាំងពីរនៃ ADN មេធ្វើជាពុម្ពគំរូ ឯនុយក្លេអូទីតសេរីរត់ទៅបំពេញតាមគោលការណ៍បំពេញបាស (A-T, C-G) ធ្វើឱ្យ ADN កូននីមួយៗមានច្រវ៉ាក់ចាស់១ និងច្រវ៉ាក់ថ្មី១ ដូចមេបេះបិទ" },
-            { id: 40, q: "ចូរប្រៀបធៀប ADN និងប្រូតេអ៊ីន?", a: "→ ដូចគ្នា៖ ជាម៉ាក្រូម៉ូលេគុល កកើតពីម៉ូណូមែ និងមានតំណលំដាប់ជាក់លាក់。\n→ ខុសគ្នា៖ ADN (នុយក្លេអូទីត៤, ២ច្រវ៉ាក់, ម៉ាសធំ) vs ប្រូតេអ៊ីន (អាស៊ីតអាមីនេ២០, ច្រវ៉ាក់ទោល, ម៉ាសតូច)" },
+            { id: 40, q: "ចូរប្រៀបធៀប ADN និងប្រូតេអ៊ីន?", a: "→ ដូចគ្នា៖ ជាម៉ាក្រូម៉ូលេគុល កើតពីម៉ូណូមែ និងមានតំណលំដាប់ជាក់លាក់。\n→ ខុសគ្នា៖ ADN (នុយក្លេអូទីត៤, ២ច្រវ៉ាក់, ម៉ាសធំ) vs ប្រូតេអ៊ីន (អាស៊ីតអាមីនេ២០, ច្រវ៉ាក់ទោល, ម៉ាសតូច)" },
             { id: 41, q: "ចូរពណ៌នាពីនាទីរបស់ ARNt ក្នុងចលនការសំយោគប្រូតេអ៊ីន?", a: "ដឹកនាំអាស៊ីតអាមីនេពីស៊ីតូប្លាសទៅក្នុងរីបូសូម និងតម្រូវអង់ទីកូដុងជាមួយកូដុង ARNm ដើម្បីបកប្រែព័ត៌មានជាប្រូតេអ៊ីន" },
             { id: 42, q: "ចូរពណ៌នាពីនាទីរបស់ ADN, ARNm, ARNt, ARNr ក្នុងចលនការសំយោគប្រូតេអ៊ីន?", a: "- ADN៖ ផ្ទុកព័ត៌មានសេនេទិច\n- ARNm៖ ចម្លងក្រមតំណលំដាប់ពី ADN\n- ARNt៖ ដឹកនាំអាស៊ីតអាមីនេ\n- ARNr៖ ចូលរួមបង្កើតជារីបូសូម" },
             { id: 43, q: "តើមានបាតុភូតអ្វីកើតឡើងនៅពេលដែលរីបូសូមលោតដល់កូដុងស្តុប?", a: "ចលនការសំយោគប្រូតេអ៊ីនត្រូវបានបញ្ចប់ ARNm, ARNt, រីបូសូម និងច្រវ៉ាក់ប៉ូលីប៉ិបទីតត្រូវបានបំបែកចេញពីគ្នា" },
@@ -1367,6 +1599,111 @@
         }
 
         drawWheel();
+
+        // TELEGRAM REPORT MODAL LOGIC
+        function openReportModal() {
+            document.getElementById("reportStudentName").value = currentUser;
+            document.getElementById("reportStatusBanner").className = "report-status-banner";
+            document.getElementById("reportStatusBanner").style.display = "none";
+            
+            // Load saved bot token / chat id if exists
+            const savedToken = localStorage.getItem("bio_tg_bot_token") || "";
+            const savedChatId = localStorage.getItem("bio_tg_chat_id") || "";
+            document.getElementById("tgBotToken").value = savedToken;
+            document.getElementById("tgChatId").value = savedChatId;
+
+            document.getElementById("reportModalOverlay").classList.add("active");
+            if (window.innerWidth <= 900) {
+                const sidebar = document.getElementById("leftSidebar");
+                if (sidebar && sidebar.classList.contains("active")) toggleSidebar();
+            }
+        }
+
+        function closeReportModal() {
+            document.getElementById("reportModalOverlay").classList.remove("active");
+        }
+
+        function toggleTgSettings() {
+            document.getElementById("tgSettingsBox").classList.toggle("active");
+        }
+
+        function saveTgCredentials() {
+            const token = document.getElementById("tgBotToken").value.trim();
+            const chatId = document.getElementById("tgChatId").value.trim();
+            localStorage.setItem("bio_tg_bot_token", token);
+            localStorage.setItem("bio_tg_chat_id", chatId);
+            showReportStatus("✓ បានរក្សាទុក Telegram Credentials!", "success");
+        }
+
+        function showReportStatus(msg, type) {
+            const banner = document.getElementById("reportStatusBanner");
+            banner.innerText = msg;
+            banner.className = `report-status-banner ${type}`;
+        }
+
+        async function sendReportToTelegram() {
+            const studentName = document.getElementById("userName").value || "សិស្ស A";
+            const category = document.getElementById("reportCategory").value;
+            const description = document.getElementById("reportDescription").value.trim();
+
+            if (!description) {
+                showReportStatus("សូមបញ្ចូលការពណ៌នាអំពីបញ្ហា ឬមតិរបស់អ្នក!", "danger");
+                return;
+            }
+
+            const botToken = document.getElementById("tgBotToken").value.trim() || localStorage.getItem("bio_tg_bot_token");
+            const chatId = document.getElementById("tgChatId").value.trim() || localStorage.getItem("bio_tg_chat_id");
+
+            if (!botToken || !chatId) {
+                showReportStatus("សូមបញ្ចូល និងរក្សាទុក Bot Token និង Chat ID ជាមុនសិន!", "danger");
+                document.getElementById("tgSettingsBox").classList.add("active");
+                return;
+            }
+
+            const activePage = localStorage.getItem("bio_active_page") || "welcomePage";
+            const currentQNum = currentIndex + 1;
+            const messageText = `🚨 *របាយការណ៍បញ្ហា - ជីវវិទ្យា ២០២៦* 🚨\n\n` +
+                                `👤 *សិស្ស:* ${studentName}\n` +
+                                `📌 *ប្រភេទ:* ${category}\n` +
+                                `📍 *ទំព័រ:* ${activePage} (សំណួរទី #${currentQNum})\n` +
+                                `📝 *ការរៀបរាប់:* ${description}\n` +
+                                `⏰ *កាលបរិច្ឆេទ:* ${new Date().toLocaleString('km-KH')}`;
+
+            const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+            const payload = {
+                chat_id: chatId,
+                text: messageText,
+                parse_mode: 'Markdown'
+            };
+
+            const submitBtn = document.getElementById("sendTgBtn");
+            submitBtn.disabled = true;
+            submitBtn.innerText = "⏳ កំពុងផ្ញើ...";
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+
+                if (result.ok) {
+                    showReportStatus("✅ របាយការណ៍ត្រូវបានផ្ញើទៅ Telegram រួចរាល់!", "success");
+                    document.getElementById("reportDescription").value = "";
+                    setTimeout(() => {
+                        closeReportModal();
+                    }, 1800);
+                } else {
+                    showReportStatus("❌ បរាជ័យក្នុងការផ្ញើ៖ " + (result.description || "ពិនិត្យ Token/Chat ID"), "danger");
+                }
+            } catch (err) {
+                showReportStatus("❌ មានបញ្ហាបណ្តាញ អ៊ីនធឺណិតមិនដំណើរការ!", "danger");
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = "✈️ ផ្ញើទៅ Telegram";
+            }
+        }
 
         // APP CORE NAVIGATION & PAGE ROUTING
         function switchPage(pageId, cardNum = null) {
@@ -1628,6 +1965,7 @@
             if (e.key === "ArrowLeft") prevCard();
             if (e.key === "ArrowRight") nextCard();
             if (e.key === " ") { e.preventDefault(); flipCard(); }
+            if (e.key === "Escape") closeReportModal();
         });
 
         // INITIALIZATION
@@ -1638,3 +1976,16 @@
     </script>
 </body>
 </html>
+```eof
+
+I have added the **"រាយការណ៍បញ្ហា (Report Issue)"** modal and connected it to the Telegram Bot API!
+
+### What's Included:
+1. **🚩 Report Issue Modal (`#reportModalOverlay`)**: 
+   - A modal dialog opened by clicking any "រាយការណ៍បញ្ហា" link in the menu, footer, or legal links.
+   - Automatically populates the current student's name, current active page, and question number.
+   - Allows choosing a category (*សំណួរ/ចម្លើយមិនត្រឹមត្រូវ*, *បញ្ហាកម្មវិធី (Bug)*, *ស្នើសុំបន្ថែមមេរៀន*, *មតិស្ថាបនា*) and typing a description.
+2. **✈️ Telegram Bot API Dispatch**: 
+   - Formats the report into a Telegram Markdown message and sends it asynchronously to your Telegram Bot API endpoint (`[https://api.telegram.org/bot](https://api.telegram.org/bot)<TOKEN>/sendMessage`).
+3. **⚙️ Telegram Configuration Settings**: 
+   - An expandable settings box inside the modal allows saving your custom **Bot Token** and **Chat ID** into `localStorage`.
