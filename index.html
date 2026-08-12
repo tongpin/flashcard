@@ -22,7 +22,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* STREAMING_CHUNK:Configuring system color tokens and secure layout styles... */
         :root {
             --primary: #4f46e5;
             --primary-hover: #4338ca;
@@ -1091,13 +1090,10 @@
 </head>
 <body>
 
-    <!-- STREAMING_CHUNK:Rendering particle canvas and secure sidebar navigation... -->
     <canvas id="particleCanvas"></canvas>
 
-    <!-- MOBILE OVERLAY -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
-    <!-- LEFT SIDE NAVIGATION MENU -->
     <div class="left-sidebar" id="leftSidebar">
         <div class="brand-logo">
             <div class="logo-icon">🧬</div>
@@ -1152,9 +1148,7 @@
         </div>
     </div>
 
-    <!-- MAIN CONTENT WRAPPER -->
     <div class="main-wrapper" id="mainWrapper">
-        <!-- TOP CONTROL BAR -->
         <div class="top-bar">
             <div class="top-bar-left">
                 <button class="menu-toggle-btn" onclick="toggleSidebar()">☰</button>
@@ -1173,15 +1167,12 @@
             </div>
         </div>
 
-        <!-- STREAMING_CHUNK:Building secure view routers... -->
-        <!-- VIEW 1: WELCOME DASHBOARD (INDEX PAGE) -->
         <div class="page-view active" id="welcomePage">
             <div class="hero-banner">
                 <h1>ស្វាគមន៍មកកាន់ប្រព័ន្ធស្វ័យសិក្សាជីវវិទ្យា ២០២៦ 🧬</h1>
                 <p>រៀបចំ និងស្វ័យសិក្សាត្រៀមប្រឡងបាក់ឌុបថ្នាក់ទី១២ ជាមួយប្រព័ន្ធវិលកង់ចៃដន្យ Flashcards ៦៣ សំណួរ និង PDF ដើម!</p>
             </div>
 
-            <!-- SPIN WHEEL PROMOTIONAL PREVIEW BANNER -->
             <div class="spin-promo-card">
                 <div class="spin-promo-header">
                     <span>Spin the Wheel</span>
@@ -1223,7 +1214,6 @@
             </div>
         </div>
 
-        <!-- VIEW 2: SPIN WHEEL REVISION GAME (SPIN PAGE) -->
         <div class="page-view" id="spinPage">
             <div class="wheel-container">
                 <h2>🎡 កង់វិលចៃដន្យសំណួរជីវវិទ្យា</h2>
@@ -1246,12 +1236,10 @@
             </div>
         </div>
 
-        <!-- VIEW 3: FLASHCARDS INTERACTIVE VIEWER (FLASHCARD PAGE) -->
         <div class="page-view" id="flashcardPage">
             <div class="flashcard-wrapper" id="flashcardWrapper">
                 <div class="flashcard-card" id="flashcardCard" onclick="flipCard()">
                     <div class="flashcard-inner" id="cardInner">
-                        <!-- FRONT FACE (QUESTION) -->
                         <div class="card-face card-face-front">
                             <div class="card-header-bar">
                                 <span class="q-tag" id="qTag">សំណួរទី 1</span>
@@ -1265,7 +1253,6 @@
                             </div>
                         </div>
 
-                        <!-- BACK FACE (ANSWER) -->
                         <div class="card-face card-face-back">
                             <div class="card-header-bar">
                                 <span class="q-tag" style="color:#065f46;">ចម្លើយត្រឹមត្រូវ</span>
@@ -1281,7 +1268,6 @@
                     </div>
                 </div>
 
-                <!-- TOOLBAR BELOW CARD -->
                 <div class="card-controls">
                     <div class="ctrl-group">
                         <button class="ctrl-btn" id="autoplayBtn" onclick="toggleAutoplay()" title="លេងស្វ័យប្រវត្តិ">▶</button>
@@ -1301,7 +1287,6 @@
                 </div>
             </div>
 
-            <!-- QUESTION LIST ACCORDION -->
             <div class="list-section">
                 <div class="list-header" onclick="toggleAccordion()">
                     <span>📋 បញ្ជីអត្ថបទសំណួរទាំង ៦៣</span>
@@ -1311,7 +1296,6 @@
             </div>
         </div>
 
-        <!-- VIEW 4: DIRECT PDF VIEWER (PDF PAGE) -->
         <div class="page-view" id="pdfPage">
             <div class="pdf-box-section">
                 <div class="pdf-box-header">
@@ -1334,7 +1318,6 @@
             </div>
         </div>
 
-        <!-- VIEW 5: USER GUIDE PAGE (GUIDE PAGE) -->
         <div class="page-view" id="guidePage">
             <div class="guide-card">
                 <div class="guide-header">
@@ -1379,7 +1362,6 @@
             </div>
         </div>
 
-        <!-- VIEW 6: PRIVACY POLICY PAGE (PRIVACY PAGE) -->
         <div class="page-view" id="privacyPage">
             <div class="policy-card">
                 <div class="policy-header">
@@ -1430,6 +1412,14 @@
                         <div>📍 ភ្នំពេញ, កម្ពុជា</div>
                         <div>✉️ ទំនាក់ទំនងគាំទ្រ</div>
                     </div>
+                    <div class="social-title">តាមដានយើង</div>
+                    <div class="social-links">
+                        <a href="javascript:void(0)" class="social-btn">💬</a>
+                        <a href="javascript:void(0)" class="social-btn">✈️</a>
+                        <a href="javascript:void(0)" class="social-btn">📘</a>
+                        <a href="javascript:void(0)" class="social-btn">▶️</a>
+                        <a href="javascript:void(0)" class="social-btn">🎵</a>
+                    </div>
                 </div>
 
                 <div class="footer-col">
@@ -1472,7 +1462,6 @@
         </footer>
     </div>
 
-    <!-- REPORT ISSUE MODAL DIALOG -->
     <div class="modal-overlay" id="reportModalOverlay">
         <div class="modal-card">
             <div class="modal-header">
@@ -1513,10 +1502,9 @@
         </div>
     </div>
 
-    <!-- STREAMING_CHUNK:Executing JS protection scripts and core routing logic... -->
     <script>
         // ANTI-SITEGRABBER / ANTI-STEALER GUARD
-        document.addEventListener('contextmenu', event => event.preventDefault()); // ហាមចុចស្តាំ
+        document.addEventListener('contextmenu', event => event.preventDefault());
         document.addEventListener('keydown', (e) => {
             if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) || (e.ctrlKey && e.key === 'U')) {
                 e.preventDefault();
@@ -1524,7 +1512,6 @@
             }
         });
 
-        // EXACT DATA FROM PDF DOCUMENT (63 QUESTIONS)
         const pdfQuestions = [
             { id: 1, q: "ចូររកលក្ខណៈខុសគ្នារវាងរុក្ខជាតិម៉ូណូកូទីលេដូននិងឌីកូទីលេដូន?", a: "• រុក្ខជាតិម៉ូណូកូទីលេដូន៖ គ្រាប់មានកូទីលេដុង១, ស្លឹកមានទ្រនុងស្រប, ផ្កា៣ស្រទាប់ឬពហុគុណ៣, ដើមមានបាច់សរសៃនាំស្ថិតនៅរាយប៉ាយ, ឬសស្វែ។\n• រុក្ខជាតិនីកូទីលេដូន៖ គ្រាប់មានកូទីលេដុង២, ស្លឹកមានទ្រនុងបែកខ្នែង, ផ្កា៤ឬ៥ស្រទាប់ឬពហុគុណនៃ៤ឬ៥, ដើមមានបាច់សរសៃនាំស្ថិតនៅជារង្វង់, ឬសកែវ" },
             { id: 2, q: "តើស្លឹករុក្ខជាតិនីកូទីលេដូនបង្ហាញឱ្យឃើញស្រទាប់អ្វីខ្លះ? តើស្រទាប់នីមួយៗមាននាទីដូចម្តេច?", a: "- ស្រទាប់អេពីឌែមលើក្រោម៖ មាននាទីការពារស្លឹករុក្ខជាតិ និងមានស្តូម៉ាតសម្រាប់បណ្តូរឧស្ម័ន និងបំភាយចំហាយទឹក។\n- ស្រទាប់ប៉ាលីសាត៖ មានក្លរ៉ូប្លាសផ្ទុកក្លរ៉ូភីល។ វាមាននាទីសំខាន់ក្នុងដំណើរស្មីសំយោគដើម្បីបង្កើតអាហារ។\n- ស្រទាប់ស្ប៉ោត៖ មានផ្ទុកស៊ីឡែមនិងផ្លូអែម និងរន្ធខ្យល់" },
@@ -1591,7 +1578,6 @@
             { id: 63, q: "តើលក្ខខណ្ឌអ្វីខ្លះដែលធ្វើឱ្យប្រូតេអ៊ីនបាត់បង់គុណភាពបាន?", a: "អាស៊ីត/បាសខ្លាំង, អង់គធាតុរំលាយ, លោហៈធ្ងន់, កំហាប់អំបិល, សាប៊ូ, អ៊ុយរេ, បម្រែបម្រួលសីតុណ្ហភាព, pH, និងចលនាមេកានិច" }
         ];
 
-        // LOAD SAVED STATE WITH DEFENSIVE CACHE RECOVERY
         let qaData = pdfQuestions.map(item => ({
             ...item,
             isAnswered: false,
@@ -1622,7 +1608,6 @@
         let isFlipped = false;
         let selectedSpinIndex = 0;
 
-        // BACKGROUND PARTICLE CANVAS
         const pCanvas = document.getElementById("particleCanvas");
         const pCtx = pCanvas.getContext("2d");
         let particles = [];
@@ -1666,7 +1651,6 @@
         }
         animateParticles();
 
-        // SPIN WHEEL CANVAS PHYSICS
         const wheelCanvas = document.getElementById("wheelCanvas");
         const wCtx = wheelCanvas.getContext("2d");
         let wheelAngle = 0;
@@ -1755,7 +1739,6 @@
 
         drawWheel();
 
-        // SECURE SERVER PROXY REPORT LOGIC
         function openReportModal() {
             document.getElementById("reportStudentName").value = currentUser;
             document.getElementById("reportStatusBanner").className = "report-status-banner";
@@ -1829,7 +1812,6 @@
             }
         }
 
-        // APP CORE NAVIGATION & PAGE ROUTING
         function switchPage(pageId, cardNum = null) {
             document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.left-sidebar .nav-item').forEach(i => i.classList.remove('active'));
@@ -2088,7 +2070,6 @@
             });
         }
 
-        // KEYBOARD SHORTCUTS
         document.addEventListener("keydown", (e) => {
             if (e.key === "ArrowLeft") prevCard();
             if (e.key === "ArrowRight") nextCard();
@@ -2096,7 +2077,6 @@
             if (e.key === "Escape") closeReportModal();
         });
 
-        // INITIALIZATION
         updateUser();
         updateStats();
         renderCard();
