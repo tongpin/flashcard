@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
+        /* STREAMING_CHUNK:Configuring system color tokens and styles... */
         :root {
             --primary: #4f46e5;
             --primary-hover: #4338ca;
@@ -965,6 +966,7 @@
 </head>
 <body>
 
+    <!-- STREAMING_CHUNK:Rendering canvas and sidebar navigation... -->
     <canvas id="particleCanvas"></canvas>
 
     <!-- MOBILE OVERLAY -->
@@ -1041,6 +1043,7 @@
             </div>
         </div>
 
+        <!-- STREAMING_CHUNK:Building page views... -->
         <!-- VIEW 1: WELCOME DASHBOARD (INDEX PAGE) -->
         <div class="page-view active" id="welcomePage">
             <div class="hero-banner">
@@ -1607,7 +1610,6 @@
             submitBtn.innerText = "⏳ កំពុងផ្ញើ...";
 
             try {
-                // Calls the Vercel Serverless Backend Proxy Function at /api/send-report
                 const response = await fetch('/api/send-report', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -1843,14 +1845,17 @@
         });
 
         function resetAllData() {
-            localStorage.removeItem("bio_qa_data_63");
-            localStorage.removeItem("bio_current_index");
-            localStorage.removeItem("bio_active_page");
-            qaData = pdfQuestions.map(item => ({ ...item, isAnswered: false, answeredBy: "" }));
-            currentIndex = 0;
-            saveData();
-            renderCard();
-            switchPage('welcomePage');
+            // Added safe confirmation prompt before resetting data
+            if (confirm("តើអ្នកពិតជាចង់កំណត់ទិន្នន័យ (វឌ្ឍនភាពនៃការឆ្លើយ) ឡើងវិញមែនទេ?")) {
+                localStorage.removeItem("bio_qa_data_63");
+                localStorage.removeItem("bio_current_index");
+                localStorage.removeItem("bio_active_page");
+                qaData = pdfQuestions.map(item => ({ ...item, isAnswered: false, answeredBy: "" }));
+                currentIndex = 0;
+                saveData();
+                renderCard();
+                switchPage('welcomePage');
+            }
         }
 
         function toggleAccordion() {
@@ -1903,3 +1908,4 @@
     </script>
 </body>
 </html>
+```eof
