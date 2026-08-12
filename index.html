@@ -7,7 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* STREAMING_CHUNK:Configuring color tokens, layouts, and secure modal styles... */
         :root {
             --primary: #4f46e5;
             --primary-hover: #4338ca;
@@ -966,7 +965,6 @@
 </head>
 <body>
 
-    <!-- STREAMING_CHUNK:Rendering background and layout structure... -->
     <canvas id="particleCanvas"></canvas>
 
     <!-- MOBILE OVERLAY -->
@@ -1043,7 +1041,6 @@
             </div>
         </div>
 
-        <!-- STREAMING_CHUNK:Building secure multi-page view router... -->
         <!-- VIEW 1: WELCOME DASHBOARD (INDEX PAGE) -->
         <div class="page-view active" id="welcomePage">
             <div class="hero-banner">
@@ -1261,7 +1258,7 @@
                     <ul>
                         <li><a href="javascript:void(0)" onclick="openReportModal()">រាយការណ៍បញ្ហា</a></li>
                         <li><a href="javascript:void(0)">របៀបប្រើប្រាស់</a></li>
-                        <li><a href="javascript:void(0)" onclick="openReportModal()">ផ្ើមតិស្ថាបនា</a></li>
+                        <li><a href="javascript:void(0)" onclick="openReportModal()">ផ្ញើមតិស្ថាបនា</a></li>
                     </ul>
                 </div>
 
@@ -1287,7 +1284,6 @@
         </footer>
     </div>
 
-    <!-- STREAMING_CHUNK:Building secure server proxy report modal... -->
     <!-- REPORT ISSUE MODAL DIALOG -->
     <div class="modal-overlay" id="reportModalOverlay">
         <div class="modal-card">
@@ -1329,7 +1325,6 @@
         </div>
     </div>
 
-    <!-- STREAMING_CHUNK:Executing JS routing logic and secure backend proxy integration... -->
     <script>
         // EXACT DATA FROM PDF DOCUMENT (63 QUESTIONS)
         const pdfQuestions = [
@@ -1612,26 +1607,23 @@
             submitBtn.innerText = "⏳ កំពុងផ្ញើ...";
 
             try {
-                // NOTE: Replace this endpoint with your actual secure backend API URL (e.g., Netlify/Vercel Serverless function or Node.js backend)
-                // The backend function will securely attach your Telegram Bot Token and Chat ID without exposing them to users.
-                const backendApiUrl = "/api/send-report"; 
+                // Calls the Vercel Serverless Backend Proxy Function at /api/send-report
+                const response = await fetch('/api/send-report', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
 
-                // Simulating successful dispatch or connecting to your backend server:
-                // const response = await fetch(backendApiUrl, {
-                //     method: 'POST',
-                //     headers: { 'Content-Type': 'application/json' },
-                //     body: JSON.stringify(payload)
-                // });
-                // const result = await response.json();
-
-                // For immediate client demonstration without a separate server file yet:
-                await new Promise(resolve => setTimeout(resolve, 800));
-
-                showReportStatus("✅ របាយការណ៍ត្រូវបានផ្ញើជូនរដ្ឋបាលដោយសុវត្ថិភាព!", "success");
-                document.getElementById("reportDescription").value = "";
-                setTimeout(() => {
-                    closeReportModal();
-                }, 1600);
+                if (result.success) {
+                    showReportStatus("✅ របាយការណ៍ត្រូវបានផ្ញើជូនរដ្ឋបាលដោយសុវត្ថិភាព!", "success");
+                    document.getElementById("reportDescription").value = "";
+                    setTimeout(() => {
+                        closeReportModal();
+                    }, 1600);
+                } else {
+                    showReportStatus("❌ បរាជ័យក្នុងការផ្ញើ៖ " + (result.error || "Server error"), "danger");
+                }
             } catch (err) {
                 showReportStatus("❌ មានបញ្ហាបណ្តាញ ឬ Backend Proxy មិនទាន់តភ្ជាប់!", "danger");
             } finally {
@@ -1876,7 +1868,7 @@
         function renderAccordion() {
             const container = document.getElementById("qAccordion");
             container.innerHTML = "";
-     qaData.forEach((item, index) => {
+            qaData.forEach((item, index) => {
                 const el = document.createElement("div");
                 el.className = `q-accordion-item ${item.isAnswered ? 'answered' : ''} ${index === currentIndex ? 'active' : ''}`;
                 el.innerHTML = `
