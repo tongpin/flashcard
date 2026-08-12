@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
+        /* STREAMING_CHUNK:Configuring system theme tokens and global styles... */
         :root {
             --primary: #4f46e5;
             --primary-hover: #4338ca;
@@ -292,21 +293,9 @@
             box-shadow: 0 10px 25px rgba(79, 70, 229, 0.12);
         }
 
-        .dash-card .card-icon {
-            font-size: 2.4rem;
-        }
-
-        .dash-card h3 {
-            font-size: 1.15rem;
-            font-weight: 700;
-            color: #0f172a;
-        }
-
-        .dash-card p {
-            font-size: 0.88rem;
-            color: #64748b;
-            line-height: 1.5;
-        }
+        .dash-card .card-icon { font-size: 2.4rem; }
+        .dash-card h3 { font-size: 1.15rem; font-weight: 700; color: #0f172a; }
+        .dash-card p { font-size: 0.88rem; color: #64748b; line-height: 1.5; }
 
         .dash-card .btn-link {
             font-size: 0.9rem;
@@ -467,11 +456,7 @@
             align-items: center;
         }
 
-        .q-tag {
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: #64748b;
-        }
+        .q-tag { font-size: 0.9rem; font-weight: 700; color: #64748b; }
 
         .status-badge {
             padding: 4px 12px;
@@ -492,12 +477,7 @@
             overflow-y: auto;
         }
 
-        .card-text-q {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #0f172a;
-            line-height: 1.6;
-        }
+        .card-text-q { font-size: 1.25rem; font-weight: 700; color: #0f172a; line-height: 1.6; }
 
         .card-text-a {
             font-size: 1.15rem;
@@ -551,21 +531,9 @@
             flex-shrink: 0;
         }
 
-        .ctrl-btn:hover {
-            background: #334155;
-            transform: translateY(-2px);
-        }
-
-        .ctrl-btn.active {
-            background: var(--primary);
-            border-color: #6366f1;
-        }
-
-        .ctrl-btn.check-btn {
-            background: #065f46;
-            border-color: #059669;
-            color: #ffffff;
-        }
+        .ctrl-btn:hover { background: #334155; transform: translateY(-2px); }
+        .ctrl-btn.active { background: var(--primary); border-color: #6366f1; }
+        .ctrl-btn.check-btn { background: #065f46; border-color: #059669; color: #ffffff; }
 
         .card-counter {
             color: #ffffff;
@@ -575,11 +543,7 @@
             white-space: nowrap;
         }
 
-        .ctrl-group {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        .ctrl-group { display: flex; align-items: center; gap: 8px; }
 
         /* ACCORDION QUESTION LIST */
         .list-section {
@@ -658,17 +622,8 @@
             gap: 10px;
         }
 
-        .pdf-title-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .pdf-title-group h3 {
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: #0f172a;
-        }
+        .pdf-title-group { display: flex; align-items: center; gap: 10px; }
+        .pdf-title-group h3 { font-size: 1.05rem; font-weight: 700; color: #0f172a; }
 
         .pdf-download-btn {
             background: var(--primary);
@@ -697,6 +652,74 @@
             border: none;
         }
 
+        /* --- PRIVACY POLICY PAGE STYLES --- */
+        .policy-card {
+            width: 100%;
+            background: var(--card-bg);
+            border-radius: 20px;
+            border: 1px solid #e2e8f0;
+            padding: 30px 24px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.04);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .policy-header {
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 16px;
+        }
+
+        .policy-header h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .policy-header p {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .policy-section {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .policy-section h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .policy-section p, .policy-section ul {
+            font-size: 0.92rem;
+            line-height: 1.7;
+            color: #334155;
+        }
+
+        .policy-section ul {
+            padding-left: 20px;
+        }
+
+        .policy-highlight-box {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 12px;
+            padding: 16px;
+            color: #065f46;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
         /* --- FOOTER STYLES --- */
         footer {
             width: 100%;
@@ -716,48 +739,18 @@
             padding-bottom: 30px;
         }
 
-        .footer-col h4 {
-            color: #ffffff;
-            font-size: 0.95rem;
-            font-weight: 700;
-            margin-bottom: 16px;
-        }
-
+        .footer-col h4 { color: #ffffff; font-size: 0.95rem; font-weight: 700; margin-bottom: 16px; }
         .footer-col ul { list-style: none; padding: 0; margin: 0; }
         .footer-col ul li { margin-bottom: 10px; }
-        .footer-col ul li a {
-            color: #94a3b8;
-            text-decoration: none;
-            font-size: 0.88rem;
-            transition: color 0.2s ease;
-        }
+        .footer-col ul li a { color: #94a3b8; text-decoration: none; font-size: 0.88rem; transition: color 0.2s ease; }
         .footer-col ul li a:hover { color: #ffffff; }
 
-        .brand-col .footer-logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 12px;
-        }
+        .brand-col .footer-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
         .brand-col .footer-logo h2 { color: #ffffff; font-size: 1.2rem; font-weight: 700; }
 
-        .brand-desc {
-            font-size: 0.85rem;
-            line-height: 1.6;
-            margin-bottom: 15px;
-            color: #64748b;
-            max-width: 380px;
-        }
+        .brand-desc { font-size: 0.85rem; line-height: 1.6; margin-bottom: 15px; color: #64748b; max-width: 380px; }
 
-        .contact-info {
-            font-size: 0.85rem;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            margin-bottom: 18px;
-            color: #cbd5e1;
-        }
-
+        .contact-info { font-size: 0.85rem; display: flex; flex-direction: column; gap: 6px; margin-bottom: 18px; color: #cbd5e1; }
         .social-title { font-size: 0.85rem; font-weight: 700; color: #ffffff; margin-bottom: 10px; }
         .social-links { display: flex; gap: 8px; }
 
@@ -826,12 +819,13 @@
 </head>
 <body>
 
+    <!-- STREAMING_CHUNK:Rendering background and structural elements... -->
     <canvas id="particleCanvas"></canvas>
 
     <!-- MOBILE OVERLAY -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
-    <!-- LEFT SIDEBAR NAVIGATION MENU -->
+    <!-- LEFT SIDE NAVIGATION MENU -->
     <div class="left-sidebar" id="leftSidebar">
         <div class="brand-logo">
             <div class="logo-icon">🧬</div>
@@ -865,6 +859,11 @@
 
         <div class="menu-category">ប្រព័ន្ធ</div>
 
+        <div class="nav-item" id="nav-privacyPage" onclick="switchPage('privacyPage')">
+            <span class="icon">🔒</span>
+            <span>គោលការណ៍ភាពឯកជន</span>
+        </div>
+
         <div class="nav-item" onclick="resetAllData()">
             <span class="icon">🔄</span>
             <span>កំណត់ឡើងវិញ</span>
@@ -892,8 +891,9 @@
             </div>
         </div>
 
+        <!-- STREAMING_CHUNK:Building views including the new Privacy Policy page... -->
         <!-- VIEW 1: WELCOME DASHBOARD (INDEX PAGE) -->
-        <div class="page-view" id="welcomePage">
+        <div class="page-view active" id="welcomePage">
             <div class="hero-banner">
                 <h1>ស្វាគមន៍មកកាន់ប្រព័ន្ធស្វ័យសិក្សាជីវវិទ្យា ២០២៦ 🧬</h1>
                 <p>រៀបចំ និងស្វ័យសិក្សាត្រៀមប្រឡងបាក់ឌុបថ្នាក់ទី១២ ជាមួយប្រព័ន្ធវិលកង់ចៃដន្យ Flashcards ៦៣ សំណួរ និង PDF ដើម!</p>
@@ -1034,6 +1034,43 @@
             </div>
         </div>
 
+        <!-- VIEW 5: PRIVACY POLICY PAGE (PRIVACY PAGE) -->
+        <div class="page-view" id="privacyPage">
+            <div class="policy-card">
+                <div class="policy-header">
+                    <h2>🔒 គោលការណ៍ភាពឯកជន (Privacy Policy)</h2>
+                    <p>បច្ចុប្បន្នភាពចុងក្រោយ៖ ខែសីហា ឆ្នាំ២០២៦</p>
+                </div>
+
+                <div class="policy-highlight-box">
+                    <strong>🛡️ សេចក្តីសង្ខេបអំពីភាពឯកជន៖</strong> ប្រព័ន្ធស្វ័យសិក្សាជីវវិទ្យា ២០២៦ ត្រូវបានរចនាឡើងដោយគោរពតាមសិទ្ធិភាពឯកជនរបស់សិស្សានុសិស្ស ១០០%។ យើងមិនប្រមូល មិនត្រួតពិនិត្យ និងមិនបញ្ជូនព័ត៌មានផ្ទាល់ខ្លួនរបស់អ្នកទៅកាន់ Server ខាងក្រៅណាមួយឡើយ។
+                </div>
+
+                <div class="policy-section">
+                    3.1 ការរក្សាទុកទិន្នន័យលើឧបករណ៍របស់អ្នក (Local Storage)
+                    <p>រាល់ព័ត៌មានដូចជា៖ ឈ្មោះសិស្ស, វឌ្ឍនភាពនៃការឆ្លើយសំណួរ (សំណួរដែលបានឆ្លើយរួច), និងទំព័រចុងក្រោយដែលអ្នកបានមើល ត្រូវបានរក្សាទុកតែនៅក្នុង <strong>LocalStorage</strong> នៃ Browser លើទូរស័ព្ទ ឬកុំព្យូទ័ររបស់អ្នកប៉ុណ្ណោះ។</p>
+                </div>
+
+                <div class="policy-section">
+                    <h3>2. គ្មានការប្រមូលទិន្នន័យផ្ទាល់ខ្លួន (No External Data Collection)</h3>
+                    <p>យើងមិនប្រមូលអាសយដ្ឋាន IP, លេខទូរស័ព្ទ, Email, ឬព័ត៌មានសម្គាល់ខ្លួនណាមួយឡើយ។ ប្រព័ន្ធនេះដំណើរការដោយផ្ទាល់នៅលើ Client-side Browser របស់អ្នក។</p>
+                </div>
+
+                <div class="policy-section">
+                    <h3>3. សិទ្ធិ និងការគ្រប់គ្រងទិន្នន័យរបស់អ្នក</h3>
+                    <ul>
+                        <li>អ្នកអាចកែប្រែឈ្មោះរបស់អ្នកបានគ្រប់ពេលតាមរយៈប្រអប់បញ្ចូលឈ្មោះខាងលើ។</li>
+                        <li>អ្នកអាចលុបទិន្នន័យ និងកំណត់វឌ្ឍនភាពសិក្សាឡើងវិញបានគ្រប់ពេល ដោយចុចប៊ូតុង <strong>"កំណត់ឡើងវិញ"</strong> នៅក្នុង menu ខាងឆ្វេង។</li>
+                    </ul>
+                </div>
+
+                <div class="policy-section">
+                    <h3>4. ការភ្ជាប់ទៅកាន់ឯកសារ PDF</h3>
+                    <p>ការមើលឯកសារ PDF ដើមនៅក្នុងកម្មវិធីនេះ គឺធ្វើឡើងដើម្បីសម្រួលដល់ការសិក្សាស្រាវជ្រាវរបស់សិស្សថ្នាក់ទី១២ ត្រៀមប្រឡងបាក់ឌុបតែប៉ុណ្ណោះ។</p>
+                </div>
+            </div>
+        </div>
+
         <footer>
             <div class="footer-container">
                 <div class="footer-col brand-col">
@@ -1080,8 +1117,7 @@
                     <h4>អំពីយើង</h4>
                     <ul>
                         <li><a href="javascript:void(0)" onclick="switchPage('welcomePage')">ទំព័រដើម</a></li>
-                        <li><a href="javascript:void(0)">លក្ខខណ្ឌនៃការប្រើប្រាស់</a></li>
-                        <li><a href="javascript:void(0)">គោលការណ៍ភាពឯកជន</a></li>
+                        <li><a href="javascript:void(0)" onclick="switchPage('privacyPage')">គោលការណ៍ភាពឯកជន</a></li>
                     </ul>
                 </div>
             </div>
@@ -1092,13 +1128,14 @@
                 </div>
                 <div class="legal-links">
                     <a href="javascript:void(0)">លក្ខខណ្ឌ</a> • 
-                    <a href="javascript:void(0)">ភាពឯកជន</a> • 
+                    <a href="javascript:void(0)" onclick="switchPage('privacyPage')">ភាពឯកជន</a> • 
                     <a href="javascript:void(0)">ប្រើប្រាស់យុត្តិធម៌</a>
                 </div>
             </div>
         </footer>
     </div>
 
+    <!-- STREAMING_CHUNK:Executing JS routing logic and privacy page navigation... -->
     <script>
         // EXACT DATA FROM PDF DOCUMENT (63 QUESTIONS)
         const pdfQuestions = [
@@ -1141,7 +1178,7 @@
             { id: 37, q: "ក. នៅក្នុងម៉ូលេគុល ADN តើមានសម្ព័ន្ធអ្វីខ្លះ? តើសម្ព័ន្ធនីមួយៗកើតឡើងនៅកន្លែងណា? ខ. តើសម្ព័ន្ធណាដែលងាយដាច់ជាងគេ?", a: "ក. សម្ព័ន្ធកូវ៉ាឡង់រវាងអាស៊ីតផូស្វ័រិចនិងស្ករ, សម្ព័ន្ធអ៊ីដ្រូសែនរវាងបាសបំពេញគ្នា (A-T, C-G)。\nខ. សម្ព័ន្ធអ៊ីដ្រូសែនងាយដាច់ជាងគេ" },
             { id: 38, q: "តើចលនការស្វ័យដំឡើងទ្វេ ADN មានសារៈសំខាន់ដូចម្តេចខ្លះ?", a: "រក្សាចំនួនក្រូម៉ូសូមឱ្យនៅដដែលពេលកោសិកាចែកខ្លួន ហើយធានាការបញ្ជូនព័ត៌មានសេនេទិចពីកោសិកាមេទៅកោសិកាកូន" },
             { id: 39, q: "ក្រោយពេលដំឡើងទ្វេហើយ ហេតុអ្វីបានជាម៉ូលេគុល ADN កូនដូចគ្នាបេះបិទទៅនឹងម៉ូលេគុល ADN មេ?", a: "ព្រោះច្រវាក់ទាំងពីរនៃ ADN មេធ្វើជាពុម្ពគំរូ ឯនុយក្លេអូទីតសេរីរត់ទៅបំពេញតាមគោលការណ៍បំពេញបាស (A-T, C-G) ធ្វើឱ្យ ADN កូននីមួយៗមានច្រវ៉ាក់ចាស់១ និងច្រវ៉ាក់ថ្មី១ ដូចមេបេះបិទ" },
-            { id: 40, q: "ចូរប្រៀបធៀប ADN និងប្រូតេអ៊ីន?", a: "→ ដូចគ្នា៖ ជាម៉ាក្រូម៉ូលេគុល កើតពីម៉ូណូមែ និងមានតំណលំដាប់ជាក់លាក់。\n→ ខុសគ្នា៖ ADN (នុយក្លេអូទីត៤, ២ច្រវ៉ាក់, ម៉ាសធំ) vs ប្រូតេអ៊ីន (អាស៊ីតអាមីនេ២០, ច្រវ៉ាក់ទោល, ម៉ាសតូច)" },
+            { id: 40, q: "ចូរប្រៀបធៀប ADN និងប្រូតេអ៊ីន?", a: "→ ដូចគ្នា៖ ជាម៉ាក្រូម៉ូលេគុល កកើតពីម៉ូណូមែ និងមានតំណលំដាប់ជាក់លាក់。\n→ ខុសគ្នា៖ ADN (នុយក្លេអូទីត៤, ២ច្រវ៉ាក់, ម៉ាសធំ) vs ប្រូតេអ៊ីន (អាស៊ីតអាមីនេ២០, ច្រវ៉ាក់ទោល, ម៉ាសតូច)" },
             { id: 41, q: "ចូរពណ៌នាពីនាទីរបស់ ARNt ក្នុងចលនការសំយោគប្រូតេអ៊ីន?", a: "ដឹកនាំអាស៊ីតអាមីនេពីស៊ីតូប្លាសទៅក្នុងរីបូសូម និងតម្រូវអង់ទីកូដុងជាមួយកូដុង ARNm ដើម្បីបកប្រែព័ត៌មានជាប្រូតេអ៊ីន" },
             { id: 42, q: "ចូរពណ៌នាពីនាទីរបស់ ADN, ARNm, ARNt, ARNr ក្នុងចលនការសំយោគប្រូតេអ៊ីន?", a: "- ADN៖ ផ្ទុកព័ត៌មានសេនេទិច\n- ARNm៖ ចម្លងក្រមតំណលំដាប់ពី ADN\n- ARNt៖ ដឹកនាំអាស៊ីតអាមីនេ\n- ARNr៖ ចូលរួមបង្កើតជារីបូសូម" },
             { id: 43, q: "តើមានបាតុភូតអ្វីកើតឡើងនៅពេលដែលរីបូសូមលោតដល់កូដុងស្តុប?", a: "ចលនការសំយោគប្រូតេអ៊ីនត្រូវបានបញ្ចប់ ARNm, ARNt, រីបូសូម និងច្រវ៉ាក់ប៉ូលីប៉ិបទីតត្រូវបានបំបែកចេញពីគ្នា" },
@@ -1167,18 +1204,33 @@
             { id: 63, q: "តើលក្ខខណ្ឌអ្វីខ្លះដែលធ្វើឱ្យប្រូតេអ៊ីនបាត់បង់គុណភាពបាន?", a: "អាស៊ីត/បាសខ្លាំង, អង់គធាតុរំលាយ, លោហៈធ្ងន់, កំហាប់អំបិល, សាប៊ូ, អ៊ុយរេ, បម្រែបម្រួលសីតុណ្ហភាព, pH, និងចលនាមេកានិច" }
         ];
 
-        // LOAD SAVED STATE
-        let savedQaData = localStorage.getItem("bio_qa_data_63");
-        let qaData = savedQaData ? JSON.parse(savedQaData) : pdfQuestions.map(item => ({
+        // LOAD SAVED STATE WITH DEFENSIVE CACHE RECOVERY
+        let qaData = pdfQuestions.map(item => ({
             ...item,
             isAnswered: false,
             answeredBy: ""
         }));
 
+        try {
+            let savedQaData = localStorage.getItem("bio_qa_data_63");
+            if (savedQaData) {
+                let parsed = JSON.parse(savedQaData);
+                if (Array.isArray(parsed) && parsed.length === 63) {
+                    qaData = parsed;
+                }
+            }
+        } catch (e) {
+            console.error("Localstorage cache fallback engaged:", e);
+        }
+
         let currentUser = localStorage.getItem("bio_user_name") || "សិស្ស A";
         document.getElementById("userName").value = currentUser;
 
         let currentIndex = parseInt(localStorage.getItem("bio_current_index")) || 0;
+        if (isNaN(currentIndex) || currentIndex < 0 || currentIndex >= qaData.length) {
+            currentIndex = 0;
+        }
+
         let autoplayInterval = null;
         let isFlipped = false;
         let selectedSpinIndex = 0;
@@ -1311,7 +1363,7 @@
         function openSpinInFlashcard() {
             currentIndex = selectedSpinIndex;
             renderCard();
-            switchPage("flashcardPage");
+            switchPage("flashcardPage", currentIndex + 1);
         }
 
         drawWheel();
@@ -1374,6 +1426,8 @@
                 switchPage('spinPage');
             } else if (hash === 'pdf') {
                 switchPage('pdfPage');
+            } else if (hash === 'privacy' || hash === 'privacyPage') {
+                switchPage('privacyPage');
             } else if (hash === 'flashcard' || hash === 'flashcardPage') {
                 switchPage('flashcardPage');
             } else {
