@@ -7,7 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* STREAMING_CHUNK:Configuring system color tokens and styles... */
         :root {
             --primary: #4f46e5;
             --primary-hover: #4338ca;
@@ -652,8 +651,8 @@
             border: none;
         }
 
-        /* --- PRIVACY POLICY PAGE STYLES --- */
-        .policy-card {
+        /* --- USER GUIDE & PRIVACY PAGE STYLES --- */
+        .policy-card, .guide-card {
             width: 100%;
             background: var(--card-bg);
             border-radius: 20px;
@@ -665,12 +664,12 @@
             gap: 20px;
         }
 
-        .policy-header {
+        .policy-header, .guide-header {
             border-bottom: 2px solid #f1f5f9;
             padding-bottom: 16px;
         }
 
-        .policy-header h2 {
+        .policy-header h2, .guide-header h2 {
             font-size: 1.4rem;
             font-weight: 700;
             color: #0f172a;
@@ -679,19 +678,19 @@
             gap: 10px;
         }
 
-        .policy-header p {
+        .policy-header p, .guide-header p {
             font-size: 0.85rem;
             color: #64748b;
             margin-top: 4px;
         }
 
-        .policy-section {
+        .policy-section, .guide-section {
             display: flex;
             flex-direction: column;
             gap: 8px;
         }
 
-        .policy-section h3 {
+        .policy-section h3, .guide-section h3 {
             font-size: 1.05rem;
             font-weight: 700;
             color: var(--primary);
@@ -700,15 +699,15 @@
             gap: 8px;
         }
 
-        .policy-section p, .policy-section ul {
+        .policy-section p, .policy-section ul, .guide-section p, .guide-section ul {
             font-size: 0.92rem;
             line-height: 1.7;
             color: #334155;
         }
 
-        .policy-section ul { padding-left: 20px; }
+        .policy-section ul, .guide-section ul { padding-left: 20px; }
 
-        .policy-highlight-box {
+        .policy-highlight-box, .guide-highlight-box {
             background: #f0fdf4;
             border: 1px solid #bbf7d0;
             border-radius: 12px;
@@ -966,7 +965,6 @@
 </head>
 <body>
 
-    <!-- STREAMING_CHUNK:Rendering canvas and sidebar navigation... -->
     <canvas id="particleCanvas"></canvas>
 
     <!-- MOBILE OVERLAY -->
@@ -1006,6 +1004,11 @@
 
         <div class="menu-category">ប្រព័ន្ធ</div>
 
+        <div class="nav-item" id="nav-guidePage" onclick="switchPage('guidePage')">
+            <span class="icon">📖</span>
+            <span>របៀបប្រើប្រាស់</span>
+        </div>
+
         <div class="nav-item" id="nav-privacyPage" onclick="switchPage('privacyPage')">
             <span class="icon">🔒</span>
             <span>គោលការណ៍ភាពឯកជន</span>
@@ -1043,7 +1046,6 @@
             </div>
         </div>
 
-        <!-- STREAMING_CHUNK:Building page views... -->
         <!-- VIEW 1: WELCOME DASHBOARD (INDEX PAGE) -->
         <div class="page-view active" id="welcomePage">
             <div class="hero-banner">
@@ -1186,7 +1188,52 @@
             </div>
         </div>
 
-        <!-- VIEW 5: PRIVACY POLICY PAGE (PRIVACY PAGE) -->
+        <!-- VIEW 5: USER GUIDE PAGE (GUIDE PAGE) -->
+        <div class="page-view" id="guidePage">
+            <div class="guide-card">
+                <div class="guide-header">
+                    <h2>📖 របៀបប្រើប្រាស់ប្រព័ន្ធស្វ័យសិក្សា (User Guide)</h2>
+                    <p>មគ្គុទេសក៍ងាយៗសម្រាប់សិស្សានុសិស្សថ្នាក់ទី១២ ត្រៀមប្រឡងបាក់ឌុប</p>
+                </div>
+
+                <div class="guide-highlight-box">
+                    <strong>🎯 គោលបំណង៖</strong> ប្រព័ន្ធនេះត្រូវបានបង្កើតឡើងដើម្បីជួយលោកអ្នករំលឹកមេរៀនជីវវិទ្យា តាមរយៈសំណួរ-ចម្លើយប្រឡងបាក់ឌុបទាំង ៦៣ និងឯកសារ PDF ដើមយ៉ាងមានប្រសិទ្ធភាព។
+                </div>
+
+                <div class="guide-section">
+                    <h3>1. 🎴 ការប្រើប្រាស់ Flashcards 3D</h3>
+                    <ul>
+                        <li>ចុចលើប័ណ្ណសំណួរដើម្បីបម្លែងមើលចម្លើយ (Flip Card)។</li>
+                        <li>ប្រើប្រាស់ប៊ូតុងลูกศរ (← / →) ឬចុចលើ Keyboard របស់អ្នកដើម្បីផ្លាស់ប្តូរសំណួរ។</li>
+                        <li>ចុចប៊ូតុង **[✓]** នៅពេលអ្នកបានឆ្លើយចេះចាំ ដើម្បីកត់ត្រាវឌ្ឍនភាពរបស់អ្នក។</li>
+                        <li>ចុចប៊ូតុង **[▶]** ដើម្បីបើកដំណើរការលេងស្វ័យប្រវត្តិ (Autoplay)។</li>
+                    </ul>
+                </div>
+
+                <div class="guide-section">
+                    <h3>2. 🎡 វិលកង់ចៃដន្យ (Spin Wheel)</h3>
+                    <ul>
+                        <li>ចូលទៅកាន់ទំព័រ **វិលកង់ចៃដន្យ** ហើយចុចប៊ូតុងវិលកង់ដើម្បីចាប់យកសំណួរដោយចៃដន្យសម្រាប់ធ្វើតេស្តខ្លួនឯង។</li>
+                    </ul>
+                </div>
+
+                <div class="guide-section">
+                    <h3>3. 📄 ការអានឯកសារ PDF ដើម</h3>
+                    <ul>
+                        <li>ចូលទៅកាន់ទំព័រ **មើល PDF ដើម** ដើម្បីអានឯកសារយោង និងលំហាត់ដើមដោយផ្ទាល់ក្នុងប្រព័ន្ធដោយមិនបាច់ទាញយក។</li>
+                    </ul>
+                </div>
+
+                <div class="guide-section">
+                    <h3>4. 🚩 ការរាយការណ៍បញ្ហា</h3>
+                    <ul>
+                        <li>ប្រសិនបើអ្នកพบកំហុស (Typo) ក្នុងសំណួរ/ចម្លើយ អ្នកអាចចុច **"រាយការណ៍បញ្ហា"** នៅ menu ខាងឆ្វេង ដើម្បីផ្ញើសារជូនរដ្ឋបាលតាម Telegram ភ្លាមៗ។</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW 6: PRIVACY POLICY PAGE (PRIVACY PAGE) -->
         <div class="page-view" id="privacyPage">
             <div class="policy-card">
                 <div class="policy-header">
@@ -1259,8 +1306,8 @@
                 <div class="footer-col">
                     <h4>ការគាំទ្រ</h4>
                     <ul>
+                        <li><a href="javascript:void(0)" onclick="switchPage('guidePage')">របៀបប្រើប្រាស់</a></li>
                         <li><a href="javascript:void(0)" onclick="openReportModal()">រាយការណ៍បញ្ហា</a></li>
-                        <li><a href="javascript:void(0)">របៀបប្រើប្រាស់</a></li>
                         <li><a href="javascript:void(0)" onclick="openReportModal()">ផ្ញើមតិស្ថាបនា</a></li>
                     </ul>
                 </div>
@@ -1279,7 +1326,7 @@
                     &copy; 2026 Biology BaccII Preparation. All rights reserved.
                 </div>
                 <div class="legal-links">
-                    <a href="javascript:void(0)">លក្ខខណ្ឌ</a> • 
+                    <a href="javascript:void(0)" onclick="switchPage('guidePage')">របៀបប្រើប្រាស់</a> • 
                     <a href="javascript:void(0)" onclick="switchPage('privacyPage')">ភាពឯកជន</a> • 
                     <a href="javascript:void(0)" onclick="openReportModal()">រាយការណ៍បញ្ហា</a>
                 </div>
@@ -1694,6 +1741,8 @@
                 switchPage('pdfPage');
             } else if (hash === 'privacy' || hash === 'privacyPage') {
                 switchPage('privacyPage');
+            } else if (hash === 'guide' || hash === 'guidePage') {
+                switchPage('guidePage');
             } else if (hash === 'flashcard' || hash === 'flashcardPage') {
                 switchPage('flashcardPage');
             } else {
@@ -1845,7 +1894,6 @@
         });
 
         function resetAllData() {
-            // Added safe confirmation prompt before resetting data
             if (confirm("តើអ្នកពិតជាចង់កំណត់ទិន្នន័យ (វឌ្ឍនភាពនៃការឆ្លើយ) ឡើងវិញមែនទេ?")) {
                 localStorage.removeItem("bio_qa_data_63");
                 localStorage.removeItem("bio_current_index");
@@ -1908,4 +1956,3 @@
     </script>
 </body>
 </html>
-```eof
