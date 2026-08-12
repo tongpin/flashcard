@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ជីវវិទ្យា ២០២៦ - ប្រព័ន្ធស្វ័យសិក្សាពេញលេញ</title>
     <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
+        /* STREAMING_CHUNK:Styling main layout and custom design tokens... */
         :root {
             --primary: #4f46e5;
             --primary-hover: #4338ca;
@@ -291,21 +293,9 @@
             box-shadow: 0 10px 25px rgba(79, 70, 229, 0.12);
         }
 
-        .dash-card .card-icon {
-            font-size: 2.4rem;
-        }
-
-        .dash-card h3 {
-            font-size: 1.15rem;
-            font-weight: 700;
-            color: #0f172a;
-        }
-
-        .dash-card p {
-            font-size: 0.88rem;
-            color: #64748b;
-            line-height: 1.5;
-        }
+        .dash-card .card-icon { font-size: 2.4rem; }
+        .dash-card h3 { font-size: 1.15rem; font-weight: 700; color: #0f172a; }
+        .dash-card p { font-size: 0.88rem; color: #64748b; line-height: 1.5; }
 
         .dash-card .btn-link {
             font-size: 0.9rem;
@@ -466,11 +456,7 @@
             align-items: center;
         }
 
-        .q-tag {
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: #64748b;
-        }
+        .q-tag { font-size: 0.9rem; font-weight: 700; color: #64748b; }
 
         .status-badge {
             padding: 4px 12px;
@@ -491,12 +477,7 @@
             overflow-y: auto;
         }
 
-        .card-text-q {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #0f172a;
-            line-height: 1.6;
-        }
+        .card-text-q { font-size: 1.25rem; font-weight: 700; color: #0f172a; line-height: 1.6; }
 
         .card-text-a {
             font-size: 1.15rem;
@@ -550,21 +531,11 @@
             flex-shrink: 0;
         }
 
-        .ctrl-btn:hover {
-            background: #334155;
-            transform: translateY(-2px);
-        }
+        .ctrl-btn:hover { background: #334155; transform: translateY(-2px); }
 
-        .ctrl-btn.active {
-            background: var(--primary);
-            border-color: #6366f1;
-        }
+        .ctrl-btn.active { background: var(--primary); border-color: #6366f1; }
 
-        .ctrl-btn.check-btn {
-            background: #065f46;
-            border-color: #059669;
-            color: #ffffff;
-        }
+        .ctrl-btn.check-btn { background: #065f46; border-color: #059669; color: #ffffff; }
 
         .card-counter {
             color: #ffffff;
@@ -574,11 +545,7 @@
             white-space: nowrap;
         }
 
-        .ctrl-group {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        .ctrl-group { display: flex; align-items: center; gap: 8px; }
 
         /* ACCORDION QUESTION LIST */
         .list-section {
@@ -657,17 +624,8 @@
             gap: 10px;
         }
 
-        .pdf-title-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .pdf-title-group h3 {
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: #0f172a;
-        }
+        .pdf-title-group { display: flex; align-items: center; gap: 10px; }
+        .pdf-title-group h3 { font-size: 1.05rem; font-weight: 700; color: #0f172a; }
 
         .pdf-download-btn {
             background: var(--primary);
@@ -715,48 +673,18 @@
             padding-bottom: 30px;
         }
 
-        .footer-col h4 {
-            color: #ffffff;
-            font-size: 0.95rem;
-            font-weight: 700;
-            margin-bottom: 16px;
-        }
-
+        .footer-col h4 { color: #ffffff; font-size: 0.95rem; font-weight: 700; margin-bottom: 16px; }
         .footer-col ul { list-style: none; padding: 0; margin: 0; }
         .footer-col ul li { margin-bottom: 10px; }
-        .footer-col ul li a {
-            color: #94a3b8;
-            text-decoration: none;
-            font-size: 0.88rem;
-            transition: color 0.2s ease;
-        }
+        .footer-col ul li a { color: #94a3b8; text-decoration: none; font-size: 0.88rem; transition: color 0.2s ease; }
         .footer-col ul li a:hover { color: #ffffff; }
 
-        .brand-col .footer-logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 12px;
-        }
+        .brand-col .footer-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
         .brand-col .footer-logo h2 { color: #ffffff; font-size: 1.2rem; font-weight: 700; }
 
-        .brand-desc {
-            font-size: 0.85rem;
-            line-height: 1.6;
-            margin-bottom: 15px;
-            color: #64748b;
-            max-width: 380px;
-        }
+        .brand-desc { font-size: 0.85rem; line-height: 1.6; margin-bottom: 15px; color: #64748b; max-width: 380px; }
 
-        .contact-info {
-            font-size: 0.85rem;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            margin-bottom: 18px;
-            color: #cbd5e1;
-        }
-
+        .contact-info { font-size: 0.85rem; display: flex; flex-direction: column; gap: 6px; margin-bottom: 18px; color: #cbd5e1; }
         .social-title { font-size: 0.85rem; font-weight: 700; color: #ffffff; margin-bottom: 10px; }
         .social-links { display: flex; gap: 8px; }
 
@@ -825,12 +753,13 @@
 </head>
 <body>
 
+    <!-- STREAMING_CHUNK:Rendering particle canvas and navigation sidebar... -->
     <canvas id="particleCanvas"></canvas>
 
     <!-- MOBILE OVERLAY -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
-    <!-- LEFT SIDEBAR NAVIGATION MENU -->
+    <!-- LEFT SIDE NAVIGATION MENU -->
     <div class="left-sidebar" id="leftSidebar">
         <div class="brand-logo">
             <div class="logo-icon">🧬</div>
@@ -891,8 +820,9 @@
             </div>
         </div>
 
+        <!-- STREAMING_CHUNK:Building page views (Welcome, Spin, Flashcards, PDF)... -->
         <!-- VIEW 1: WELCOME DASHBOARD (INDEX PAGE) -->
-        <div class="page-view" id="welcomePage">
+        <div class="page-view active" id="welcomePage">
             <div class="hero-banner">
                 <h1>ស្វាគមន៍មកកាន់ប្រព័ន្ធស្វ័យសិក្សាជីវវិទ្យា ២០២៦ 🧬</h1>
                 <p>រៀបចំ និងស្វ័យសិក្សាត្រៀមប្រឡងបាក់ឌុបថ្នាក់ទី១២ ជាមួយប្រព័ន្ធវិលកង់ចៃដន្យ Flashcards ៦៣ សំណួរ និង PDF ដើម!</p>
@@ -1033,6 +963,7 @@
             </div>
         </div>
 
+        <!-- STREAMING_CHUNK:Adding modern page footer... -->
         <footer>
             <div class="footer-container">
                 <div class="footer-col brand-col">
@@ -1098,67 +1029,45 @@
         </footer>
     </div>
 
+    <!-- STREAMING_CHUNK:Initializing JavaScript logic, data array, and event handlers... -->
     <script>
-        // PAGE SWITCHING ROUTER WITH URL HASH PERSISTENCE FOR DIRECT SHARING
-        function switchPage(pageId, cardNum = null) {
-            document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.left-sidebar .nav-item').forEach(i => i.classList.remove('active'));
-
-            const targetPage = document.getElementById(pageId);
-            const targetNav = document.getElementById('nav-' + pageId);
-
-            if (targetPage) targetPage.classList.add('active');
-            if (targetNav) targetNav.classList.add('active');
-
-            // Save active page to localStorage
-            localStorage.setItem("bio_active_page", pageId);
-
-            // Update URL Hash for direct link sharing (e.g. #spin, #pdf, #card-5)
-            if (pageId === 'flashcardPage' && cardNum !== null) {
-                window.location.hash = `card-${cardNum}`;
-            } else if (pageId === 'welcomePage') {
-                history.replaceState(null, null, ' ');
-            } else {
-                window.location.hash = pageId.replace('Page', '');
-            }
-
-            // Scroll main container to top
-            document.getElementById('mainWrapper').scrollTop = 0;
-
-            if (window.innerWidth <= 900) {
-                const sidebar = document.getElementById("leftSidebar");
-                if (sidebar.classList.contains("active")) toggleSidebar();
-            }
-        }
-
-        // HANDLE URL HASH ON INITIAL LOAD & HASH CHANGE
-        function handleHashRoute() {
-            const hash = window.location.hash.replace('#', '');
-            if (!hash) {
-                const savedPage = localStorage.getItem("bio_active_page") || "welcomePage";
-                switchPage(savedPage);
-                return;
-            }
-
-            if (hash.startsWith('card-')) {
-                const cardNum = parseInt(hash.replace('card-', ''));
-                if (!isNaN(cardNum) && cardNum >= 1 && cardNum <= qaData.length) {
-                    currentIndex = cardNum - 1;
-                    renderCard();
-                    switchPage('flashcardPage', cardNum);
-                } else {
-                    switchPage('flashcardPage', currentIndex + 1);
-                }
-            } else if (hash === 'spin') {
-                switchPage('spinPage');
-            } else if (hash === 'pdf') {
-                switchPage('pdfPage');
-            } else {
-                switchPage('welcomePage');
-            }
-        }
-
-        window.addEventListener('hashchange', handleHashRoute);
+        // EXACT DATA FROM PDF DOCUMENT (63 QUESTIONS)
+        const pdfQuestions = [
+            { id: 1, q: "ចូររកលក្ខណៈខុសគ្នារវាងរុក្ខជាតិម៉ូណូកូទីលេដូននិងឌីកូទីលេដូន?", a: "• រុក្ខជាតិម៉ូណូកូទីលេដូន៖ គ្រាប់មានកូទីលេដុង១, ស្លឹកមានទ្រនុងស្រប, ផ្កា៣ស្រទាប់ឬពហុគុណ៣, ដើមមានបាច់សរសៃនាំស្ថិតនៅរាយប៉ាយ, ឬសស្វែ។\n• រុក្ខជាតិនីកូទីលេដូន៖ គ្រាប់មានកូទីលេដុង២, ស្លឹកមានទ្រនុងបែកខ្នែង, ផ្កា៤ឬ៥ស្រទាប់ឬពហុគុណនៃ៤ឬ៥, ដើមមានបាច់សរសៃនាំស្ថិតនៅជារង្វង់, ឬសកែវ" },
+            { id: 2, q: "តើស្លឹករុក្ខជាតិនីកូទីលេដូនបង្ហាញឱ្យឃើញស្រទាប់អ្វីខ្លះ? តើស្រទាប់នីមួយៗមាននាទីដូចម្តេច?", a: "- ស្រទាប់អេពីឌែមលើក្រោម៖ មាននាទីការពារស្លឹករុក្ខជាតិ និងមានស្តូម៉ាតសម្រាប់បណ្តូរឧស្ម័ន និងបំភាយចំហាយទឹក។\n- ស្រទាប់ប៉ាលីសាត៖ មានក្លរ៉ូប្លាសផ្ទុកក្លរ៉ូភីល។ វាមាននាទីសំខាន់ក្នុងដំណើរស្មីសំយោគដើម្បីបង្កើតអាហារ។\n- ស្រទាប់ស្ប៉ោត៖ មានផ្ទុកស៊ីឡែមនិងផ្លូអែម និងរន្ធខ្យល់" },
+            { id: 3, q: "ហេតុអ្វីបានជាគ្រាប់លំអងមិនមែនជាកាម៉ែតឈ្មោល? ចូរពន្យល់?", a: "គ្រាប់លំអង ជាកោសិកាមានណៃយ៉ូអាប្លូអ៊ុតពីរ គឺណៃយ៉ូបន្តពូជ និងណៃយ៉ូលូតលាស់។\n- ណៃយ៉ូលូតលាស់ នាំដំណើរការលូតលាស់នៃបំពង់លំអង។\n- ណៃយ៉ូបន្តពូជ ចែកខ្លួនតាមមីតូស ១ ដង បង្កើតបានស្ពែម៉ាតូសូអ៊ុតពីរគ្មានផ្លាសែល" },
+            { id: 4, q: "តើពោតជាម៉ូណូកូទីលេដូនឬឌីកូទីលេដូន? ព្រោះអ្វី? តើពោតមានដំណើរលំអងបែបណា?", a: "→ ពោតជាម៉ូណូកូទីលេដូន ព្រោះ៖ គ្រាប់មានកូទីលេដុង១, ស្លឹកវែងមានទ្រនុងស្រប, ផ្កា៣ស្រទាប់ឬពហុគុណ៣, ដើមមានបាច់សរសៃនាំស្ថិតនៅរាយប៉ាយ, ឬសស្វែ, ដើមទោលត្រង់។\n→ ពោតមានដំណើរលំអងកាត់ ព្រោះកញ្ចុំកេសរញី និងកញ្ចុំកេសរឈ្មោលមានទីតាំងផ្សេងគ្នា ប៉ុន្តែវាស្ថិតនៅលើដើមតែមួយ" },
+            { id: 5, q: "ដូចម្តេចដែលហៅថាដំណើរលំអងសិប្បនិម្មិត? ហេតុអ្វីបានជាគេធ្វើដំណើរលំអងបែបសិប្បនិម្មិត?", a: "→ ដំណើរលំអងបែបសិប្បនិម្មិត គឺជាដំណើរលំអងដែលមនុស្សយកគ្រាប់លំអងពីរុក្ខជាតិមួយទៅដាក់លើស្ទិចម៉ាតរបស់រុក្ខជាតិមួយទៀត។\n→ បានជាគេធ្វើដំណើរលំអងនេះឡើង ព្រោះដើម្បីបង្កាត់រុក្ខជាតិមានលក្ខណៈពិសេសៗដែលគេចង់បាន" },
+            { id: 6, q: "តើការបង្កកំណើតទ្វេ? ហេតុអ្វីបានជារុក្ខជាតិអង់ស្យូស្ពែមមានការបង្កកំណើតទ្វេ?", a: "ការបង្កកំណើតទ្វេ គឺជាការបង្កកំណើតពីរដងក្នុងពេលតែមួយរបស់រុក្ខជាតិអង់ស្យូស្ពែម。\nបានជារុក្ខជាតិអង់ស្យូស្ពែមមានការបង្កកំណើតទ្វេ ព្រោះ៖ ស្ពែម៉ាតូសូអ៊ុតមួយចូលរួមបង្កកំណើតជាមួយកាម៉ែតញី បង្កើតបានជាស៊ីកូតឌីប្លូអ៊ុត (2n) មួយដែលលូតលាស់ទៅជាអំប្រ៊ីយ៉ុង ហើយស្ពែម៉ាតូសូអ៊ុតមួយទៀតបង្កកំណើតជាមួយណៃយ៉ូកណ្តាល (2n) បង្កើតជាអាល់ប៊ុយម៉ែន (3n)" },
+            { id: 7, q: "តើផ្ការុក្ខជាតិអង់ស្យូស្ពៃមមាននាទីដូចម្តេច?", a: "→ ផ្កាមាននាទីដូចជា៖\n- ផលិតកោសិកាបន្តពូជញី\n- ផលិតកោសិកាបន្តពូជឈ្មោល\n- ទាក់ទាញសត្វល្អិតក្នុងដំណើរលំអង\n- ធ្វើឱ្យមានការបង្កកំណើត" },
+            { id: 8, q: "ហេតុអ្វីបានជាអរម៉ូនភ្លេចតែកោសិកាគោលដៅ?", a: "បានជាអរម៉ូនភ្លេចតែកោសិកាគោលដៅ ព្រោះកោសិកាគោលដៅមានឆួលនៅលើភ្នាសកោសិកា។ កោសិកាគោលដៅមានទម្រង់ត្រូវនឹងទម្រង់របស់អរម៉ូន ដែលបង្កើតបានជាសារធាតុចម្រុះឆួល-អរម៉ូន។ សារធាតុនេះហើយដែលធ្វើឱ្យកោសិកាគោលដៅឆ្លើយតបទៅនឹងអំពើរបស់អរម៉ូន" },
+            { id: 9, q: "តើអរម៉ូនដែលបញ្ចេញដោយកោសិកា (B) និង កោសិកាអាល់ហ្វា (a) របស់លំពែងមានសកម្មភាពដូចម្តេចខ្លះ?", a: "• សកម្មភាពកោសិកាបេតា (β)៖ នៅពេលកម្រិតគ្លុយកូសកើនឡើងខ្ពស់ បញ្ចេញអាំងស៊ុយលីន ភ្លេចកោសិកាគោលដៅ (ថ្លើម, សាច់ដុំ, ជាលិកាខ្លាញ់) ឱ្យចាប់យកគ្លុយកូសប្រើប្រាស់ជាប្រភពថាមពល។ គ្លុយកូសដែលសល់បំប្លែងទៅជាគ្លីកូសែនស្តុកទុក。\n• សកម្មភាពកោសិកាអាល់ហ្វា (α)៖ នៅពេលគ្លុយកូសធ្លាក់ចុះ បញ្ចេញគ្លុយកាកុង ជំរុញថ្លើមឱ្យបំប្លែងគ្លីកូសែនទៅជាគ្លុយកូសបញ្ចេញទៅក្នុងឈាមវិញ" },
+            { id: 10, q: "ចូរប្រៀបធៀបក្រពេញអង់ដូគ្រីននិងក្រពេញអ៊ុចសូគ្រីន?", a: "→ លក្ខណៈដូចគ្នា៖ ជាសរីរាង្គកើតចេញពីកោសិកាអេពីតេស្យូម បញ្ចេញសារធាតុចាំបាច់សម្រាប់សារពាង្គកាយ。\n→ លក្ខណៈខុសគ្នា៖\n- អង់ដូគ្រីន៖ គ្មានបំពង់នាំ, ផលិតអរម៉ូន, បញ្ចេញអរម៉ូនទៅកាន់ចរន្តឈាមដោយផ្ទាល់。\n- អ៊ិចសូគ្រីន៖ មានបំពង់នាំ, ផលិតរសរំលាយអាហារ/សំណល់, បញ្ចេញតាមបំពង់នាំ" },
+            { id: 11, q: "តើក្រពេញទីរ៉ូអ៊ុតស្ថិតនៅត្រង់ណា? វាផលិតអរម៉ូនអ្វីខ្លះ? ហើយមាននាទីដូចម្តេច?", a: "ក្រពេញទីរ៉ូអ៊ុតស្ថិតនៅត្រង់ក ចំពីក្រោមបំពង់សំឡេង ខាងមុខបំពង់ខ្យល់។ វាផលិតអរម៉ូនទីរ៉ុកស៊ីន (បង្កើនអត្រាមេតាបូលីសប្រូតេអ៊ីន, គ្លុយស៊ីត, ខ្លាញ់) និងកាល់ស៊ីតូនីន (តម្រូវអត្រាកាល់ស្យូមក្នុងឈាម)" },
+            { id: 12, q: "ដូចម្តេចដែលហៅថា ក្រពេញប៉ារ៉ាទីរ៉ូអ៊ុត? វាផលិតអរម៉ូនអ្វី? អរម៉ូននីមួយៗមាននាទីដូចម្តេច?", a: "→ ក្រពេញប៉ារ៉ាទីរ៉ូអ៊ុត ជាក្រពេញរាងពងក្រពើតូចៗចំនួន ៤ បង្កប់ក្នុងផ្នែកខាងក្រោយនៃក្រពេញទីរ៉ូអ៊ុត。\n→ វាផលិតអរម៉ូនប៉ារ៉ាទីរ៉ូអ៊ុត ដែលមាននាទីតម្រូវមេតាបូលីសកាល់ស្យូម និងផូស្វាតនៅក្នុងសារពាង្គកាយ" },
+            { id: 13, q: "ហេតុអ្វីបានជាគេថា ក្រពះនិងពោះវៀនតូចជាក្រពេញអង់ដូគ្រីន?", a: "ព្រោះក្រពះបញ្ចេញអរម៉ូនកាស្ទីន និងពោះវៀនតូចបញ្ចេញអរម៉ូនសេក្រេទីនទៅកាន់ចរន្តឈាមដោយផ្ទាល់" },
+            { id: 14, q: "តើអរម៉ូនមានប៉ុន្មានក្រុម? អ្វីខ្លះ? ចូររៀបរាប់?", a: "- អរម៉ូនប៉ិបទីត៖ កើតពីច្រវ៉ាក់អាស៊ីតអាមីនេ មិនរលាយក្នុងស្រទាប់លីពីត មិនអាចឆ្លងកាត់ភ្នាសកោសិកាបាន。\n- អរម៉ូនស្តេរ៉ូអ៊ុត៖ ជាម៉ូលេគុលលីពីតតូចៗ រលាយក្នុងស្រទាប់លីពីត អាចឆ្លងកាត់ភ្នាសកោសិកាបាន" },
+            { id: 15, q: "ដូចម្តេចដែលហៅថាក្រពេញអង់ដូគ្រីន? ចូររាប់ឈ្មោះក្រពេញអង់ដូគ្រីនសំខាន់ៗ?", a: "ជាក្រពេញគ្មានបំពង់នាំ ផលិត និងបញ្ចេញអរម៉ូនទៅកាន់ចរន្តឈាមដោយផ្ទាល់。\nក្រពេញសំខាន់ៗ៖ អីប៉ូតាឡាមុស, អីប៉ូភីស, ទីរ៉ូអ៊ុត, ប៉ារ៉ាទីរ៉ូអ៊ុត, ទីមុស, លំពែង, ក្រពះនិងពោះវៀនតូច, ក្រពេញលើតម្រង់នោម, ក្រពេញភេទ" },
+            { id: 16, q: "តើអរម៉ូនអុកស៊ីតូស៊ីននិងអរម៉ូនប្រឡាក់ទីនមានលក្ខណៈខុសគ្នាដូចម្តេចខ្លះ?", a: "• អុកស៊ីតូស៊ីន៖ បញ្ចេញដោយអីប៉ូភីសក្រោយ, បញ្ចេញពេលសម្រាល, ជំរុញការកន្ត្រាក់ស្បូន និងបញ្ចេញទឹកដោះ。\n• ប្រូឡាក់ទីន៖ បញ្ចេញដោយអីប៉ូភីសមុខ, បញ្ចេញក្រោយសម្រាល, បណ្តាលឱ្យក្រពេញទឹកដោះលូតលាស់ និងផលិតទឹកដោះ" },
+            { id: 17, q: "ហេតុអ្វីបានជាគេនិយាយថា លំពែងជាក្រពេញអង់ដូគ្រីនផងនិងស៊ិចសូគ្រីនផង?", a: "- ជាអ៊ិចសូគ្រីន៖ បញ្ចេញរសលំពែងតាមបំពង់នាំ。\n- ជាអង់ដូគ្រីន៖ បញ្ចេញអរម៉ូនអាំងស៊ុយលីន និងគ្លុយកាកុងទៅកាន់ចរន្តឈាម" },
+            { id: 18, q: "ចូររកលក្ខណៈខុសគ្នាអរម៉ូនប៉ិបទីតនិងស្តេរ៉ូអ៊ុត?", a: "• ប៉ិបទីត៖ កើតពីអាស៊ីតអាមីនេ, មិនរលាយក្នុងលីពីត, មិនអាចឆ្លងភ្នាស, សកម្មភាពក្នុងណៃយូ, មានឥទ្ធិពលរយៈពេលខ្លី。\n• ស្តេរ៉ូអ៊ុត៖ កើតពីលីពីត, រលាយក្នុងលីពីត, អាចឆ្លងភ្នាស, សកម្មភាពក្នុងណៃយូនិងស៊ីតូប្លាស, មានឥទ្ធិពលរយៈពេលយូរ" },
+            { id: 19, q: "ក. តើលំពែងផលិតអរម៉ូនអ្វីខ្លះ? អរម៉ូននីមួយៗមាននាទីដូចម្តេច? ខ. ហេតុអ្វីបានគេចាត់ទុកថា ក្រពះ និងពោះវៀនតូចជាក្រពេញអង់ដូគ្រីន?", a: "ក. លំពែងផលិតអាំងស៊ុយលីន (បន្ថយកម្រិតគ្លុយកូស) និងគ្លុយកាកុង (បង្កើនកម្រិតគ្លុយកូស)。\nខ. ព្រោះវាផលិត និងបញ្ចេញអរម៉ូនទៅកាន់ចរន្តឈាមដោយផ្ទាល់ (ក្រពះផលិតកាស្ទីន, ពោះវៀនតូចផលិតសេក្រេទីន)" },
+            { id: 20, q: "ហេតុអ្វីបានជាត្រចៀកមានជំងឺឆ្លងបណ្តាលឱ្យបាត់បង់ថេរលំនឹង?", a: "ព្រោះមេរោគបណ្តាលឱ្យត្រចៀកឡើងហើម ធាតុរាវក្នុងត្រចៀកដាក់សម្ពាធលើបំពង់ពាក់កណ្តាលរង្វង់ ធ្វើឱ្យរោមល្អិតៗលើកោសិកាផ្នូលផ្ញើសញ្ញាវិញ្ញាណតុល្យភាពទៅខួរក្បាលមិនត្រឹមត្រូវ" },
+            { id: 21, q: "នៅពេលគ្រុនផ្តាសាយ ហេតុអ្វីបានជាអ្នកពិបាកក្នុងការភ្លក់រសជាតិនៃអាហារ?", a: "ព្រោះរសជាតិអាហារទាក់ទងនឹងវិញ្ញាណរសជាតិផង និងក្លិនផង។ ពេលគ្រុន ស្រទាប់ក្នុងរន្ធច្រមុះក្លាយជាខាប់ ធ្វើឱ្យផ្នូលវិញ្ញាណបំពេញនាទីមិនបានល្អ" },
+            { id: 22, q: "ហេតុអ្វីបានជាពេលមានការប៉ះទង្គិច ឬរបួសដោយមុតដាច់ធ្វើឱ្យយើងមានការឈឺចាប់?", a: "ព្រោះនៅស្រទាប់ក្រោមអេពីឌែមមានឆួលវិញ្ញាណឈឺចាប់ ដែលបង្កើតជាអាំងភ្លុចប្រសាទ បញ្ជូនតាមសរសៃប្រសាទវិញ្ញាណនាំទៅខួរឆ្អឹងខ្នង រួចបន្តទៅខួរក្បាលបកស្រាយឱ្យយើងឈឺចាប់" },
+            { id: 23, q: "ដូចម្តេចដែលហៅថាពន្លកជីវ្ហាវិញ្ញាណ? ចូររៀបរាប់ទីតាំងនៃរសជាតិទាំង៤របស់អណ្តាត?", a: "ជាផ្នូលវិញ្ញាណរសជាតិ。\n- ផ្អែម៖ ចុងអណ្តាត\n- ប្រៃ៖ ចំហៀងសងខាង (ផ្នែកមុខ)\n- ជូរ៖ ចំហៀងសងខាង (ផ្នែកបន្ទាប់)\n- ល្វីង៖ គល់អណ្តាត" },
+            { id: 24, q: "តើរលកសូរមានឥទ្ធិពលទៅលើផ្នែកផ្សេងៗនៃត្រចៀកយ៉ាងដូចម្តេច?", a: "ស្លឹកត្រចៀកប្រមូលរលកសូរ -> រន្ធត្រចៀកនាំទៅក្រដាសត្រចៀក -> ឆ្អឹងតូចៗ៣ ញ័រ -> ភ្នាសបង្អួចរាងពងក្រពើញ័រ -> ធាតុរាវក្នុងបំពង់រាងគូទខ្យងញ័រ -> រោមល្អិតៗញ័រ -> ប្តូរជាអាំងភ្លុចប្រសាទ" },
+            { id: 25, q: "តើស្បែកមាននាទីដូចម្តេចខ្លះ?", a: "ការពារសារពាង្គកាយ, បង្ការការជ្រៀតចូលនៃមេរោគ, បង្ការការបាត់បង់ទឹក, ការពារកាំរស្មី UV, បណ្តូរឧស្ម័ន, បញ្ចេញកាកសំណល់តាមញើស, ទទួលរំញោចផ្សេងៗ, និងបន្ថយកម្ដៅ" },
+            { id: 26, q: "តើឆួលវិញ្ញាណក្លិននិងជួលវិញ្ញាណរសជាតិមានទំនាក់ទំនងគ្នាយ៉ាងដូចម្តេច?", a: "រសជាតិអាហារទាក់ទងនឹងវិញ្ញាណរសជាតិ និងវិញ្ញាណក្លិន។ ក្លិនឈ្ងុយភោចឆួលក្លិន អាហារក្នុងមាត់ភោចឆួលរសជាតិ ទើបវិញ្ញាណទាំងពីរប្របំពេញគ្នាឱ្យអាហារមានរសជាតិឆ្ងាញ់" },
+            { id: 27, q: "ក. ដូចម្តេចដែលហៅថា អង់ស៊ីលីយែ? ខ. តើបាតុភូតអ្វីដែលធ្វើឱ្យយើងអាចមើលឃើញវត្ថុផ្សេងៗស្ថិតនៅចម្ងាយខុសៗគ្នា?", a: "ក. អង់ស៊ីលីយែ៖ ជាសាច់ដុំរលីងជុំវិញកែវភ្នែក ភ្ជាប់កែវភ្នែកដោយសរសៃចំណង。\nខ. កម្លាំងសម្របតម្រូវ៖ បង្កើតកម្រាស់កែវភ្នែកត្រឹមត្រូវតាមរយៈការកន្ត្រាក់/បន្ធូរនៃអង្គស៊ីលីយែ" },
+            { id: 28, q: "ក. តើអង់ស៊ីមជាអ្វី? ខ. ហេតុអ្វីបានជានៅក្នុងកោសិកានៃសារពាង្គកាយមានអង់ស៊ីមច្រើនប្រភេទ? គ. អង់ស៊ីមទាំងអស់សុទ្ធតែប្រូតេអ៊ីនដែរឬទេ? ព្រោះអ្វី?", a: "ក. អង់ស៊ីម ជាប្រូតេអ៊ីនដែលជាកាតាលីករជីវៈជួយជំរុញល្បឿនប្រតិកម្មគីមី。\nខ. ព្រោះក្នុងកោសិកាមានប្រតិកម្មគីមីរាប់ពាន់ ហើយអង់ស៊ីមមួយមានអំពើលើប្រតិកម្មមួយប៉ុណោះ。\nគ. អង់ស៊ីមទាំងអស់ជាប្រូតេអ៊ីន ប៉ុន្តែមានមុខងារមិនដូចគ្នានឹងប្រូតេអ៊ីនទូទៅទេ..." },
+            { id: 29, q: "ហេតុអ្វីបានជាសីតុណ្ហភាពខ្ពស់ពេកឬទាបពេកធ្វើឱ្យអង់ស៊ីមបាត់បង់គុណភាព?", a: "ព្រោះអង់ស៊ីមជាប្រូតេអ៊ីន។ កាលណាសីតុណ្ហភាពខ្ពស់ពេក សម្ព័ន្ធអ៊ីដ្រូសែនត្រូវបានរលា ធ្វើឱ្យប្រូតេអ៊ីនខូចទ្រង់ទ្រាយ ទើបអង់ស៊ីមបាត់បង់គុណភាព" },
+            { id: 30, q: "ហេតុអ្វីបានជាគេនិយាយថាអង់ស៊ីមជាប្រូតេអ៊ីនដែលមានសកម្មភាពបានខ្លាំងក្លា?", a: "ព្រោះអង់ស៊ីមមួយចំនួនតូច អាចបង្កើនល្បឿនប្រតិកម្មគីមីបានមួយចំនួនធំ" },
+            { id: 31, q: "តើគេហៅឈ្មោះរបស់អង់ស៊ីមបានត្រឹមត្រូវដោយផ្អែកលើកត្តាអ្វីខ្លះ?", a: "- យថាប្រភេទនៃកាតាលីករដែលជំរុញល្បឿនប្រតិកម្ម\n- ឈ្មោះស៊ុបស្អាតដែលបញ្ចប់ដោយពាក្យ «អាស»" },
+            { id: 32, q: "ចូរពណ៌នាពីលក្ខណៈរបស់អង់ស៊ីម?", a: "- ជាប្រូតេអ៊ីនមានសកម្មភាពខ្លាំងក្លា\n- ប្រែប្រួលតាមទម្រង់/នាទី សីតុណ្ហភាព pH និងកំហាប់ស៊ុបស្អាត\n- ជាកាតាលីករមានប្រតិកម្មបញ្ច្រាសទៅវិញទៅមក\n- អង់ស៊ីមខ្លះជាកូអង់ស៊ីម" },
+            { id: 33, q: "ក. ចូរសរសេររូបមន្តទូទៅរបស់អាស៊ីតអាមីនេ។ ខ. រ៉ាឌីកាល់ R របស់អាឡានីនគឺ CH3 និងសេរីនគឺ CH2OH។ ចូរសរសេររូបមន្តគីមីនៃអាស៊ីតអាមីនេទាំងពីរ។ គ. ចូរសរសេររូបមន្តឌីប៉ិបទីតរវាងអាស៊ីតអាមីនេទាំងពីរ?", a: "ក. H2N-CH(R)-COOH\nខ. អាឡានីន៖ H2N-CH(CH3)-COOH | សេរីន៖ H2N-CH(CH2OH)-COOH\nគ. H2N-CH(CH3)-CO-NH-CH(CH2OH)-COOH" },
+            { id: 34, q: "ក. តើអាស៊ីតអាមីនេពីរភ្ជាប់គ្នាដោយសារអ្វី? ចូរសរសេររូបមន្តស្ទើលាតនៃចំណងដែលភ្ជាប់នោះ។ ខ. ចូរសរសេររូបមន្តទូទៅរបស់អាស៊ីតអាមីនេព្រមទាំងលើកឧទាហរណ៍បញ្ជាក់។ គ. ចូរសរសេររូបមន្តទូទៅនៃឌីប៉ិបទីត?", a: "ក. ភ្ជាប់ដោយចំណងប៉ិបទីត (-CO-NH-)\nខ. រូបមន្តទូទៅ H2N-CH(R)-COOH\nគ. H2N-CH(R1)-CO-NH-CH(R2)-COOH" },
+            { id: 35, q: "ហេតុអ្វីបានជាតំណលំដាប់អាស៊ីតអាមីនេកំណត់ទម្រង់និងនាទីរបស់ប្រូតេអ៊ុន?", a: "ព្រោះប្រូតេអ៊ីនជាប៉ូលីមែនៃអាស៊ីតអាមីនេ ហើយការតម្រៀបតំណលំដាប់អាស៊ីតអាមីនេធ្វើឱ្យម៉ូលេគុលមានទម្រង់ខុសៗគ្នា ដែលទម្រង់នោះជាអ្នកកំណត់នាទី" },
             { id: 36, q: "ក. តើនុយក្លេអូទីតជាអ្វី? តើវាផ្សំឡើងពីធាតុអ្វីខ្លះ? ខ. នុយក្លេអូទីតមានតែបួនប្រភេទ ហេតុអ្វីអាចបង្កើតម៉ូលេគុល ADN ខុសគ្នាច្រើន?", a: "ក. ជាម៉ូណូមែនៃ ADN ផ្សំពី៖ អាស៊ីតផូស្វ័រិច ១, ស្ករដេអុកស៊ីរីបូស ១, បាសអាស៊ូត ១។\nខ. ព្រោះកើតពីនុយក្លេអូទីតរាប់ម៉ឺនទៅរាប់លាន ដែលតម្រៀបគ្នាតាមតំណលំដាប់ ចំនួន និងប្រភេទខុសៗគ្នា" },
             { id: 37, q: "ក. នៅក្នុងម៉ូលេគុល ADN តើមានសម្ព័ន្ធអ្វីខ្លះ? តើសម្ព័ន្ធនីមួយៗកើតឡើងនៅកន្លែងណា? ខ. តើសម្ព័ន្ធណាដែលងាយដាច់ជាងគេ?", a: "ក. សម្ព័ន្ធកូវ៉ាឡង់រវាងអាស៊ីតផូស្វ័រិចនិងស្ករ, សម្ព័ន្ធអ៊ីដ្រូសែនរវាងបាសបំពេញគ្នា (A-T, C-G)。\nខ. សម្ព័ន្ធអ៊ីដ្រូសែនងាយដាច់ជាងគេ" },
             { id: 38, q: "តើចលនការស្វ័យដំឡើងទ្វេ ADN មានសារៈសំខាន់ដូចម្តេចខ្លះ?", a: "រក្សាចំនួនក្រូម៉ូសូមឱ្យនៅដដែលពេលកោសិកាចែកខ្លួន ហើយធានាការបញ្ជូនព័ត៌មានសេនេទិចពីកោសិកាមេទៅកោសិកាកូន" },
@@ -1189,18 +1098,33 @@
             { id: 63, q: "តើលក្ខខណ្ឌអ្វីខ្លះដែលធ្វើឱ្យប្រូតេអ៊ីនបាត់បង់គុណភាពបាន?", a: "អាស៊ីត/បាសខ្លាំង, អង់គធាតុរំលាយ, លោហៈធ្ងន់, កំហាប់អំបិល, សាប៊ូ, អ៊ុយរេ, បម្រែបម្រួលសីតុណ្ហភាព, pH, និងចលនាមេកានិច" }
         ];
 
-        let savedQaData = localStorage.getItem("bio_qa_data_63");
-        let qaData = savedQaData ? JSON.parse(savedQaData) : pdfQuestions.map(item => ({
+        // LOAD SAVED STATE WITH SAFE DEFENSIVE FALLBACKS
+        let qaData = pdfQuestions.map(item => ({
             ...item,
             isAnswered: false,
             answeredBy: ""
         }));
 
+        try {
+            let savedQaData = localStorage.getItem("bio_qa_data_63");
+            if (savedQaData) {
+                let parsed = JSON.parse(savedQaData);
+                if (Array.isArray(parsed) && parsed.length === 63) {
+                    qaData = parsed;
+                }
+            }
+        } catch (e) {
+            console.error("Localstorage cache fallback engaged:", e);
+        }
+
         let currentUser = localStorage.getItem("bio_user_name") || "សិស្ស A";
         document.getElementById("userName").value = currentUser;
 
         let currentIndex = parseInt(localStorage.getItem("bio_current_index")) || 0;
-        let activePage = localStorage.getItem("bio_active_page") || "welcomePage";
+        if (isNaN(currentIndex) || currentIndex < 0 || currentIndex >= qaData.length) {
+            currentIndex = 0;
+        }
+
         let autoplayInterval = null;
         let isFlipped = false;
         let selectedSpinIndex = 0;
@@ -1255,7 +1179,7 @@
         let wheelAngle = 0;
         let spinVelocity = 0;
         let isSpinning = false;
-        const totalSlices = 12; // 12 colorful slices representing question numbers
+        const totalSlices = 12;
         const sliceColors = ['#4f46e5', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4', '#ec4899', '#3b82f6', '#14b8a6', '#eab308', '#f97316', '#a855f7'];
 
         function drawWheel() {
@@ -1280,7 +1204,6 @@
                 wCtx.strokeStyle = '#ffffff';
                 wCtx.stroke();
 
-                // Draw Text
                 wCtx.save();
                 wCtx.translate(centerX, centerY);
                 wCtx.rotate(startAngle + sliceAngle / 2);
@@ -1291,7 +1214,6 @@
                 wCtx.restore();
             }
 
-            // Draw Center Pin
             wCtx.beginPath();
             wCtx.arc(centerX, centerY, 25, 0, 2 * Math.PI);
             wCtx.fillStyle = "#0f172a";
@@ -1310,20 +1232,19 @@
             if (isSpinning) return;
             isSpinning = true;
             document.getElementById("spinResultBox").classList.remove("show");
-            spinVelocity = Math.random() * 0.3 + 0.35; // Random initial speed
+            spinVelocity = Math.random() * 0.3 + 0.35;
             requestAnimationFrame(animateSpin);
         }
 
         function animateSpin() {
             if (spinVelocity > 0.002) {
                 wheelAngle += spinVelocity;
-                spinVelocity *= 0.985; // Friction
+                spinVelocity *= 0.985;
                 drawWheel();
                 requestAnimationFrame(animateSpin);
             } else {
                 isSpinning = false;
                 spinVelocity = 0;
-                // Select random question result
                 selectedSpinIndex = Math.floor(Math.random() * qaData.length);
                 const item = qaData[selectedSpinIndex];
 
@@ -1336,12 +1257,68 @@
         function openSpinInFlashcard() {
             currentIndex = selectedSpinIndex;
             renderCard();
-            switchPage("flashcardPage");
+            switchPage("flashcardPage", currentIndex + 1);
         }
 
         drawWheel();
 
-        // APP CORE FUNCTIONS
+        // APP CORE NAVIGATION & PAGE ROUTING
+        function switchPage(pageId, cardNum = null) {
+            document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.left-sidebar .nav-item').forEach(i => i.classList.remove('active'));
+
+            const targetPage = document.getElementById(pageId);
+            const targetNav = document.getElementById('nav-' + pageId);
+
+            if (targetPage) targetPage.classList.add('active');
+            if (targetNav) targetNav.classList.add('active');
+
+            localStorage.setItem("bio_active_page", pageId);
+
+            if (pageId === 'flashcardPage' && cardNum !== null) {
+                window.location.hash = `card-${cardNum}`;
+            } else if (pageId === 'welcomePage') {
+                history.replaceState(null, null, ' ');
+            } else {
+                window.location.hash = pageId.replace('Page', '');
+            }
+
+            document.getElementById('mainWrapper').scrollTop = 0;
+
+            if (window.innerWidth <= 900) {
+                const sidebar = document.getElementById("leftSidebar");
+                if (sidebar.classList.contains("active")) toggleSidebar();
+            }
+        }
+
+        function handleHashRoute() {
+            const hash = window.location.hash.replace('#', '');
+            if (!hash) {
+                const savedPage = localStorage.getItem("bio_active_page") || "welcomePage";
+                switchPage(savedPage);
+                return;
+            }
+
+            if (hash.startsWith('card-')) {
+                const cardNum = parseInt(hash.replace('card-', ''));
+                if (!isNaN(cardNum) && cardNum >= 1 && cardNum <= qaData.length) {
+                    currentIndex = cardNum - 1;
+                    renderCard();
+                    switchPage('flashcardPage', cardNum);
+                } else {
+                    switchPage('flashcardPage', currentIndex + 1);
+                }
+            } else if (hash === 'spin') {
+                switchPage('spinPage');
+            } else if (hash === 'pdf') {
+                switchPage('pdfPage');
+            } else {
+                switchPage('welcomePage');
+            }
+        }
+
+        window.addEventListener('hashchange', handleHashRoute);
+
         function toggleSidebar() {
             document.getElementById("leftSidebar").classList.toggle("active");
             document.getElementById("sidebarOverlay").classList.toggle("active");
@@ -1378,7 +1355,6 @@
             document.getElementById("cardAnswerText").innerText = item.a;
             document.getElementById("cardCounter").innerText = `${currentIndex + 1} / ${qaData.length}`;
 
-            // Save current card position & update shareable URL Hash
             localStorage.setItem("bio_current_index", currentIndex);
             if (document.getElementById("flashcardPage").classList.contains("active")) {
                 window.location.hash = `card-${currentIndex + 1}`;
@@ -1485,16 +1461,14 @@
         });
 
         function resetAllData() {
-            if (confirm("តើអ្នកពិតជាចង់កំណត់ទិន្នន័យឡើងវិញមែនទេ?")) {
-                localStorage.removeItem("bio_qa_data_63");
-                localStorage.removeItem("bio_current_index");
-                localStorage.removeItem("bio_active_page");
-                qaData = pdfQuestions.map(item => ({ ...item, isAnswered: false, answeredBy: "" }));
-                currentIndex = 0;
-                saveData();
-                renderCard();
-                switchPage('welcomePage');
-            }
+            localStorage.removeItem("bio_qa_data_63");
+            localStorage.removeItem("bio_current_index");
+            localStorage.removeItem("bio_active_page");
+            qaData = pdfQuestions.map(item => ({ ...item, isAnswered: false, answeredBy: "" }));
+            currentIndex = 0;
+            saveData();
+            renderCard();
+            switchPage('welcomePage');
         }
 
         function toggleAccordion() {
