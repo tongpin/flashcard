@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* STREAMING_CHUNK:Configuring system color tokens, icon layouts, and security rules... */
+        /* STREAMING_CHUNK:Configuring system color tokens, preview card banner, and layout styles... */
         :root {
             --primary: #4f46e5;
             --primary-hover: #4338ca;
@@ -310,6 +310,111 @@
             align-items: center;
             gap: 6px;
             margin-top: 8px;
+        }
+
+        /* --- SPIN WHEEL PRO BANNER STYLE --- */
+        .spin-promo-card {
+            background: linear-gradient(135deg, #090d16 0%, #1e1b4b 100%);
+            border: 1px solid #334155;
+            border-radius: 20px;
+            padding: 24px;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .spin-promo-header {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .spin-promo-header span {
+            font-size: 0.75rem;
+            color: #818cf8;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .spin-promo-header h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .spin-promo-header p {
+            font-size: 0.88rem;
+            color: #94a3b8;
+            line-height: 1.5;
+        }
+
+        .spin-preview-banner {
+            width: 100%;
+            height: 180px;
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+            border-radius: 14px;
+            border: 1px solid #4338ca;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .spin-preview-left {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            z-index: 2;
+        }
+
+        .spin-preview-left h4 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .spin-preview-left p {
+            font-size: 0.8rem;
+            color: #cbd5e1;
+        }
+
+        .spin-preview-badges {
+            display: flex;
+            gap: 6px;
+            margin-top: 6px;
+        }
+
+        .badge-pill {
+            background: rgba(255, 255, 255, 0.12);
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #e2e8f0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .spin-mini-wheel {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            background: conic-gradient(#4f46e5 0deg 90deg, #10b981 90deg 180deg, #f59e0b 180deg 270deg, #ef4444 270deg 360deg);
+            border: 3px solid #ffffff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 2;
+            animation: spinBannerSlow 12s linear infinite;
+        }
+
+        @keyframes spinBannerSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         /* --- SPIN WHEEL STYLES --- */
@@ -966,12 +1071,13 @@
             .card-counter { font-size: 0.85rem; padding: 0 4px; }
             .wheel-wrapper { width: 260px; height: 260px; }
             #wheelCanvas { width: 260px; height: 260px; }
+            .spin-preview-banner { flex-direction: column; height: auto; text-align: center; gap: 12px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- STREAMING_CHUNK:Rendering particle canvas and secure sidebar navigation... -->
+    <!-- STREAMING_CHUNK:Rendering background particle canvas and secure sidebar navigation... -->
     <canvas id="particleCanvas"></canvas>
 
     <!-- MOBILE OVERLAY -->
@@ -1053,7 +1159,7 @@
             </div>
         </div>
 
-        <!-- STREAMING_CHUNK:Building secure view routers... -->
+        <!-- STREAMING_CHUNK:Building secure view routers and welcome dashboard with Spin Wheel promo banner... -->
         <!-- VIEW 1: WELCOME DASHBOARD (INDEX PAGE) -->
         <div class="page-view active" id="welcomePage">
             <div class="hero-banner">
@@ -1061,14 +1167,32 @@
                 <p>រៀបចំ និងស្វ័យសិក្សាត្រៀមប្រឡងបាក់ឌុបថ្នាក់ទី១២ ជាមួយប្រព័ន្ធវិលកង់ចៃដន្យ Flashcards ៦៣ សំណួរ និង PDF ដើម!</p>
             </div>
 
-            <div class="dashboard-grid">
-                <div class="dash-card" onclick="switchPage('spinPage')">
-                    <div class="card-icon">🎡</div>
-                    <h3>វិលកង់ចៃដន្យ (Spin Wheel)</h3>
-                    <p>លេងល្បែងវិលកង់ចៃដន្យដើម្បីចាប់យករៀបចំឆ្លើយសំណួរជីវវិទ្យាទាំង ៦៣ ដោយស្វ័យប្រវត្តិ!</p>
-                    <div class="btn-link">លេងវិលកង់ឥឡូវនេះ →</div>
+            <!-- SPIN WHEEL PROMOTIONAL PREVIEW BANNER -->
+            <div class="spin-promo-card">
+                <div class="spin-promo-header">
+                    <span>Spin the Wheel</span>
+                    <h3>Spin the Wheel: Free Random Picker & Decision Maker</h3>
+                    <p>លេងកង់វិលចៃដន្យដើម្បីធ្វើតេស្តសំណួរជីវវិទ្យាបាក់ឌុបទាំង ៦៣ ដោយយុត្តិធម៌ រហ័ស និងងាយស្រួល។</p>
+                </div>
+                
+                <div class="spin-preview-banner">
+                    <div class="spin-preview-left">
+                        <h4>កង់វិលចៃដន្យជីវវិទ្យា</h4>
+                        <p>Fair spins for classrooms, quizzes, and self-checks.</p>
+                        <div class="spin-preview-badges">
+                            <span class="badge-pill">🔒 PRIVATE (Local-first)</span>
+                            <span class="badge-pill">⚡ FAST (Offline-ready)</span>
+                        </div>
+                    </div>
+                    <div class="spin-mini-wheel"></div>
                 </div>
 
+                <button class="spin-action-btn" onclick="switchPage('spinPage')" style="align-self: flex-start; padding: 10px 28px; font-size: 1rem;">
+                    🎡 ចាប់ផ្តើមវិលកង់ឥឡូវនេះ →
+                </button>
+            </div>
+
+            <div class="dashboard-grid">
                 <div class="dash-card" onclick="switchPage('flashcardPage')">
                     <div class="card-icon">🎴</div>
                     <h3>Flashcards រំលឹកមេរៀន</h3>
