@@ -7,7 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* STREAMING_CHUNK:Styling main layout and custom design tokens... */
         :root {
             --primary: #4f46e5;
             --primary-hover: #4338ca;
@@ -293,9 +292,21 @@
             box-shadow: 0 10px 25px rgba(79, 70, 229, 0.12);
         }
 
-        .dash-card .card-icon { font-size: 2.4rem; }
-        .dash-card h3 { font-size: 1.15rem; font-weight: 700; color: #0f172a; }
-        .dash-card p { font-size: 0.88rem; color: #64748b; line-height: 1.5; }
+        .dash-card .card-icon {
+            font-size: 2.4rem;
+        }
+
+        .dash-card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .dash-card p {
+            font-size: 0.88rem;
+            color: #64748b;
+            line-height: 1.5;
+        }
 
         .dash-card .btn-link {
             font-size: 0.9rem;
@@ -456,7 +467,11 @@
             align-items: center;
         }
 
-        .q-tag { font-size: 0.9rem; font-weight: 700; color: #64748b; }
+        .q-tag {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #64748b;
+        }
 
         .status-badge {
             padding: 4px 12px;
@@ -477,7 +492,12 @@
             overflow-y: auto;
         }
 
-        .card-text-q { font-size: 1.25rem; font-weight: 700; color: #0f172a; line-height: 1.6; }
+        .card-text-q {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #0f172a;
+            line-height: 1.6;
+        }
 
         .card-text-a {
             font-size: 1.15rem;
@@ -531,11 +551,21 @@
             flex-shrink: 0;
         }
 
-        .ctrl-btn:hover { background: #334155; transform: translateY(-2px); }
+        .ctrl-btn:hover {
+            background: #334155;
+            transform: translateY(-2px);
+        }
 
-        .ctrl-btn.active { background: var(--primary); border-color: #6366f1; }
+        .ctrl-btn.active {
+            background: var(--primary);
+            border-color: #6366f1;
+        }
 
-        .ctrl-btn.check-btn { background: #065f46; border-color: #059669; color: #ffffff; }
+        .ctrl-btn.check-btn {
+            background: #065f46;
+            border-color: #059669;
+            color: #ffffff;
+        }
 
         .card-counter {
             color: #ffffff;
@@ -545,7 +575,11 @@
             white-space: nowrap;
         }
 
-        .ctrl-group { display: flex; align-items: center; gap: 8px; }
+        .ctrl-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
         /* ACCORDION QUESTION LIST */
         .list-section {
@@ -624,8 +658,17 @@
             gap: 10px;
         }
 
-        .pdf-title-group { display: flex; align-items: center; gap: 10px; }
-        .pdf-title-group h3 { font-size: 1.05rem; font-weight: 700; color: #0f172a; }
+        .pdf-title-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pdf-title-group h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
 
         .pdf-download-btn {
             background: var(--primary);
@@ -673,18 +716,48 @@
             padding-bottom: 30px;
         }
 
-        .footer-col h4 { color: #ffffff; font-size: 0.95rem; font-weight: 700; margin-bottom: 16px; }
+        .footer-col h4 {
+            color: #ffffff;
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
         .footer-col ul { list-style: none; padding: 0; margin: 0; }
         .footer-col ul li { margin-bottom: 10px; }
-        .footer-col ul li a { color: #94a3b8; text-decoration: none; font-size: 0.88rem; transition: color 0.2s ease; }
+        .footer-col ul li a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.88rem;
+            transition: color 0.2s ease;
+        }
         .footer-col ul li a:hover { color: #ffffff; }
 
-        .brand-col .footer-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+        .brand-col .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
         .brand-col .footer-logo h2 { color: #ffffff; font-size: 1.2rem; font-weight: 700; }
 
-        .brand-desc { font-size: 0.85rem; line-height: 1.6; margin-bottom: 15px; color: #64748b; max-width: 380px; }
+        .brand-desc {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #64748b;
+            max-width: 380px;
+        }
 
-        .contact-info { font-size: 0.85rem; display: flex; flex-direction: column; gap: 6px; margin-bottom: 18px; color: #cbd5e1; }
+        .contact-info {
+            font-size: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 18px;
+            color: #cbd5e1;
+        }
+
         .social-title { font-size: 0.85rem; font-weight: 700; color: #ffffff; margin-bottom: 10px; }
         .social-links { display: flex; gap: 8px; }
 
@@ -753,13 +826,12 @@
 </head>
 <body>
 
-    <!-- STREAMING_CHUNK:Rendering particle canvas and navigation sidebar... -->
     <canvas id="particleCanvas"></canvas>
 
     <!-- MOBILE OVERLAY -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
-    <!-- LEFT SIDE NAVIGATION MENU -->
+    <!-- LEFT SIDEBAR NAVIGATION MENU -->
     <div class="left-sidebar" id="leftSidebar">
         <div class="brand-logo">
             <div class="logo-icon">🧬</div>
@@ -820,9 +892,8 @@
             </div>
         </div>
 
-        <!-- STREAMING_CHUNK:Building page views (Welcome, Spin, Flashcards, PDF)... -->
         <!-- VIEW 1: WELCOME DASHBOARD (INDEX PAGE) -->
-        <div class="page-view active" id="welcomePage">
+        <div class="page-view" id="welcomePage">
             <div class="hero-banner">
                 <h1>ស្វាគមន៍មកកាន់ប្រព័ន្ធស្វ័យសិក្សាជីវវិទ្យា ២០២៦ 🧬</h1>
                 <p>រៀបចំ និងស្វ័យសិក្សាត្រៀមប្រឡងបាក់ឌុបថ្នាក់ទី១២ ជាមួយប្រព័ន្ធវិលកង់ចៃដន្យ Flashcards ៦៣ សំណួរ និង PDF ដើម!</p>
@@ -963,7 +1034,6 @@
             </div>
         </div>
 
-        <!-- STREAMING_CHUNK:Adding modern page footer... -->
         <footer>
             <div class="footer-container">
                 <div class="footer-col brand-col">
@@ -991,27 +1061,27 @@
                 <div class="footer-col">
                     <h4>ផលិតផល / មេរៀន</h4>
                     <ul>
-                        <li><a href="#" onclick="switchPage('spinPage')">វិលកង់ចៃដន្យ</a></li>
-                        <li><a href="#" onclick="switchPage('flashcardPage')">Flashcard រំលឹកមេរៀន</a></li>
-                        <li><a href="#" onclick="switchPage('pdfPage')">ឯកសារដើម PDF</a></li>
+                        <li><a href="javascript:void(0)" onclick="switchPage('spinPage')">វិលកង់ចៃដន្យ</a></li>
+                        <li><a href="javascript:void(0)" onclick="switchPage('flashcardPage')">Flashcard រំលឹកមេរៀន</a></li>
+                        <li><a href="javascript:void(0)" onclick="switchPage('pdfPage')">ឯកសារដើម PDF</a></li>
                     </ul>
                 </div>
 
                 <div class="footer-col">
                     <h4>ការគាំទ្រ</h4>
                     <ul>
-                        <li><a href="#">សំបុត្រការគាំទ្រ</a></li>
-                        <li><a href="#">របៀបប្រើប្រាស់</a></li>
-                        <li><a href="#">រាយការណ៍បញ្ហា</a></li>
+                        <li><a href="javascript:void(0)">សំបុត្រការគាំទ្រ</a></li>
+                        <li><a href="javascript:void(0)">របៀបប្រើប្រាស់</a></li>
+                        <li><a href="javascript:void(0)">រាយការណ៍បញ្ហា</a></li>
                     </ul>
                 </div>
 
                 <div class="footer-col">
                     <h4>អំពីយើង</h4>
                     <ul>
-                        <li><a href="#" onclick="switchPage('welcomePage')">ទំព័រដើម</a></li>
-                        <li><a href="#">លក្ខខណ្ឌនៃការប្រើប្រាស់</a></li>
-                        <li><a href="#">គោលការណ៍ភាពឯកជន</a></li>
+                        <li><a href="javascript:void(0)" onclick="switchPage('welcomePage')">ទំព័រដើម</a></li>
+                        <li><a href="javascript:void(0)">លក្ខខណ្ឌនៃការប្រើប្រាស់</a></li>
+                        <li><a href="javascript:void(0)">គោលការណ៍ភាពឯកជន</a></li>
                     </ul>
                 </div>
             </div>
@@ -1021,15 +1091,14 @@
                     &copy; 2026 Biology BaccII Preparation. All rights reserved.
                 </div>
                 <div class="legal-links">
-                    <a href="#">លក្ខខណ្ឌ</a> • 
-                    <a href="#">ភាពឯកជន</a> • 
-                    <a href="#">ប្រើប្រាស់យុត្តិធម៌</a>
+                    <a href="javascript:void(0)">លក្ខខណ្ឌ</a> • 
+                    <a href="javascript:void(0)">ភាពឯកជន</a> • 
+                    <a href="javascript:void(0)">ប្រើប្រាស់យុត្តិធម៌</a>
                 </div>
             </div>
         </footer>
     </div>
 
-    <!-- STREAMING_CHUNK:Initializing JavaScript logic, data array, and event handlers... -->
     <script>
         // EXACT DATA FROM PDF DOCUMENT (63 QUESTIONS)
         const pdfQuestions = [
@@ -1098,33 +1167,18 @@
             { id: 63, q: "តើលក្ខខណ្ឌអ្វីខ្លះដែលធ្វើឱ្យប្រូតេអ៊ីនបាត់បង់គុណភាពបាន?", a: "អាស៊ីត/បាសខ្លាំង, អង់គធាតុរំលាយ, លោហៈធ្ងន់, កំហាប់អំបិល, សាប៊ូ, អ៊ុយរេ, បម្រែបម្រួលសីតុណ្ហភាព, pH, និងចលនាមេកានិច" }
         ];
 
-        // LOAD SAVED STATE WITH SAFE DEFENSIVE FALLBACKS
-        let qaData = pdfQuestions.map(item => ({
+        // LOAD SAVED STATE
+        let savedQaData = localStorage.getItem("bio_qa_data_63");
+        let qaData = savedQaData ? JSON.parse(savedQaData) : pdfQuestions.map(item => ({
             ...item,
             isAnswered: false,
             answeredBy: ""
         }));
 
-        try {
-            let savedQaData = localStorage.getItem("bio_qa_data_63");
-            if (savedQaData) {
-                let parsed = JSON.parse(savedQaData);
-                if (Array.isArray(parsed) && parsed.length === 63) {
-                    qaData = parsed;
-                }
-            }
-        } catch (e) {
-            console.error("Localstorage cache fallback engaged:", e);
-        }
-
         let currentUser = localStorage.getItem("bio_user_name") || "សិស្ស A";
         document.getElementById("userName").value = currentUser;
 
         let currentIndex = parseInt(localStorage.getItem("bio_current_index")) || 0;
-        if (isNaN(currentIndex) || currentIndex < 0 || currentIndex >= qaData.length) {
-            currentIndex = 0;
-        }
-
         let autoplayInterval = null;
         let isFlipped = false;
         let selectedSpinIndex = 0;
@@ -1257,7 +1311,7 @@
         function openSpinInFlashcard() {
             currentIndex = selectedSpinIndex;
             renderCard();
-            switchPage("flashcardPage", currentIndex + 1);
+            switchPage("flashcardPage");
         }
 
         drawWheel();
@@ -1275,19 +1329,27 @@
 
             localStorage.setItem("bio_active_page", pageId);
 
-            if (pageId === 'flashcardPage' && cardNum !== null) {
-                window.location.hash = `card-${cardNum}`;
+            if (pageId === 'flashcardPage') {
+                const targetHash = cardNum !== null ? `card-${cardNum}` : `card-${currentIndex + 1}`;
+                if (window.location.hash !== `#${targetHash}`) {
+                    history.replaceState(null, null, `#${targetHash}`);
+                }
             } else if (pageId === 'welcomePage') {
-                history.replaceState(null, null, ' ');
+                if (window.location.hash !== '' && window.location.hash !== '#') {
+                    history.replaceState(null, null, ' ');
+                }
             } else {
-                window.location.hash = pageId.replace('Page', '');
+                const targetHash = pageId.replace('Page', '');
+                if (window.location.hash !== `#${targetHash}`) {
+                    history.replaceState(null, null, `#${targetHash}`);
+                }
             }
 
             document.getElementById('mainWrapper').scrollTop = 0;
 
             if (window.innerWidth <= 900) {
                 const sidebar = document.getElementById("leftSidebar");
-                if (sidebar.classList.contains("active")) toggleSidebar();
+                if (sidebar && sidebar.classList.contains("active")) toggleSidebar();
             }
         }
 
@@ -1312,6 +1374,8 @@
                 switchPage('spinPage');
             } else if (hash === 'pdf') {
                 switchPage('pdfPage');
+            } else if (hash === 'flashcard' || hash === 'flashcardPage') {
+                switchPage('flashcardPage');
             } else {
                 switchPage('welcomePage');
             }
