@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ជីវវិទ្យា បាក់ឌុប - Flashcard & PDF Viewer</title>
     <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- PDF.js CDN for client-side native PDF rendering -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <style>
         :root {
             --primary: #4f46e5;
@@ -46,7 +48,7 @@
             z-index: 0;
         }
 
-        /* --- OVERLAY FOR MOBILE SIDEBAR --- */
+        /* OVERLAY FOR MOBILE SIDEBAR */
         .sidebar-overlay {
             display: none;
             position: fixed;
@@ -59,7 +61,7 @@
         }
         .sidebar-overlay.active { display: block; }
 
-        /* --- LEFT SIDE NAVIGATION MENU --- */
+        /* LEFT SIDEBAR */
         .left-sidebar {
             width: 260px;
             background: var(--sidebar-bg);
@@ -117,7 +119,7 @@
         }
         .nav-item .icon { font-size: 1.2rem; }
 
-        /* --- MAIN CONTENT WRAPPER --- */
+        /* MAIN WRAPPER */
         .main-wrapper {
             flex: 1;
             display: flex;
@@ -129,7 +131,7 @@
             width: 100%;
         }
 
-        /* --- EXACT TOP BAR --- */
+        /* TOP BAR */
         .top-bar {
             display: flex;
             justify-content: space-between;
@@ -241,7 +243,7 @@
             width: 100%;
         }
 
-        /* FLASHCARD CONTAINER (QUIZLET STYLE) */
+        /* FLASHCARD CONTAINER */
         .flashcard-wrapper {
             width: 100%;
             display: flex;
@@ -485,7 +487,7 @@
             line-height: 1.4;
         }
 
-        /* --- PDF VIEWER BOX STYLES --- */
+        /* PDF DIRECT IMPORT & PAGE RENDERING STYLES */
         .pdf-box-section {
             width: 100%;
             background: var(--card-bg);
@@ -519,6 +521,28 @@
             font-weight: 700;
             color: #0f172a;
         }
+
+        .pdf-toolbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .pdf-import-btn-label {
+            background: var(--primary);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.2s;
+        }
+        .pdf-import-btn-label:hover { background: var(--primary-hover); }
 
         .pdf-nav-controls {
             display: flex;
@@ -557,6 +581,41 @@
             outline: none;
         }
 
+        /* NATIVE PDF CANVAS DISPLAY CONTAINER */
+        .pdf-viewer-stage {
+            width: 100%;
+            background: #475569;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 480px;
+            max-height: 700px;
+            overflow: auto;
+            position: relative;
+            border: 1px solid #cbd5e1;
+        }
+
+        #pdfCanvas {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            background: white;
+        }
+
+        .pdf-placeholder-box {
+            text-align: center;
+            color: #ffffff;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
         .pdf-paper-card {
             background: #ffffff;
             border: 1px solid #cbd5e1;
@@ -569,6 +628,7 @@
             line-height: 1.8;
             font-size: 0.95rem;
             color: #1e293b;
+            width: 100%;
         }
 
         .pdf-page-watermark {
@@ -587,7 +647,7 @@
             font-size: 0.95rem;
         }
 
-        /* --- FOOTER STYLES --- */
+        /* FOOTER */
         footer {
             width: 100%;
             background: #090d16;
@@ -683,7 +743,7 @@
         .legal-links a { color: #64748b; text-decoration: none; transition: color 0.2s; }
         .legal-links a:hover { color: #cbd5e1; }
 
-        /* RESPONSIVE FOR MOBILE */
+        /* RESPONSIVE */
         @media (max-width: 900px) {
             .left-sidebar {
                 position: fixed;
@@ -750,7 +810,6 @@
 
     <!-- MAIN CONTENT WRAPPER -->
     <div class="main-wrapper" id="mainWrapper">
-        <!-- TOP CONTROL BAR -->
         <div class="top-bar">
             <div class="top-bar-left">
                 <button class="menu-toggle-btn" onclick="toggleSidebar()">☰</button>
@@ -771,7 +830,6 @@
 
         <!-- MAIN BODY CONTENT -->
         <div class="content-body">
-            <!-- FLASHCARD INTERACTIVE VIEWER -->
             <div class="flashcard-wrapper" id="flashcardWrapper">
                 <div class="flashcard-card" id="flashcardCard" onclick="flipCard()">
                     <div class="flashcard-inner" id="cardInner">
@@ -834,66 +892,49 @@
                 <div class="q-accordion" id="qAccordion"></div>
             </div>
 
-            <!-- PDF VIEWER BOX SECTION (DIRECT EMBED & TEXT MODES) -->
             <div class="pdf-box-section" id="pdfViewBox">
                 <div class="pdf-box-header">
                     <div class="pdf-title-group">
                         <span style="font-size: 1.4rem;">📄</span>
-                        <h3>អត្ថបទដើម PDF (Bacii Percantages.pdf)</h3>
+                        <h3 id="pdfBoxTitle">អត្ថបទដើម PDF (Bacii Percantages.pdf)</h3>
                     </div>
-                    <div class="pdf-nav-controls">
-                        <!-- MODE TOGGLE BUTTONS -->
-                        <button class="pdf-nav-btn" style="width: auto; padding: 0 12px; border-radius: 12px; font-size: 0.8rem;" id="modeEmbedBtn" onclick="switchPdfViewMode('embed')">📄 Native PDF</button>
-                        <button class="pdf-nav-btn" style="width: auto; padding: 0 12px; border-radius: 12px; font-size: 0.8rem; background: #64748b;" id="modeTextBtn" onclick="switchPdfViewMode('text')">📝 Text Mode</button>
-                    </div>
-                </div>
 
-                <!-- DIRECT NATIVE PDF EMBEDDER CONTAINER -->
-                <div id="pdfEmbedContainer" style="display: flex; flex-direction: column; gap: 12px; width: 100%;">
-                    <div style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc; padding: 12px 16px; border-radius: 10px; border: 1px dashed #cbd5e1; flex-wrap: wrap; gap: 10px;">
-                        <span style="font-size: 0.88rem; font-weight: 600; color: #475569;">
-                            📁 ជ្រើសរើស ឬទាញទម្លាក់រៀបចំឯកសារ PDF របស់អ្នករៀបចំអានភ្លាមៗ (Select Bacii Percantages.pdf):
-                        </span>
-                        <label style="background: var(--primary); color: white; padding: 6px 16px; border-radius: 8px; font-weight: 700; font-size: 0.85rem; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: background 0.2s;">
-                            <span>📤 ជ្រើសរើសឯកសារ PDF...</span>
-                            <input type="file" id="pdfFileInput" accept="application/pdf" style="display: none;" onchange="loadNativePdfFile(event)">
+                    <div class="pdf-toolbar-actions">
+                        <!-- DIRECT PDF IMPORT BUTTON -->
+                        <label class="pdf-import-btn-label">
+                            <span>📥 នាំចូល/ជ្រើសរើស PDF</span>
+                            <input type="file" id="pdfFileInput" accept="application/pdf" style="display: none;" onchange="handleDirectPdfImport(event)">
                         </label>
-                    </div>
 
-                    <div id="pdfNativeWrapper" style="width: 100%; height: 600px; border-radius: 12px; overflow: hidden; border: 1px solid #cbd5e1; background: #525659; display: flex; align-items: center; justify-content: center; color: white;">
-                        <div id="pdfPlaceholderMsg" style="text-align: center; padding: 20px;">
-                            <p style="font-size: 1.2rem; margin-bottom: 8px;">📄 មិនទាន់មានការទាញយក PDF ដើមនៅឡើយទេ</p>
-                            <p style="font-size: 0.85rem; color: #cbd5e1; margin-bottom: 16px;">សូមចុចប៊ូតុង "ជ្រើសរើសឯកសារ PDF..." ខាងលើដើម្បីមើល file "Bacii Percantages.pdf" របស់អ្នកដោយផ្ទាល់</p>
-                            <button onclick="document.getElementById('pdfFileInput').click()" style="padding: 8px 18px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">
-                                📂 ជ្រើសរើស File PDF ឥឡូវនេះ
-                            </button>
+                        <!-- MODE TOGGLE BUTTONS -->
+                        <button class="pdf-nav-btn" style="width: auto; padding: 0 10px; border-radius: 12px; font-size: 0.8rem; background: var(--primary);" id="btnRenderPdfMode" onclick="switchPdfViewMode('pdf')">🖼️ Page View</button>
+                        <button class="pdf-nav-btn" style="width: auto; padding: 0 10px; border-radius: 12px; font-size: 0.8rem; background: #64748b;" id="btnTextPdfMode" onclick="switchPdfViewMode('text')">📝 Text Mode</button>
+
+                        <div class="pdf-nav-controls">
+                            <button class="pdf-nav-btn" onclick="prevPdfPage()">◄</button>
+                            <span style="font-size: 0.85rem; font-weight: 700;">ទំព័រ</span>
+                            <select class="pdf-page-select" id="pdfPageSelect" onchange="changePdfPage(this.value)">
+                                <!-- Dynamic pages will populate here -->
+                            </select>
+                            <button class="pdf-nav-btn" onclick="nextPdfPage()">►</button>
                         </div>
-                        <iframe id="pdfEmbedObject" style="width: 100%; height: 100%; border: none; display: none;" src=""></iframe>
                     </div>
                 </div>
 
-                <!-- TEXT PAGINATION MODE CONTAINER -->
-                <div id="pdfTextContainer" style="display: none; flex-direction: column; gap: 12px; width: 100%;">
-                    <div style="display: flex; justify-content: flex-end; align-items: center; gap: 8px;">
-                        <button class="pdf-nav-btn" onclick="prevPdfPage()">◄</button>
-                        <span>ទំព័រទី</span>
-                        <select class="pdf-page-select" id="pdfPageSelect" onchange="changePdfPage(this.value)">
-                            <option value="1">1 / 12</option>
-                            <option value="2">2 / 12</option>
-                            <option value="3">3 / 12</option>
-                            <option value="4">4 / 12</option>
-                            <option value="5">5 / 12</option>
-                            <option value="6">6 / 12</option>
-                            <option value="7">7 / 12</option>
-                            <option value="8">8 / 12</option>
-                            <option value="9">9 / 12</option>
-                            <option value="10">10 / 12</option>
-                            <option value="11">11 / 12</option>
-                            <option value="12">12 / 12</option>
-                        </select>
-                        <button class="pdf-nav-btn" onclick="nextPdfPage()">►</button>
+                <!-- DYNAMIC NATIVE PDF CANVAS RENDERER STAGE -->
+                <div id="pdfCanvasContainer" class="pdf-viewer-stage">
+                    <div id="pdfPlaceholderMsg" class="pdf-placeholder-box" style="display: none;">
+                        <p style="font-size: 1.2rem; font-weight: 700;">📂 ជ្រើសរើស ឬទាញទម្លាក់ឯកសារ "Bacii Percantages.pdf"</p>
+                        <p style="font-size: 0.85rem; color: #cbd5e1;">អ្នកអាចជ្រើសរើស File PDF ផ្ទាល់ខ្លួនពីក្នុងម៉ាស៊ីនដើម្បីបង្ហាញទំព័រ PDF ដើមយ៉ាងច្បាស់ (HD Canvas Render)</p>
+                        <button onclick="document.getElementById('pdfFileInput').click()" style="padding: 8px 18px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 8px;">
+                            📥 ជ្រើសរើសឯកសារ PDF ឥឡូវនេះ
+                        </button>
                     </div>
+                    <canvas id="pdfCanvas"></canvas>
+                </div>
 
+                <!-- FALLBACK TEXT PAGINATION MODE CONTAINER -->
+                <div id="pdfTextContainer" style="display: none; width: 100%;">
                     <div class="pdf-paper-card">
                         <span class="pdf-page-watermark" id="pdfWatermark">PAGE 1</span>
                         <div class="pdf-content-body" id="pdfPageContent">
@@ -971,48 +1012,11 @@
     </div>
 
     <script>
-        // DIRECT PDF EMBEDDER LOGIC
-        let activePdfObjectUrl = null;
+        // Configure PDF.js Worker
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
 
-        function switchPdfViewMode(mode) {
-            const embedContainer = document.getElementById("pdfEmbedContainer");
-            const textContainer = document.getElementById("pdfTextContainer");
-            const embedBtn = document.getElementById("modeEmbedBtn");
-            const textBtn = document.getElementById("modeTextBtn");
-
-            if (mode === 'embed') {
-                embedContainer.style.display = "flex";
-                textContainer.style.display = "none";
-                embedBtn.style.background = "var(--primary)";
-                textBtn.style.background = "#64748b";
-            } else {
-                embedContainer.style.display = "none";
-                textContainer.style.display = "flex";
-                embedBtn.style.background = "#64748b";
-                textBtn.style.background = "var(--primary)";
-            }
-        }
-
-        function loadNativePdfFile(event) {
-            const file = event.target.files[0];
-            if (file && file.type === "application/pdf") {
-                if (activePdfObjectUrl) {
-                    URL.revokeObjectURL(activePdfObjectUrl);
-                }
-                activePdfObjectUrl = URL.createObjectURL(file);
-                const iframe = document.getElementById("pdfEmbedObject");
-                const placeholder = document.getElementById("pdfPlaceholderMsg");
-
-                iframe.src = activePdfObjectUrl;
-                iframe.style.display = "block";
-                placeholder.style.display = "none";
-            } else {
-                alert("សូមជ្រើសរើសឯកសារដែលមានទម្រង់ជា PDF (.pdf)!");
-            }
-        }
-
-        // PDF PAGES CONTENT EXACTLY FROM BACII PERCENTAGES.PDF
-        const pdfPages = [
+        // PRESET PDF TEXT PAGES FROM BACII PERCENTAGES.PDF
+        const pdfPagesText = [
             `សំណួរនិងលំហាត់ជីវវិទ្យា វិភាគបាក់ឌុប២០២៦ (៦០សំណួរ)
 
 1. ចូររកលក្ខណៈខុសគ្នារវាងរុក្ខជាតិម៉ូណូកូទីលេដូន និង ឌីកូទីលេដូន (100%)
@@ -1041,7 +1045,7 @@
 → ផ្កាមាននាទីដូចជា៖ ផលិតកោសិកាបន្តពូជញី, ផលិតកោសិកាបន្តពូជឈ្មោល, ទាក់ទាញសត្វល្អិតក្នុងដំណើរលំអង, ធ្វើឱ្យមានការបង្កកំណើត។
 
 8. ហេតុអ្វីបានជាអ័រម៉ូនភ្លេចតែកោសិកាគោលដៅ? (100%)
-ព្រោះកោសិកាគោលដៅមានឆួលនៅលើភ្នាសកោសិកា។ កោសិកាគោលដៅមានទម្រង់ត្រូវនឹងទម្រង់របស់អ័រម៉ូនដែលបង្កើតបានជាសារធាតុចម្រុះឆួល-អ័រម៉ូន។
+ព្រោះកោសិកាគោលដៅមានឆួលនៅលើភ្នាសកោសិកា។ កោសិកាគោលដៅមានទម្រង់ត្រូវនឹងទម្រង់របស់អ័រម៉ូនដែលបង្កើតបានជាសារធាតុឆួល-អ័រម៉ូន។
 
 9. តើអ័រម៉ូនដែលបញ្ចេញដោយកោសិកា (β) និង កោសិកាអាល់ហ្វា (α) របស់លំពែងមានសកម្មភាពដូចម្តេចខ្លះ? (100%)
 • សកម្មភាពកោសិកាបេតា (β)៖ បញ្ចេញអាំងស៊ុយលីន ពេលកម្រិតគ្លុយកូសកើនឡើងខ្ពស់ ជំរុញឱ្យថ្លើមនិងសាច់ដុំចាប់យកគ្លុយកូសប្រើប្រាស់ និងបំប្លែងគ្លុយកូសដែលសល់ទៅជាគ្លីកូសែន។
@@ -1067,140 +1071,148 @@
 • អ័រម៉ូនស្តេរ៉ូអ៊ុត៖ ជាម៉ូលេគុលលីពីតតូចៗ រលាយក្នុងស្រទាប់លីពីត អាចឆ្លងកាត់ភ្នាសកោសិកាបាន។
 
 15. ដូចម្តេចដែលហៅថាក្រពេញអង់ដូគ្រីន? ចូររាប់ឈ្មោះក្រពេញអង់ដូគ្រីនសំខាន់ៗ (100%)
-ជាក្រពេញគ្មានបំពង់នាំ ផលិត និងបញ្ចេញអ័រម៉ូនទៅកាន់ចរន្តឈាមដោយផ្ទាល់។ ក្រពេញសំខាន់ៗ៖ អ៊ីប៉ូតាឡាមុស, អ៊ីប៉ូភីស, ទីរ៉ូអ៊ុត, ប៉ារ៉ាទីរ៉ូអ៊ុត, ទីមុស, លំពែង, ក្រពះនិងពោះវៀនតូច, ក្រពេញលើតម្រង់នោម, ក្រពេញភេទ។
+ជាក្រពេញគ្មានបំពង់នាំ ផលិត និងបញ្ចេញអ័រម៉ូនទៅកាន់ចរន្តឈាមដោយផ្ទាល់។ ក្រពេញសំខាន់ៗ៖ អ៊ីប៉ូតាឡាមុស, អ៊ីប៉ូភីស, ទីរ៉ូអ៊ុត, ប៉ារ៉ាទីរ៉ូអ៊ុត, ទីមុស, លំពែង, ក្រពះនិងពោះវៀនតូច, ក្រពេញលើតម្រង់នោម, ក្រពេញភេទ។`,
 
-16. តើអ័រម៉ូនអុកស៊ីតូស៊ីននិងអរម៉ូនប្រូឡាក់ទីនមានលក្ខណៈខុសគ្នាដូចម្តេចខ្លះ? (70%)
+            `16. តើអ័រម៉ូនអុកស៊ីតូស៊ីននិងអរម៉ូនប្រូឡាក់ទីនមានលក្ខណៈខុសគ្នាដូចម្តេចខ្លះ? (70%)
 • អុកស៊ីតូស៊ីន៖ បញ្ចេញដោយអ៊ីប៉ូភីសក្រោយ, បញ្ចេញពេលសម្រាលកូន, ជំរុញការកន្ត្រាក់ស្បូន និងបញ្ចេញទឹកដោះ។
-• ប្រូឡាក់ទីន៖ បញ្ចេញដោយអ៊ីប៉ូភីសមុខ, បញ្ចេញក្រោយសម្រាលកូន, បណ្តាលឱ្យក្រពេញទឹកដោះលូតលាស់ និងផលិតទឹកដោះ។`,
+• ប្រូឡាក់ទីន៖ បញ្ចេញដោយអ៊ីប៉ូភីសមុខ, បញ្ចេញក្រោយសម្រាលកូន, បណ្តាលឱ្យក្រពេញទឹកដោះលូតលាស់ និងផលិតទឹកដោះ។
 
-            `17. ហេតុអ្វីបានជាគេនិយាយថា លំពែងជាក្រពេញអង់ដូគ្រីនផងនិងស៊ិចសូគ្រីនផង? (100%)
+17. ហេតុអ្វីបានជាគេនិយាយថា លំពែងជាក្រពេញអង់ដូគ្រីនផងនិងស៊ិចសូគ្រីនផង? (100%)
 ព្រោះជាអ៊ិចសូគ្រីនដោយបញ្ចេញរសលំពែងតាមបំពង់នាំ និងជាអង់ដូគ្រីនដោយបញ្ចេញអ័រម៉ូនអាំងស៊ុយលីន និងគ្លុយកាកុងទៅកាន់ចរន្តឈាម។
 
 18. ចូររកលក្ខណៈខុសគ្នាអ័រម៉ូនប៉ិបទីតនិងស្តេរ៉ូអ៊ុត (80%)
 • ប៉ិបទីត៖ កើតពីអាស៊ីតអាមីនេ, មិនរលាយក្នុងលីពីត, មិនអាចឆ្លងភ្នាស, សកម្មភាពក្នុងណៃយូ, មានឥទ្ធិពលរយៈពេលខ្លី។
-• ស្តេរ៉ូអ៊ុត៖ កើតពីលីពីត (កូលេស្តេរ៉ូល), រលាយក្នុងលីពីត, អាចឆ្លងភ្នាស, សកម្មភាពក្នុងណៃយូនិងស៊ីតូប្លាស, មានឥទ្ធិពលរយៈពេលយូរ។
+• ស្តេរ៉ូអ៊ុត៖ កើតពីលីពីត (កូលេស្តេរ៉ូល), រលាយក្នុងលីពីត, អាចឆ្លងភ្នាស, សកម្មភាពក្នុងណៃយូនិងស៊ីតូប្លាស, មានឥទ្ធិពលរយៈពេលយូរ។`,
 
-19. ក. តើលំពែងផលិតអ័រម៉ូនអ្វីខ្លះ? អ័រម៉ូននីមួយៗមាននាទីដូចម្តេច? ខ. ហេតុអ្វីបានគេចាត់ទុកថា ក្រពះ និងពោះវៀនតូចជាក្រពេញអង់ដូគ្រីន? (100%)
+            `19. ក. តើលំពែងផលិតអ័រម៉ូនអ្វីខ្លះ? អ័រម៉ូននីមួយៗមាននាទីដូចម្តេច? ខ. ហេតុអ្វីបានគេចាត់ទុកថា ក្រពះ និងពោះវៀនតូចជាក្រពេញអង់ដូគ្រីន? (100%)
 ក. ផលិតអាំងស៊ុយលីន (បន្ថយកម្រិតគ្លុយកូស) និងគ្លុយកាកុង (បង្កើនកម្រិតគ្លុយកូស)។
 ខ. ព្រោះវាផលិត និងបញ្ចេញអ័រម៉ូនទៅកាន់ចរន្តឈាមដោយផ្ទាល់។
 
 20. ហេតុអ្វីបានជាត្រចៀកមានជំងឺឆ្លងបណ្តាលឱ្យបាត់បង់ថេរលំនឹង? (80%)
-ព្រោះមេរោគធ្វើឱ្យត្រចៀកឡើងហើម ធាតុរាវក្នុងត្រចៀកដាក់សម្ពាធលើបំពង់ពាក់កណ្តាលរង្វង់ ធ្វើឱ្យរោមល្អិតៗលើកោសិកាផ្នូលផ្ញើសញ្ញាវិញ្ញាណតុល្យភាពទៅខួរក្បាលមិនត្រឹមត្រូវ។`,
-
-            `21. នៅពេលគ្រុនផ្តាសាយ ហេតុអ្វីបានជាអ្នកពិបាកក្នុងការភ្លក់រសជាតិនៃអាហារ? (100%)
-ព្រោះរសជាតិអាហារទាក់ទងនឹងវិញ្ញាណរសជាតិផង និងក្លិនផង។ ពេលគ្រុន ស្រទាប់ក្នុងរន្ធច្រមុះក្លាយជាខាប់ ធ្វើឱ្យផ្នូលវិញ្ញាណបំពេញនាទីមិនបានល្អ។
-
-22. ហេតុអ្វីបានជាពេលមានការប៉ះទង្គិច ឬរបួសដោយមុតដាច់ធ្វើឱ្យយើងមានការឈឺចាប់? (100%)
-ព្រោះនៅស្រទាប់ក្រោមអេពីឌែម (ដែម) មានឆួលវិញ្ញាណឈឺចាប់ ដែលបង្កើតជាអាំងភ្លុចប្រសាទ បញ្ជូនតាមសរសៃប្រសាទវិញ្ញាណនាំទៅខួរឆ្អឹងខ្នង និងបន្តទៅខួរក្បាលបកស្រាយឱ្យឈឺចាប់។
-
-23. ដូចម្តេចដែលហៅថាពន្លកជីវ្ហាវិញ្ញាណ? ចូររៀបរាប់ទីតាំងនៃរសជាតិទាំង៤របស់អណ្តាត (100%)
-ជាផ្នូលវិញ្ញាណរសជាតិ។ ផ្អែម (ចុងអណ្តាត), ប្រៃ (ចំហៀងផ្នែកមុខ), ជូរ (ចំហៀងផ្នែកបន្ទាប់), ល្វីង (គល់អណ្តាត)។
-
-24. តើរលកសូរមានឥទ្ធិពលទៅលើផ្នែកផ្សេងៗនៃត្រចៀកយ៉ាងដូចម្តេច? (100%)
-ស្លឹកត្រចៀកប្រមូលរលកសូរ -> រន្ធត្រចៀកនាំទៅក្រដាសត្រចៀក -> ឆ្អឹងតូចៗ៣ ញ័រ -> ភ្នាសបង្អួចរាងពងក្រពើញ័រ -> ធាតុរាវក្នុងបំពង់រាងគូទខ្យងញ័រ -> រោមល្អិតៗញ័រ -> ប្តូរជាអាំងភ្លុចប្រសាទ។`,
-
-            `25. តើស្បែកមាននាទីដូចម្តេចខ្លះ? (70%)
-ការពារសារពាង្គកាយពីឥទ្ធិពលរូប/គីមី, បង្ការមេរោគ, បង្ការការបាត់បង់ទឹក, ការពារកាំរស្មី UV, បណ្តូរឧស្ម័ន, បញ្ចេញកាកសំណល់តាមញើស, ទទួលរំញោចផ្សេងៗ, និងបន្ថយកម្ដៅ។
-
-26. តើឆួលវិញ្ញាណក្លិននិងជួលវិញ្ញាណរសជាតិមានទំនាក់ទំនងគ្នាយ៉ាងដូចម្តេច? (100%)
-រសជាតិអាហារទាក់ទងនឹងវិញ្ញាណរសជាតិ និងវិញ្ញាណក្លិន។ ក្លិនឈ្ងុយភោចឆួលក្លិន អាហារក្នុងមាត់ភោចឆួលរសជាតិ ទើបវិញ្ញាណទាំងពីរប្របំពេញគ្នាឱ្យអាហារមានរសជាតិឆ្ងាញ់។
-
-27. ក. ដូចម្តេចដែលហៅថា អង់ស៊ីលីយែ? ខ. តើបាតុភូតអ្វីដែលធ្វើឱ្យយើងអាចមើលឃើញវត្ថុផ្សេងៗស្ថិតនៅចម្ងាយខុសៗគ្នា? (80%)
-ក. អង្គស៊ីលីយែ៖ ជាសាច់ដុំរលីងជុំវិញកែវភ្នែក ភ្ជាប់កែវភ្នែកដោយសរសៃចំណង។
-ខ. កម្លាំងសម្របតម្រូវ (Accommodation)៖ កែវភ្នែកប្រែប្រួលកម្រាស់តាមរយៈការកន្ត្រាក់/បន្ធូរនៃអង្គស៊ីលីយែ។`,
-
-            `28. ក. តើអង់ស៊ីមជាអ្វី? ខ. ហេតុអ្វីបានជានៅក្នុងកោសិកានៃសារពាង្គកាយមានអង់ស៊ីមច្រើនប្រភេទ? គ. អង់ស៊ីមទាំងអស់សុទ្ធតែប្រូតេអ៊ីនដែរឬទេ? ព្រោះអ្វី? (100%)
-ក. អង់ស៊ីម ជាប្រូតេអ៊ីនដែលជាកាតាលីករជីវៈជួយជំរុញល្បឿនប្រតិកម្មគីមី។
-ខ. ព្រោះក្នុងកោសិកាមានប្រតិកម្មគីមីរាប់ពាន់ ហើយអង់ស៊ីមមួយមានអំពើលើប្រតិកម្មមួយប៉ុណោះ។
-គ. អង់ស៊ីមទាំងអស់ជាប្រូតេអ៊ីន ព្រោះកើតចេញពីអាស៊ីតអាមីនេភ្ជាប់គ្នាដោយសម្ព័ន្ធប៉ិបទីត។
-
-29. ហេតុអ្វីបានជាសីតុណ្ហភាពខ្ពស់ពេកឬទាបពេកធ្វើឱ្យអង់ស៊ីមបាត់បង់គុណភាព? (100%)
-ព្រោះអង់ស៊ីមជាប្រូតេអ៊ីន។ កាលណាសីតុណ្ហភាពខ្ពស់ពេក សម្ព័ន្ធអ៊ីដ្រូសែនត្រូវបានរលា ធ្វើឱ្យប្រូតេអ៊ីនខូចទ្រង់ទ្រាយ (Denaturation) ទើបអង់ស៊ីមបាត់បង់គុណភាព។
-
-30. ហេតុអ្វីបានជាគេនិយាយថាអង់ស៊ីមជាប្រូតេអ៊ីនដែលមានសកម្មភាពបានខ្លាំងក្លា? (100%)
-ព្រោះអង់ស៊ីមមួយចំនួនតូច អាចបង្កើនល្បឿនប្រតិកម្មគីមីបានមួយចំនួនធំ។`,
-
-            `31. តើគេហៅឈ្មោះរបស់អង់ស៊ីមបានត្រឹមត្រូវដោយផ្អែកលើកត្តាអ្វីខ្លះ? (100%)
-- យថាប្រភេទនៃកាតាលីករដែលជំរុញល្បឿនប្រតិកម្ម
-- ឈ្មោះស៊ុបស្អាតដែលបញ្ចប់ដោយពាក្យ «អាស» (-ase)
-
-32. ចូរពណ៌នាពីលក្ខណៈរបស់អង់ស៊ីម (100%)
-- ជាប្រូតេអ៊ីនមានសកម្មភាពខ្លាំងក្លា
-- ប្រែប្រួលតាមទម្រង់/នាទី សីតុណ្ហភាព pH និងកំហាប់ស៊ុបស្អាត
-- ជាកាតាលីករមានប្រតិកម្មបញ្ច្រាសទៅវិញទៅមក
-- អង់ស៊ីមខ្លះជាកូអង់ស៊ីម
-
-33. ក. ចូរសរសេររូបមន្តទូទៅរបស់អាស៊ីតអាមីនេ។ ខ. រ៉ាឌីកាល់ R របស់អាឡានីនគឺ -CH3, រ៉ាឌីកាល់ R របស់សេរីនគឺ -CH2OH។ ចូរសរសេររូបមន្តគីមីនៃអាស៊ីតអាមីនេទាំងពីរ។ គ. ចូរសរសេររូបមន្តឌីប៉ិបទីតរវាងអាស៊ីតអាមីនេទាំងពីរ (100%)
-ក. H2N-CH(R)-COOH
-ខ. អាឡានីន៖ H2N-CH(CH3)-COOH, សេរីន៖ H2N-CH(CH2OH)-COOH
-គ. H2N-CH(CH3)-CO-NH-CH(CH2OH)-COOH`,
-
-            `34. ក. តើអាស៊ីតអាមីនេពីរភ្ជាប់គ្នាដោយសារអ្វី? ចូរសរសេររូបមន្តស្ទើលាតនៃចំណងនោះ។ ខ. ចូរសរសេររូបមន្តទូទៅរបស់អាស៊ីតអាមីនេ ព្រមទាំងលើកឧទាហរណ៍បញ្ជាក់។ គ. ចូរសរសេររូបមន្តទូទៅនៃឌីប៉ិបទីត (100%)
-ក. ភ្ជាប់ដោយចំណងប៉ិបទីត (-CO-NH-)
-ខ. រូបមន្តទូទៅ H2N-CH(R)-COOH
-គ. H2N-CH(R1)-CO-NH-CH(R2)-COOH
-
-35. ហេតុអ្វីបានជាតំណលំដាប់អាស៊ីតអាមីនេកំណត់ទម្រង់និងនាទីរបស់ប្រូតេអ៊ីន? (100%)
-ព្រោះប្រូតេអ៊ីនជាប៉ូលីមែនៃអាស៊ីតអាមីនេ ហើយការតម្រៀបតំណលំដាប់អាស៊ីតអាមីនេធ្វើឱ្យម៉ូលេគុលមានទម្រង់ខុសៗគ្នា ដែលទម្រង់នោះជាអ្នកកំណត់នាទី។
-
-36. ក. តើនុយក្លេអូទីតជាអ្វី? តើវាផ្សំឡើងពីធាតុអ្វីខ្លះ? ខ. នុយក្លេអូទីតមានតែបួនប្រភេទ ហេតុអ្វីអាចបង្កើតម៉ូលេគុល DNA ខុសគ្នាច្រើន? (100%)
-ក. ជាម៉ូណូមែនៃ DNA ផ្សំពី៖ អាស៊ីតផូស្វ័រិច ១, ស្ករដេអុកស៊ីរីបូស ១, បាសអាស៊ូត (A, T, C, G) ១។
-ខ. ព្រោះកើតពីនុយក្លេអូទីតរាប់ម៉ឺនទៅរាប់លាន ដែលតម្រៀបគ្នាតាមតំណលំដាប់ ចំនួន និងប្រភេទខុសៗគ្នា។`,
-
-            `37. ក. នៅក្នុងម៉ូលេគុល DNA តើមានសម្ព័ន្ធអ្វីខ្លះ? តើសម្ព័ន្ធនីមួយៗកើតឡើងនៅកន្លែងណា? ខ. តើសម្ព័ន្ធណាដែលងាយដាច់ជាងគេ? (100%)
-ក. សម្ព័ន្ធកូវ៉ាឡង់រវាងអាស៊ីតផូស្វ័រិចនិងស្ករ, សម្ព័ន្ធអ៊ីដ្រូសែនរវាងបាសបំពេញគ្នា (A-T, C-G)។
-ខ. សម្ព័ន្ធអ៊ីដ្រូសែនងាយដាច់ជាងគេ។
-
-38. តើចលនការស្វ័យដំឡើងទ្វេ DNA មានសារៈសំខាន់ដូចម្តេចខ្លះ? (100%)
-រក្សាចំនួនក្រូម៉ូសូមឱ្យនៅដដែលពេលកោសិកាចែកខ្លួន ហើយធានាការបញ្ជូនព័ត៌មានសេនេទិចពីកោសិកាមេទៅកោសិកាកូន។
-
-39. ក្រោយពេលដំឡើងទ្វេហើយ ហេតុអ្វីបានជាម៉ូលេគុល DNA កូនដូចគ្នាបេះបិទទៅនឹងម៉ូលេគុល DNA មេ? (100%)
-ព្រោះច្រវាក់ទាំងពីរនៃ DNA មេធ្វើជាពុម្ពគំរូ ឯនុយក្លេអូទីតសេរីរត់ទៅបំពេញតាមគោលការណ៍បំពេញបាស (A-T, C-G) ធ្វើឱ្យ DNA កូននីមួយៗមានច្រវ៉ាក់ចាស់១ និងច្រវ៉ាក់ថ្មី១ ដូចមេបេះបិទ។
-
-40. ចូរប្រៀបធៀប DNA និងប្រូតេអ៊ីន (70%)
-• ដូចគ្នា៖ ជាម៉ាក្រូម៉ូលេគុល កើតពីម៉ូណូមែ និងមានតំណលំដាប់ជាក់លាក់។
-• ខុសគ្នា៖ DNA (នុយក្លេអូទីត៤, ២ច្រវ៉ាក់, ម៉ាសធំ) vs ប្រូតេអ៊ីន (អាស៊ីតអាមីនេ២០, ច្រវ៉ាក់ទោល, ម៉ាសតូច)។`,
-
-            `41. ចូរពណ៌នាពីនាទីរបស់ ARNt ក្នុងចលនការសំយោគប្រូតេអ៊ីន (100%)
-ដឹកនាំអាស៊ីតអាមីនេពីស៊ីតូប្លាសទៅក្នុងរីបូសូម និងតម្រូវអង់ទីកូដុងជាមួយកូដុង ARNm ដើម្បីបកប្រែព័ត៌មានជាប្រូតេអ៊ីន។
-
-42. ចូរពណ៌នាពីនាទីរបស់ DNA, mRNA, tRNA, rRNA ក្នុងចលនការសំយោគប្រូតេអ៊ីន (80%)
-- DNA៖ ផ្ទុកព័ត៌មានសេនេទិចកំណត់ការសំយោគ mRNA
-- mRNA៖ ចម្លងក្រមតំណលំដាប់ពី DNA ទៅស៊ីតូប្លាស
-- tRNA៖ ដឹកនាំអាស៊ីតអាមីនេ និងតម្រូវអង់ទីកូដុង
-- rRNA៖ ចូលរួមបង្កើតជារីបូសូម (រោងជាងសំយោគប្រូតេអ៊ីន)
-
-43. តើមានបាតុភូតអ្វីកើតឡើងនៅពេលដែលរីបូសូមលោតដល់កូដុងស្តុប? (100%)
-ចលនការសំយោគប្រូតេអ៊ីនត្រូវបានបញ្ចប់ ARNm, tRNA, រីបូសូម និងច្រវ៉ាក់ប៉ូលីប៉ិបទីតត្រូវបានបំបែកចេញពីគ្នា ហើយមេតយូនីនផ្ដាច់ចេញពីច្រវ៉ាក់ប៉ូលីប៉ិបទីត។
-
-44. ហេតុអ្វីបានជាចាំបាច់មានការចម្លងក្រម ARNm? (100%)
-ព្រោះព័ត៌មានសេនេទិចស្ថិតនៅជានិច្ចក្នុងណៃយូ ឯការសំយោគប្រូតេអ៊ីនស្ថិតនៅក្នុងស៊ីតូប្លាស ទើបចាំបាច់មាន ARNm ទៅចម្លងក្រម។`
+ព្រោះមេរោគធ្វើឱ្យត្រចៀកឡើងហើម ធាតុរាវក្នុងត្រចៀកដាក់សម្ពាធលើបំពង់ពាក់កណ្តាលរង្វង់ ធ្វើឱ្យរោមល្អិតៗលើកោសិកាផ្នូលផ្ញើសញ្ញាវិញ្ញាណតុល្យភាពទៅខួរក្បាលមិនត្រឹមត្រូវ។`
         ];
 
-        let currentPdfPage = 0;
+        // PDF.js VARIABLES FOR DIRECT FILE IMPORT & PAGE RENDERING
+        let importedPdfDoc = null;
+        let currentPdfPageNum = 1;
+        let totalPdfPages = pdfPagesText.length;
+        let activeViewMode = 'pdf'; // 'pdf' or 'text'
+        let pdfRenderScale = 1.4;
 
-        function renderPdfPage() {
-            document.getElementById("pdfWatermark").innerText = `PAGE ${currentPdfPage + 1}`;
-            document.getElementById("pdfPageContent").innerText = pdfPages[currentPdfPage];
-            document.getElementById("pdfPageSelect").value = (currentPdfPage + 1).toString();
+        function updatePdfPageDropdown(total) {
+            const select = document.getElementById("pdfPageSelect");
+            select.innerHTML = "";
+            for (let i = 1; i <= total; i++) {
+                const opt = document.createElement("option");
+                opt.value = i;
+                opt.innerText = `${i} / ${total}`;
+                select.appendChild(opt);
+            }
+            select.value = currentPdfPageNum;
+        }
+
+        function switchPdfViewMode(mode) {
+            activeViewMode = mode;
+            const pdfStage = document.getElementById("pdfCanvasContainer");
+            const textStage = document.getElementById("pdfTextContainer");
+            const btnPdf = document.getElementById("btnRenderPdfMode");
+            const btnText = document.getElementById("btnTextPdfMode");
+
+            if (mode === 'pdf') {
+                pdfStage.style.display = "flex";
+                textStage.style.display = "none";
+                btnPdf.style.background = "var(--primary)";
+                btnText.style.background = "#64748b";
+                renderCurrentPdfPage();
+            } else {
+                pdfStage.style.display = "none";
+                textStage.style.display = "block";
+                btnPdf.style.background = "#64748b";
+                btnText.style.background = "var(--primary)";
+                renderTextModePage();
+            }
+        }
+
+        function handleDirectPdfImport(event) {
+            const file = event.target.files[0];
+            if (file && file.type === "application/pdf") {
+                const fileReader = new FileReader();
+                fileReader.onload = function() {
+                    const typedarray = new Uint8Array(this.result);
+                    pdfjsLib.getDocument({ data: typedarray }).promise.then(function(pdfDoc_) {
+                        importedPdfDoc = pdfDoc_;
+                        totalPdfPages = importedPdfDoc.numPages;
+                        currentPdfPageNum = 1;
+                        document.getElementById("pdfBoxTitle").innerText = `អត្ថបទដើម PDF (${file.name})`;
+                        document.getElementById("pdfPlaceholderMsg").style.display = "none";
+                        document.getElementById("pdfCanvas").style.display = "block";
+                        updatePdfPageDropdown(totalPdfPages);
+                        switchPdfViewMode('pdf');
+                    }).catch(function(err) {
+                        alert("មិនអាចអានឯកសារ PDF បានទេ! សូមព្យាយាមម្ដងទៀត។");
+                    });
+                };
+                fileReader.readAsArrayBuffer(file);
+            }
+        }
+
+        function renderCurrentPdfPage() {
+            if (importedPdfDoc) {
+                importedPdfDoc.getPage(currentPdfPageNum).then(function(page) {
+                    const canvas = document.getElementById('pdfCanvas');
+                    const ctx = canvas.getContext('2d');
+                    const viewport = page.getViewport({ scale: pdfRenderScale });
+
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+
+                    const renderContext = {
+                        canvasContext: ctx,
+                        viewport: viewport
+                    };
+                    page.render(renderContext);
+                });
+            } else {
+                // Show placeholder if no PDF file imported yet
+                document.getElementById("pdfPlaceholderMsg").style.display = "flex";
+                document.getElementById("pdfCanvas").style.display = "none";
+            }
+        }
+
+        function renderTextModePage() {
+            const watermark = document.getElementById("pdfWatermark");
+            const content = document.getElementById("pdfPageContent");
+            watermark.innerText = `PAGE ${currentPdfPageNum}`;
+            
+            if (currentPdfPageNum <= pdfPagesText.length) {
+                content.innerText = pdfPagesText[currentPdfPageNum - 1];
+            } else {
+                content.innerText = `ទំព័រទី ${currentPdfPageNum} នៃឯកសារ PDF ដែលបាននាំចូល។`;
+            }
         }
 
         function changePdfPage(val) {
-            currentPdfPage = parseInt(val) - 1;
-            renderPdfPage();
+            currentPdfPageNum = parseInt(val);
+            if (activeViewMode === 'pdf') {
+                renderCurrentPdfPage();
+            } else {
+                renderTextModePage();
+            }
         }
 
         function nextPdfPage() {
-            if (currentPdfPage < pdfPages.length - 1) {
-                currentPdfPage++;
-                renderPdfPage();
+            if (currentPdfPageNum < totalPdfPages) {
+                currentPdfPageNum++;
+                document.getElementById("pdfPageSelect").value = currentPdfPageNum;
+                changePdfPage(currentPdfPageNum);
             }
         }
 
         function prevPdfPage() {
-            if (currentPdfPage > 0) {
-                currentPdfPage--;
-                renderPdfPage();
+            if (currentPdfPageNum > 1) {
+                currentPdfPageNum--;
+                document.getElementById("pdfPageSelect").value = currentPdfPageNum;
+                changePdfPage(currentPdfPageNum);
             }
         }
 
@@ -1214,68 +1226,67 @@
             }
         }
 
-        // EXACT DATA FROM YOUR PDF DOCUMENT (63 QUESTIONS)
         const pdfQuestions = [
-            { id: 1, q: "ចូររកលក្ខណៈខុសគ្នារវាងរុក្ខជាតិម៉ូណូកូទីលេដូននិងឌីកូទីលេដូន?", a: "• រុក្ខជាតិម៉ូណូកូទីលេដូន៖ គ្រាប់មានកូទីលេដុង១, ស្លឹកមានទ្រនុងស្រប, ផ្កា៣ស្រទាប់ឬពហុគុណ៣, ដើមមានបាច់សរសៃនាំស្ថិតនៅរាយប៉ាយ, ឬសស្វែ។\n• រុក្ខជាតិនីកូទីលេដូន៖ គ្រាប់មានកូទីលេដុង២, ស្លឹកមានទ្រនុងបែកខ្នែង, ផ្កា៤ឬ៥ស្រទាប់ឬពហុគុណនៃ៤ឬ៥, ដើមមានបាច់សរសៃនាំស្ថិតនៅជារង្វង់, ឬសកែវ។" },
+            { id: 1, q: "ចូររកលក្ខណៈខុសគ្នារវាងរុក្ខជាតិម៉ូណូកូទីលេដូននិងឌីកូទីលេដូន?", a: "• រុក្ខជាតិម៉ូណូកូទីលេដូន៖ គ្រាប់មានកូទីលេដុង១, ស្លឹកមានទ្រនុងស្រប, ផ្កា៣ស្រទាប់ឬពហុគុណ៣, ដើមមានបាច់សរសៃនាំស្ថិតនៅរាយប៉ាយ, ឬសស្វែ។\n• រុក្ខជាតិនីកូទីលេដូន៖ គ្រាប់មានកូទីលេដុង២, ស្លឹកមានទ្រនុងបែកខ្នែង, ផ្កា៤ឬ៥ស្រទាប់ឬពហុគុណនៃ៤ឬ៥, ដើមមានបាច់សរសៃនាំស្ថិតនៅជារង្វង់, ឬសកែវ membrane" },
             { id: 2, q: "តើស្លឹករុក្ខជាតិនីកូទីលេដូនបង្ហាញឱ្យឃើញស្រទាប់អ្វីខ្លះ? តើស្រទាប់នីមួយៗមាននាទីដូចម្តេច?", a: "- ស្រទាប់អេពីឌែមលើក្រោម៖ មាននាទីការពារស្លឹករុក្ខជាតិ និងមានស្តូម៉ាតសម្រាប់បណ្តូរឧស្ម័ន និងបំភាយចំហាយទឹក។\n- ស្រទាប់ប៉ាលីសាត៖ មានក្លរ៉ូប្លាសផ្ទុកក្លរ៉ូភីល។ វាមាននាទីសំខាន់ក្នុងដំណើរស្មីសំយោគដើម្បីបង្កើតអាហារ។\n- ស្រទាប់ស្ប៉ោត៖ មានផ្ទុកស៊ីឡែមនិងផ្លូអែម និងរន្ធខ្យល់។" },
-            { id: 3, q: "ហេតុអ្វីបានជាគ្រាប់លំអងមិនមែនជាកាម៉ែតឈ្មោល? ចូរពន្យល់?", a: "គ្រាប់លំអង ជាកោសិកាមានណៃយ៉ូអាប្លូអ៊ុតពីរ គឺណៃយ៉ូបន្តពូជ និងណៃយ៉ូលូតលាស់។\n- ណៃយ៉ូលូតលាស់ នាំដំណើរការលូតលាស់នៃបំពង់លំអង។\n- ណៃយ៉ូបន្តពូជ ចែកខ្លួនតាមមីតូស ១ ដង បង្កើតបានស្ពែម៉ាតូសូអ៊ុតពីរគ្មានផ្លាសែល។" },
+            { id: 3, q: "ហេតុអ្វីបានជាគ្រាប់លំអងមិនមែនជាកាម៉ែតឈ្មោល? ចូរពន្យល់?", a: "គ្រាប់លំអង ជាកោសិកាមានណៃយ៉ូអាប្លូអ៊ុតពីរ គឺណៃយ៉ូបន្តពូជ និងណៃយ៉ូលូតលាស់។\n- ណៃយ៉ូលូតលាស់ នាំដំណើរការលូតលាស់នៃបំពង់លំអង។\n- ណៃយ៉ូបន្តពូជ ចែកខ្លួនតាមមីតូស ១ ដង បង្កើតបានស្ពែម៉ាតូសូអ៊ុតពីរគ្មានផ្លាសែល membrane" },
             { id: 4, q: "តើពោតជាម៉ូណូកូទីលេដូនឬឌីកូទីលេដូន? ព្រោះអ្វី? តើពោតមានដំណើរលំអងបែបណា?", a: "→ ពោតជាម៉ូណូកូទីលេដូន ព្រោះ៖ គ្រាប់មានកូទីលេដុង១, ស្លឹកវែងមានទ្រនុងស្រប, ផ្កា៣ស្រទាប់ឬពហុគុណ៣, ដើមមានបាច់សរសៃនាំស្ថិតនៅរាយប៉ាយ, ឬសស្វែ, ដើមទោលត្រង់។\n→ ពោតមានដំណើរលំអងកាត់ ព្រោះកញ្ចុំកេសរញី និងកញ្ចុំកេសរឈ្មោលមានទីតាំងផ្សេងគ្នា ប៉ុន្តែវាស្ថិតនៅលើដើមតែមួយ។" },
-            { id: 5, q: "ដូចម្តេចដែលហៅថាដំណើរលំអងសិប្បនិម្មិត? ហេតុអ្វីបានជាគេធ្វើដំណើរលំអងបែបសិប្បនិម្មិត?", a: "→ ដំណើរលំអងបែបសិប្បនិម្មិត គឺជាដំណើរលំអងដែលមនុស្សយកគ្រាប់លំអងពីរុក្ខជាតិមួយទៅដាក់លើស្ទិចម៉ាតរបស់រុក្ខជាតិមួយទៀត។\n→ បានជាគេធ្វើដំណើរលំអងនេះឡើង ព្រោះដើម្បីបង្កាត់រុក្ខជាតិមានលក្ខណៈពិសេសៗដែលគេចង់បាន។" },
+            { id: 5, q: "ដូចម្តេចដែលហៅថាដំណើរលំអងសិប្បនិម្មិត? ហេតុអ្វីបានជាគេធ្វើដំណើរលំអងបែបសិប្បនិម្មិត?", a: "→ ដំណើរលំអងបែបសិប្បនិម្មិត គឺជាដំណើរលំអងដែលមនុស្សយកគ្រាប់លំអងពីរុក្ខជាតិមួយទៅដាក់លើស្ទិចម៉ាតរបស់រុក្ខជាតិមួយទៀត។\n→ បានជាគេធ្វើដំណើរលំអងនេះឡើង ព្រោះដើម្បីបង្កាត់រុក្ខជាតិមានលក្ខណៈពិសេសៗដែលគេចង់បាន membrane" },
             { id: 6, q: "តើការបង្កកំណើតទ្វេ? ហេតុអ្វីបានជារុក្ខជាតិអង់ស្យូស្ពែមមានការបង្កកំណើតទ្វេ?", a: "ការបង្កកំណើតទ្វេ គឺជាការបង្កកំណើតពីរដងក្នុងពេលតែមួយរបស់រុក្ខជាតិអង់ស្យូស្ពែម。\nបានជារុក្ខជាតិអង់ស្យូស្ពែមមានការបង្កកំណើតទ្វេ ព្រោះ៖ ស្ពែម៉ាតូសូអ៊ុតមួយចូលរួមបង្កកំណើតជាមួយកាម៉ែតញី បង្កើតបានជាស៊ីកូតឌីប្លូអ៊ុត (2n) មួយដែលលូតលាស់ទៅជាអំប្រ៊ីយ៉ុង ហើយស្ពែម៉ាតូសូអ៊ុតមួយទៀតបង្កកំណើតជាមួយណៃយ៉ូកណ្តាល (2n) បង្កើតជាអាល់ប៊ុយម៉ែន (3n)។" },
-            { id: 7, q: "តើផ្ការុក្ខជាតិអង់ស្យូស្ពៃមមាននាទីដូចម្តេច?", a: "→ ផ្កាមាននាទីដូចជា៖\n- ផលិតកោសិកាបន្តពូជញី\n- ផលិតកោសិកាបន្តពូជឈ្មោល\n- ទាក់ទាញសត្វល្អិតក្នុងដំណើរលំអង\n- ធ្វើឱ្យមានការបង្កកំណើត។" },
-            { id: 8, q: "ហេតុអ្វីបានជាអរម៉ូនភ្លេចតែកោសិកាគោលដៅ?", a: "បានជាអរម៉ូនភ្លេចតែកោសិកាគោលដៅ ព្រោះកោសិកាគោលដៅមានឆួលនៅលើភ្នាសកោសិកា។ កោសិកាគោលដៅមានទម្រង់ត្រូវនឹងទម្រង់របស់អរម៉ូន ដែលបង្កើតបានជាសារធាតុចម្រុះឆួល-អរម៉ូន។ សារធាតុនេះហើយដែលធ្វើឱ្យកោសិកាគោលដៅឆ្លើយតបទៅនឹងអំពើរបស់អរម៉ូន។" },
-            { id: 9, q: "តើអរម៉ូនដែលបញ្ចេញដោយកោសិកា (B) និង កោសិកាអាល់ហ្វា (a) របស់លំពែងមានសកម្មភាពដូចម្តេចខ្លះ?", a: "• សកម្មភាពកោសិកាបេតា (β)៖ នៅពេលកម្រិតគ្លុយកូសកើនឡើងខ្ពស់ បញ្ចេញអាំងស៊ុយលីន ភ្លេចកោសិកាគោលដៅ (ថ្លើម, សាច់ដុំ, ជាលិកាខ្លាញ់) ឱ្យចាប់យកគ្លុយកូសប្រើប្រាស់ជាប្រភពថាមពល។ គ្លុយកូសដែលសល់បំប្លែងទៅជាគ្លីកូសែនស្តុកទុក。\n• សកម្មភាពកោសិកាអាល់ហ្វា (α)៖ នៅពេលគ្លុយកូសធ្លាក់ចុះ បញ្ចេញគ្លុយកាកុង ជំរុញថ្លើមឱ្យបំប្លែងគ្លីកូសែនទៅជាគ្លុយកូសបញ្ចេញទៅក្នុងឈាមវិញ។" },
-            { id: 10, q: "ចូរប្រៀបធៀបក្រពេញអង់ដូគ្រីននិងក្រពេញអ៊ុចសូគ្រីន?", a: "→ លក្ខណៈដូចគ្នា៖ ជាសរីរាង្គកើតចេញពីកោសិកាអេពីតេស្យូម បញ្ចេញសារធាតុចាំបាច់សម្រាប់សារពាង្គកាយ。\n→ លក្ខណៈខុសគ្នា៖\n- អង់ដូគ្រីន៖ គ្មានបំពង់នាំ, ផលិតអរម៉ូន, បញ្ចេញអរម៉ូនទៅកាន់ចរន្តឈាមដោយផ្ទាល់。\n- អ៊ិចសូគ្រីន៖ មានបំពង់នាំ, ផលិតរសរំលាយអាហារ/សំណល់, បញ្ចេញតាមបំពង់នាំ។" },
-            { id: 11, q: "តើក្រពេញទីរ៉ូអ៊ុតស្ថិតនៅត្រង់ណា? វាផលិតអរម៉ូនអ្វីខ្លះ? ហើយមាននាទីដូចម្តេច?", a: "ក្រពេញទីរ៉ូអ៊ុតស្ថិតនៅត្រង់ក ចំពីក្រោមបំពង់សំឡេង ខាងមុខបំពង់ខ្យល់។ វាផលិតអរម៉ូនទីរ៉ុកស៊ីន (បង្កើនអត្រាមេតាបូលីសប្រូតេអ៊ីន, គ្លុយស៊ីត, ខ្លាញ់) និងកាល់ស៊ីតូនីន (តម្រូវអត្រាកាល់ស្យូមក្នុងឈាម)។" },
-            { id: 12, q: "ដូចម្តេចដែលហៅថា ក្រពេញប៉ារ៉ាទីរ៉ូអ៊ុត? វាផលិតអរម៉ូនអ្វី? អ័រម៉ូននីមួយៗមាននាទីដូចម្តេច?", a: "→ ក្រពេញប៉ារ៉ាទីរ៉ូអ៊ុត ជាក្រពេញរាងពងក្រពើតូចៗចំនួន ៤ បង្កប់ក្នុងផ្នែកខាងក្រោយនៃក្រពេញទីរ៉ូអ៊ុត。\n→ វាផលិតអរម៉ូនប៉ារ៉ាទីរ៉ូអ៊ុត ដែលមាននាទីតម្រូវមេតាបូលីសកាល់ស្យូម និងផូស្វាតនៅក្នុងសារពាង្គកាយ។" },
-            { id: 13, q: "ហេតុអ្វីបានជាគេថា ក្រពះនិងពោះវៀនតូចជាក្រពេញអង់ដូគ្រីន?", a: "ព្រោះក្រពះបញ្ចេញអរម៉ូនកាស្ទីន និងពោះវៀនតូចបញ្ចេញអរម៉ូនសេក្រេទីនទៅកាន់ចរន្តឈាមដោយផ្ទាល់។" },
-            { id: 14, q: "តើអរម៉ូនមានប៉ុន្មានក្រុម? អ្វីខ្លះ? ចូររៀបរាប់?", a: "- អរម៉ូនប៉ិបទីត៖ កើតពីច្រវ៉ាក់អាស៊ីតអាមីនេ មិនរលាយក្នុងស្រទាប់លីពីត មិនអាចឆ្លងកាត់ភ្នាសកោសិកាបាន。\n- អរម៉ូនស្តេរ៉ូអ៊ុត៖ ជាម៉ូលេគុលលីពីតតូចៗ រលាយក្នុងស្រទាប់លីពីត អាចឆ្លងកាត់ភ្នាសកោសិកាបាន។" },
-            { id: 15, q: "ដូចម្តេចដែលហៅថាក្រពេញអង់ដូគ្រីន? ចូររាប់ឈ្មោះក្រពេញអង់ដូគ្រីនសំខាន់ៗ?", a: "ជាក្រពេញគ្មានបំពង់នាំ ផលិត និងបញ្ចេញអរម៉ូនទៅកាន់ចរន្តឈាមដោយផ្ទាល់。\nក្រពេញសំខាន់ៗ៖ អីប៉ូតាឡាមុស, អីប៉ូភីស, ទីរ៉ូអ៊ុត, ប៉ារ៉ាទីរ៉ូអ៊ុត, ទីមុស, លំពែង, ក្រពះនិងពោះវៀនតូច, ក្រពេញលើតម្រង់នោម, ក្រពេញភេទ។" },
-            { id: 16, q: "តើអរម៉ូនអុកស៊ីតូស៊ីននិងអរម៉ូនប្រឡាក់ទីនមានលក្ខណៈខុសគ្នាដូចម្តេចខ្លះ?", a: "• អុកស៊ីតូស៊ីន៖ បញ្ចេញដោយអីប៉ូភីសក្រោយ, បញ្ចេញពេលសម្រាល, ជំរុញការកន្ត្រាក់ស្បូន និងបញ្ចេញទឹកដោះ。\n• ប្រូឡាក់ទីន៖ បញ្ចេញដោយអីប៉ូភីសមុខ, បញ្ចេញក្រោយសម្រាល, បណ្តាលឱ្យក្រពេញទឹកដោះលូតលាស់ និងផលិតទឹកដោះ។" },
-            { id: 17, q: "ហេតុអ្វីបានជាគេនិយាយថា លំពែងជាក្រពេញអង់ដូគ្រីនផងនិងស៊ិចសូគ្រីនផង?", a: "- ជាអ៊ិចសូគ្រីន៖ បញ្ចេញរសលំពែងតាមបំពង់នាំ。\n- ជាអង់ដូគ្រីន៖ បញ្ចេញអរម៉ូនអាំងស៊ុយលីន និងគ្លុយកាកុងទៅកាន់ចរន្តឈាម។" },
-            { id: 18, q: "ចូររកលក្ខណៈខុសគ្នាអរម៉ូនប៉ិបទីតនិងស្តេរ៉ូអ៊ុត?", a: "• ប៉ិបទីត៖ កើតពីអាស៊ីតអាមីនេ, មិនរលាយក្នុងលីពីត, មិនអាចឆ្លងភ្នាស, សកម្មភាពក្នុងណៃយូ, មានឥទ្ធិពលរយៈពេលខ្លី。\n• ស្តេរ៉ូអ៊ុត៖ កើតពីលីពីត, រលាយក្នុងលីពីត, អាចឆ្លងភ្នាស, សកម្មភាពក្នុងណៃយូនិងស៊ីតូប្លាស, មានឥទ្ធិពលរយៈពេលយូរ" },
-            { id: 19, q: "ក. តើលំពែងផលិតអរម៉ូនអ្វីខ្លះ? អរម៉ូននីមួយៗមាននាទីដូចម្តេច? ខ. ហេតុអ្វីបានគេចាត់ទុកថា ក្រពះ និងពោះវៀនតូចជាក្រពេញអង់ដូគ្រីន?", a: "ក. លំពែងផលិតអាំងស៊ុយលីន (បន្ថយកម្រិតគ្លុយកូស) និងគ្លុយកាកុង (បង្កើនកម្រិតគ្លុយកូស)។\nខ. ព្រោះវាផលិត និងបញ្ចេញអរម៉ូនទៅកាន់ចរន្តឈាមដោយផ្ទាល់ (ក្រពះផលិតកាស្ទីន, ពោះវៀនតូចផលិតសេក្រេទីន)។" },
-            { id: 20, q: "ហេតុអ្វីបានជាត្រចៀកមានជំងឺឆ្លងបណ្តាលឱ្យបាត់បង់ថេរលំនឹង?", a: "ព្រោះមេរោគបណ្តាលឱ្យត្រចៀកឡើងហើម ធាតុរាវក្នុងត្រចៀកដាក់សម្ពាធលើបំពង់ពាក់កណ្តាលរង្វង់ ធ្វើឱ្យរោមល្អិតៗលើកោសិកាផ្នូលផ្ញើសញ្ញាវិញ្ញាណតុល្យភាពទៅខួរក្បាលមិនត្រឹមត្រូវ។" },
-            { id: 21, q: "នៅពេលគ្រុនផ្តាសាយ ហេតុអ្វីបានជាអ្នកពិបាកក្នុងការភ្លក់រសជាតិនៃអាហារ?", a: "ព្រោះរសជាតិអាហារទាក់ទងនឹងវិញ្ញាណរសជាតិផង និងក្លិនផង។ ពេលគ្រុន ស្រទាប់ក្នុងរន្ធច្រមុះក្លាយជាខាប់ ធ្វើឱ្យផ្នូលវិញ្ញាណបំពេញនាទីមិនបានល្អ។" },
-            { id: 22, q: "ហេតុអ្វីបានជាពេលមានការប៉ះទង្គិច ឬរបួសដោយមុតដាច់ធ្វើឱ្យយើងមានការឈឺចាប់?", a: "ព្រោះនៅស្រទាប់ក្រោមអេពីឌែមមានឆួលវិញ្ញាណឈឺចាប់ ដែលបង្កើតជាអាំងភ្លុចប្រសាទ បញ្ជូនតាមសរសៃប្រសាទវិញ្ញាណនាំទៅខួរឆ្អឹងខ្នង រួចបន្តទៅខួរក្បាលបកស្រាយឱ្យយើងឈឺចាប់។" },
-            { id: 23, q: "ដូចម្តេចដែលហៅថាពន្លកជីវ្ហាវិញ្ញាណ? ចូររៀបរាប់ទីតាំងនៃរសជាតិទាំង៤របស់អណ្តាត?", a: "ជាផ្នូលវិញ្ញាណរសជាតិ。\n- ផ្អែម៖ ចុងអណ្តាត\n- ប្រៃ៖ ចំហៀងសងខាង (ផ្នែកមុខ)\n- ជូរ៖ ចំហៀងសងខាង (ផ្នែកបន្ទាប់)\n- ល្វីង៖ គល់អណ្តាត" },
-            { id: 24, q: "តើរលកសូរមានឥទ្ធិពលទៅលើផ្នែកផ្សេងៗនៃត្រចៀកយ៉ាងដូចម្តេច?", a: "ស្លឹកត្រចៀកប្រមូលរលកសូរ -> រន្ធត្រចៀកនាំទៅក្រដាសត្រចៀក -> ឆ្អឹងតូចៗ៣ ញ័រ -> ភ្នាសបង្អួចរាងពងក្រពើញ័រ -> ធាតុរាវក្នុងបំពង់រាងគូទខ្យងញ័រ -> រោមល្អិតៗញ័រ -> ប្តូរជាអាំងភ្លុចប្រសាទ។" },
-            { id: 25, q: "តើស្បែកមាននាទីដូចម្តេចខ្លះ?", a: "ការពារសារពាង្គកាយ, បង្ការការជ្រៀតចូលនៃមេរោគ, បង្ការការបាត់បង់ទឹក, ការពារកាំរស្មី UV, បណ្តូរឧស្ម័ន, បញ្ចេញកាកសំណល់តាមញើស, ទទួលរំញោចផ្សេងៗ, និងបន្ថយកម្ដៅ" },
-            { id: 26, q: "តើឆួលវិញ្ញាណក្លិននិងជួលវិញ្ញាណរសជាតិមានទំនាក់ទំនងគ្នាយ៉ាងដូចម្តេច?", a: "រសជាតិអាហារទាក់ទងនឹងវិញ្ញាណរសជាតិ និងវិញ្ញាណក្លិន។ ក្លិនឈ្ងុយភោចឆួលក្លិន អាហារក្នុងមាត់ភោចឆួលរសជាតិ ទើបវិញ្ញាណទាំងពីរប្របំពេញគ្នាឱ្យអាហារមានរសជាតិឆ្ងាញ់។" },
-            { id: 27, q: "ក. ដូចម្តេចដែលហៅថា អង់ស៊ីលីយែ? ខ. តើបាតុភូតអ្វីដែលធ្វើឱ្យយើងអាចមើលឃើញវត្ថុផ្សេងៗស្ថិតនៅចម្ងាយខុសៗគ្នា?", a: "ក. អង្គស៊ីលីយែ៖ ជាសាច់ដុំរលីងជុំវិញកែវភ្នែក ភ្ជាប់កែវភ្នែកដោយសរសៃចំណង。\nខ. កម្លាំងសម្របតម្រូវ៖ បង្កើតកម្រាស់កែវភ្នែកត្រឹមត្រូវតាមរយៈការកន្ត្រាក់/បន្ធូរនៃអង្គស៊ីលីយែ។" },
-            { id: 28, q: "ក. តើអង់ស៊ីមជាអ្វី? ខ. ហេតុអ្វីបានជានៅក្នុងកោសិកានៃសារពាង្គកាយមានអង់ស៊ីមច្រើនប្រភេទ? គ. អង់ស៊ីមទាំងអស់សុទ្ធតែប្រូតេអ៊ីនដែរឬទេ? ព្រោះអ្វី?", a: "ក. អង់ស៊ីម ជាប្រូតេអ៊ីនដែលជាកាតាលីករជីវៈជួយជំរុញល្បឿនប្រតិកម្មគីមី。\nខ. ព្រោះក្នុងកោសិកាមានប្រតិកម្មគីមីរាប់ពាន់ ហើយអង់ស៊ីមមួយមានអំពើលើប្រតិកម្មមួយប៉ុណោះ。\nគ. អង់ស៊ីមទាំងអស់ជាប្រូតេអ៊ីន ប៉ុន្តែមានមុខងារមិនដូចគ្នានឹងប្រូតេអ៊ីនទូទៅទេ..." },
-            { id: 29, q: "ហេតុអ្វីបានជាសីតុណ្ហភាពខ្ពស់ពេកឬទាបពេកធ្វើឱ្យអង់ស៊ីមបាត់បង់គុណភាព?", a: "ព្រោះអង់ស៊ីមជាប្រូតេអ៊ីន។ កាលណាសីតុណ្ហភាពខ្ពស់ពេក សម្ព័ន្ធអ៊ីដ្រូសែនត្រូវបានរលា ធ្វើឱ្យប្រូតេអ៊ីនខូចទ្រង់ទ្រាយ ទើបអង់ស៊ីមបាត់បង់គុណភាព។" },
-            { id: 30, q: "ហេតុអ្វីបានជាគេនិយាយថាអង់ស៊ីមជាប្រូតេអ៊ីនដែលមានសកម្មភាពបានខ្លាំងក្លា?", a: "ព្រោះអង់ស៊ីមមួយចំនួនតូច អាចបង្កើនល្បឿនប្រតិកម្មគីមីបានមួយចំនួនធំ" },
-            { id: 31, q: "តើគេហៅឈ្មោះរបស់អង់ស៊ីមបានត្រឹមត្រូវដោយផ្អែកលើកត្តាអ្វីខ្លះ?", a: "- យថាប្រភេទនៃកាតាលីករដែលជំរុញល្បឿនប្រតិកម្ម\n- ឈ្មោះស៊ុបស្អាតដែលបញ្ចប់ដោយពាក្យ «អាស»" },
-            { id: 32, q: "ចូរពណ៌នាពីលក្ខណៈរបស់អង់ស៊ីម?", a: "- ជាប្រូតេអ៊ីនមានសកម្មភាពខ្លាំងក្លា\n- ប្រែប្រួលតាមទម្រង់/នាទី សីតុណ្ហភាព pH និងកំហាប់ស៊ុបស្អាត\n- ជាកាតាលីករមានប្រតិកម្មបញ្ច្រាសទៅវិញទៅមក\n- អង់ស៊ីមខ្លះជាកូអង់ស៊ីម" },
-            { id: 33, q: "ក. ចូរសរសេររូបមន្តទូទៅរបស់អាស៊ីតអាមីនេ។ ខ. រ៉ាឌីកាល់ R របស់អាឡានីនគឺ CH3 និងសេរីនគឺ CH2OH។ ចូរសរសេររូបមន្តគីមីនៃអាស៊ីតអាមីនេទាំងពីរ។ គ. ចូរសរសេររូបមន្តឌីប៉ិបទីតរវាងអាស៊ីតអាមីនេទាំងពីរ។", a: "ក. H2N-CH(R)-COOH\nខ. អាឡានីន៖ H2N-CH(CH3)-COOH | សេរីន៖ H2N-CH(CH2OH)-COOH\nគ. H2N-CH(CH3)-CO-NH-CH(CH2OH)-COOH" },
-            { id: 34, q: "ក. តើអាស៊ីតអាមីនេពីរភ្ជាប់គ្នាដោយសារអ្វី? ចូរសរសេររូបមន្តស្ទើលាតនៃចំណងដែលភ្ជាប់នោះ។ ខ. ចូរសរសេររូបមន្តទូទៅរបស់អាស៊ីតអាមីនេព្រមទាំងលើកឧទាហរណ៍បញ្ជាក់។ គ. ចូរសរសេររូបមន្តទូទៅនៃឌីប៉ិបទីត។", a: "ក. ភ្ជាប់ដោយចំណងប៉ិបទីត (-CO-NH-)\nខ. រូបមន្តទូទៅ H2N-CH(R)-COOH\nគ. H2N-CH(R1)-CO-NH-CH(R2)-COOH" },
+            { id: 7, q: "តើផ្ការុក្ខជាតិអង់ស្យូស្ពៃមមាននាទីដូចម្តេច?", a: "→ ផ្កាមាននាទីដូចជា៖\n- ផលិតកោសិកាបន្តពូជញី\n- ផលិតកោសិកាបន្តពូជឈ្មោល\n- ទាក់ទាញសត្វល្អិតក្នុងដំណើរលំអង\n- ធ្វើឱ្យមានការបង្កកំណើត membrane" },
+            { id: 8, q: "ហេតុអ្វីបានជាអរម៉ូនភ្លេចតែកោសិកាគោលដៅ?", a: "បានជាអរម៉ូនភ្លេចតែកោសិកាគោលដៅ ព្រោះកោសិកាគោលដៅមានឆួលនៅលើភ្នាសកោសិកា។ កោសិកាគោលដៅមានទម្រង់ត្រូវនឹងទម្រង់របស់អរម៉ូន ដែលបង្កើតបានជាសារធាតុចម្រុះឆួល-អរម៉ូន។ សារធាតុនេះហើយដែលធ្វើឱ្យកោសិកាគោលដៅឆ្លើយតបទៅនឹងអំពើរបស់អរម៉ូន membrane" },
+            { id: 9, q: "តើអរម៉ូនដែលបញ្ចេញដោយកោសិកា (B) និង កោសិកាអាល់ហ្វា (a) របស់លំពែងមានសកម្មភាពដូចម្តេចខ្លះ?", a: "• សកម្មភាពកោសិកាបេតា (β)៖ នៅពេលកម្រិតគ្លុយកូសកើនឡើងខ្ពស់ បញ្ចេញអាំងស៊ុយលីន ភ្លេចកោសិកាគោលដៅ (ថ្លើម, សាច់ដុំ, ជាលិកាខ្លាញ់) ឱ្យចាប់យកគ្លុយកូសប្រើប្រាស់ជាប្រភពថាមពល។ គ្លុយកូសដែលសល់បំប្លែងទៅជាគ្លីកូសែនស្តុកទុក。\n• សកម្មភាពកោសិកាអាល់ហ្វា (α)៖ នៅពេលគ្លុយកូសធ្លាក់ចុះ បញ្ចេញគ្លុយកាកុង ជំរុញថ្លើមឱ្យបំប្លែងគ្លីកូសែនទៅជាគ្លុយកូសបញ្ចេញទៅក្នុងឈាមវិញ membrane" },
+            { id: 10, q: "ចូរប្រៀបធៀបក្រពេញអង់ដូគ្រីននិងក្រពេញអ៊ុចសូគ្រីន?", a: "→ លក្ខណៈដូចគ្នា៖ ជាសរីរាង្គកើតចេញពីកោសិកាអេពីតេស្យូម បញ្ចេញសារធាតុចាំបាច់សម្រាប់សារពាង្គកាយ。\n→ លក្ខណៈខុសគ្នា៖\n- អង់ដូគ្រីន៖ គ្មានបំពង់នាំ, ផលិតអរម៉ូន, បញ្ចេញអរម៉ូនទៅកាន់ចរន្តឈាមដោយផ្ទាល់。\n- អ៊ិចសូគ្រីន៖ មានបំពង់នាំ, ផលិតរសរំលាយអាហារ/សំណល់, បញ្ចេញតាមបំពង់នាំ membrane" },
+            { id: 11, q: "តើក្រពេញទីរ៉ូអ៊ុតស្ថិតនៅត្រង់ណា? វាផលិតអរម៉ូនអ្វីខ្លះ? ហើយមាននាទីដូចម្តេច?", a: "ក្រពេញទីរ៉ូអ៊ុតស្ថិតនៅត្រង់ក ចំពីក្រោមបំពង់សំឡេង ខាងមុខបំពង់ខ្យល់។ វាផលិតអរម៉ូនទីរ៉ុកស៊ីន (បង្កើនអត្រាមេតាបូលីសប្រូតេអ៊ីន, គ្លុយស៊ីត, ខ្លាញ់) និងកាល់ស៊ីតូនីន (តម្រូវអត្រាកាល់ស្យូមក្នុងឈាម) membrane" },
+            { id: 12, q: "ដូចម្តេចដែលហៅថា ក្រពេញប៉ារ៉ាទីរ៉ូអ៊ុត? វាផលិតអរម៉ូនអ្វី? អ័រម៉ូននីមួយៗមាននាទីដូចម្តេច?", a: "→ ក្រពេញប៉ារ៉ាទីរ៉ូអ៊ុត ជាក្រពេញរាងពងក្រពើតូចៗចំនួន ៤ បង្កប់ក្នុងផ្នែកខាងក្រោយនៃក្រពេញទីរ៉ូអ៊ុត。\n→ វាផលិតអរម៉ូនប៉ារ៉ាទីរ៉ូអ៊ុត ដែលមាននាទីតម្រូវមេតាបូលីសកាល់ស្យូម និងផូស្វាតនៅក្នុងសារពាង្គកាយ membrane" },
+            { id: 13, q: "ហេតុអ្វីបានជាគេថា ក្រពះនិងពោះវៀនតូចជាក្រពេញអង់ដូគ្រីន?", a: "ព្រោះក្រពះបញ្ចេញអរម៉ូនកាស្ទីន និងពោះវៀនតូចបញ្ចេញអរម៉ូនសេក្រេទីនទៅកាន់ចរន្តឈាមដោយផ្ទាល់ membrane" },
+            { id: 14, q: "តើអរម៉ូនមានប៉ុន្មានក្រុម? អ្វីខ្លះ? ចូររៀបរាប់?", a: "- អរម៉ូនប៉ិបទីត៖ កើតពីច្រវ៉ាក់អាស៊ីតអាមីនេ មិនរលាយក្នុងស្រទាប់លីពីត មិនអាចឆ្លងកាត់ភ្នាសកោសិកាបាន。\n- អរម៉ូនស្តេរ៉ូអ៊ុត៖ ជាម៉ូលេគុលលីពីតតូចៗ រលាយក្នុងស្រទាប់លីពីត អាចឆ្លងកាត់ភ្នាសកោសិកាបាន membrane" },
+            { id: 15, q: "ដូចម្តេចដែលហៅថាក្រពេញអង់ដូគ្រីន? ចូររាប់ឈ្មោះក្រពេញអង់ដូគ្រីនសំខាន់ៗ?", a: "ជាក្រពេញគ្មានបំពង់នាំ ផលិត និងបញ្ចេញអរម៉ូនទៅកាន់ចរន្តឈាមដោយផ្ទាល់。\nក្រពេញសំខាន់ៗ៖ អីប៉ូតាឡាមុស, អីប៉ូភីស, ទីរ៉ូអ៊ុត, ប៉ារ៉ាទីរ៉ូអ៊ុត, ទីមុស, លំពែង, ក្រពះនិងពោះវៀនតូច, ក្រពេញលើតម្រង់នោម, ក្រពេញភេទ membrane" },
+            { id: 16, q: "តើអរម៉ូនអុកស៊ីតូស៊ីននិងអរម៉ូនប្រឡាក់ទីនមានលក្ខណៈខុសគ្នាដូចម្តេចខ្លះ?", a: "• អុកស៊ីតូស៊ីន៖ បញ្ចេញដោយអីប៉ូភីសក្រោយ, បញ្ចេញពេលសម្រាល, ជំរុញការកន្ត្រាក់ស្បូន និងបញ្ចេញទឹកដោះ。\n• ប្រូឡាក់ទីន៖ បញ្ចេញដោយអីប៉ូភីសមុខ, បញ្ចេញក្រោយសម្រាល, បណ្តាលឱ្យក្រពេញទឹកដោះលូតលាស់ និងផលិតទឹកដោះ membrane" },
+            { id: 17, q: "ហេតុអ្វីបានជាគេនិយាយថា លំពែងជាក្រពេញអង់ដូគ្រីនផងនិងស៊ិចសូគ្រីនផង?", a: "- ជាអ៊ិចសូគ្រីន៖ បញ្ចេញរសលំពែងតាមបំពង់នាំ。\n- ជាអង់ដូគ្រីន៖ បញ្ចេញអរម៉ូនអាំងស៊ុយលីន និងគ្លុយកាកុងទៅកាន់ចរន្តឈាម membrane" },
+            { id: 18, q: "ចូររកលក្ខណៈខុសគ្នាអរម៉ូនប៉ិបទីតនិងស្តេរ៉ូអ៊ុត?", a: "• ប៉ិបទីត៖ កើតពីអាស៊ីតអាមីនេ, មិនរលាយក្នុងលីពីត, មិនអាចឆ្លងភ្នាស, សកម្មភាពក្នុងណៃយូ, មានឥទ្ធិពលរយៈពេលខ្លី。\n• ស្តេរ៉ូអ៊ុត៖ កើតពីលីពីត, រលាយក្នុងលីពីត, អាចឆ្លងភ្នាស, សកម្មភាពក្នុងណៃយូនិងស៊ីតូប្លាស, មានឥទ្ធិពលរយៈពេលយូរ membrane" },
+            { id: 19, q: "ក. តើលំពែងផលិតអរម៉ូនអ្វីខ្លះ? អរម៉ូននីមួយៗមាននាទីដូចម្តេច? ខ. ហេតុអ្វីបានគេចាត់ទុកថា ក្រពះ និងពោះវៀនតូចជាក្រពេញអង់ដូគ្រីន?", a: "ក. លំពែងផលិតអាំងស៊ុយលីន (បន្ថយកម្រិតគ្លុយកូស) និងគ្លុយកាកុង (បង្កើនកម្រិតគ្លុយកូស)។\nខ. ព្រោះវាផលិត និងបញ្ចេញអរម៉ូនទៅកាន់ចរន្តឈាមដោយផ្ទាល់ (ក្រពះផលិតកាស្ទីន, ពោះវៀនតូចផលិតសេក្រេទីន) membrane" },
+            { id: 20, q: "ហេតុអ្វីបានជាត្រចៀកមានជំងឺឆ្លងបណ្តាលឱ្យបាត់បង់ថេរលំនឹង?", a: "ព្រោះមេរោគបណ្តាលឱ្យត្រចៀកឡើងហើម ធាតុរាវក្នុងត្រចៀកដាក់សម្ពាធលើបំពង់ពាក់កណ្តាលរង្វង់ ធ្វើឱ្យរោមល្អិតៗលើកោសិកាផ្នូលផ្ញើសញ្ញាវិញ្ញាណតុល្យភាពទៅខួរក្បាលមិនត្រឹមត្រូវ membrane" },
+            { id: 21, q: "នៅពេលគ្រុនផ្តាសាយ ហេតុអ្វីបានជាអ្នកពិបាកក្នុងការភ្លក់រសជាតិនៃអាហារ?", a: "ព្រោះរសជាតិអាហារទាក់ទងនឹងវិញ្ញាណរសជាតិផង និងក្លិនផង។ ពេលគ្រុន ស្រទាប់ក្នុងរន្ធច្រមុះក្លាយជាខាប់ ធ្វើឱ្យផ្នូលវិញ្ញាណបំពេញនាទីមិនបានល្អ membrane" },
+            { id: 22, q: "ហេតុអ្វីបានជាពេលមានការប៉ះទង្គិច ឬរបួសដោយមុតដាច់ធ្វើឱ្យយើងមានការឈឺចាប់?", a: "ព្រោះនៅស្រទាប់ក្រោមអេពីឌែមមានឆួលវិញ្ញាណឈឺចាប់ ដែលបង្កើតជាអាំងភ្លុចប្រសាទ បញ្ជូនតាមសរសៃប្រសាទវិញ្ញាណនាំទៅខួរឆ្អឹងខ្នង រួចបន្តទៅខួរក្បាលបកស្រាយឱ្យយើងឈឺចាប់ membrane" },
+            { id: 23, q: "ដូចម្តេចដែលហៅថាពន្លកជីវ្ហាវិញ្ញាណ? ចូររៀបរាប់ទីតាំងនៃរសជាតិទាំង៤របស់អណ្តាត?", a: "ជាផ្នូលវិញ្ញាណរសជាតិ。\n- ផ្អែម៖ ចុងអណ្តាត\n- ប្រៃ៖ ចំហៀងសងខាង (ផ្នែកមុខ)\n- ជូរ៖ ចំហៀងសងខាង (ផ្នែកបន្ទាប់)\n- ល្វីង៖ គល់អណ្តាត membrane" },
+            { id: 24, q: "តើរលកសូរមានឥទ្ធិពលទៅលើផ្នែកផ្សេងៗនៃត្រចៀកយ៉ាងដូចម្តេច?", a: "ស្លឹកត្រចៀកប្រមូលរលកសូរ -> រន្ធត្រចៀកនាំទៅក្រដាសត្រចៀក -> ឆ្អឹងតូចៗ៣ ញ័រ -> ភ្នាសបង្អួចរាងពងក្រពើញ័រ -> ធាតុរាវក្នុងបំពង់រាងគូទខ្យងញ័រ -> រោមល្អិតៗញ័រ -> ប្តូរជាអាំងភ្លុចប្រសាទ membrane" },
+            { id: 25, q: "តើស្បែកមាននាទីដូចម្តេចខ្លះ?", a: "ការពារសារពាង្គកាយ, បង្ការការជ្រៀតចូលនៃមេរោគ, បង្ការការបាត់បង់ទឹក, ការពារកាំរស្មី UV, បណ្តូរឧស្ម័ន, បញ្ចេញកាកសំណល់តាមញើស, ទទួលរំញោចផ្សេងៗ, និងបន្ថយកម្ដៅ membrane" },
+            { id: 26, q: "តើឆួលវិញ្ញាណក្លិននិងជួលវិញ្ញាណរសជាតិមានទំនាក់ទំនងគ្នាយ៉ាងដូចម្តេច?", a: "រសជាតិអាហារទាក់ទងនឹងវិញ្ញាណរសជាតិ និងវិញ្ញាណក្លិន។ ក្លិនឈ្ងុយភោចឆួលក្លិន អាហារក្នុងមាត់ភោចឆួលរសជាតិ ទើបវិញ្ញាណទាំងពីរប្របំពេញគ្នាឱ្យអាហារមានរសជាតិឆ្ងាញ់ membrane" },
+            { id: 27, q: "ក. ដូចម្តេចដែលហៅថា អង់ស៊ីលីយែ? ខ. តើបាតុភូតអ្វីដែលធ្វើឱ្យយើងអាចមើលឃើញវត្ថុផ្សេងៗស្ថិតនៅចម្ងាយខុសៗគ្នា?", a: "ក. អង្គស៊ីលីយែ៖ ជាសាច់ដុំរលីងជុំវិញកែវភ្នែក ភ្ជាប់កែវភ្នែកដោយសរសៃចំណង。\nខ. កម្លាំងសម្របតម្រូវ៖ បង្កើតកម្រាស់កែវភ្នែកត្រឹមត្រូវតាមរយៈការកន្ត្រាក់/បន្ធូរនៃអង្គស៊ីលីយែ membrane" },
+            { id: 28, q: "ក. តើអង់ស៊ីមជាអ្វី? ខ. ហេតុអ្វីបានជានៅក្នុងកោសិកានៃសារពាង្គកាយមានអង់ស៊ីមច្រើនប្រភេទ? គ. អង់ស៊ីមទាំងអស់សុទ្ធតែប្រូតេអ៊ីនដែរឬទេ? ព្រោះអ្វី?", a: "ក. អង់ស៊ីម ជាប្រូតេអ៊ីនដែលជាកាតាលីករជីវៈជួយជំរុញល្បឿនប្រតិកម្មគីមី。\nខ. ព្រោះក្នុងកោសិកាមានប្រតិកម្មគីមីរាប់ពាន់ ហើយអង់ស៊ីមមួយមានអំពើលើប្រតិកម្មមួយប៉ុណោះ。\nគ. អង់ស៊ីមទាំងអស់ជាប្រូតេអ៊ីន ប៉ុន្តែមានមុខងារមិនដូចគ្នានឹងប្រូតេអ៊ីនទូទៅទេ... membrane" },
+            { id: 29, q: "ហេតុអ្វីបានជាសីតុណ្ហភាពខ្ពស់ពេកឬទាបពេកធ្វើឱ្យអង់ស៊ីមបាត់បង់គុណភាព?", a: "ព្រោះអង់ស៊ីមជាប្រូតេអ៊ីន។ កាលណាសីតុណ្ហភាពខ្ពស់ពេក សម្ព័ន្ធអ៊ីដ្រូសែនត្រូវបានរលា ធ្វើឱ្យប្រូតេអ៊ីនខូចទ្រង់ទ្រាយ ទើបអង់ស៊ីមបាត់បង់គុណភាព membrane" },
+            { id: 30, q: "ហេតុអ្វីបានជាគេនិយាយថាអង់ស៊ីមជាប្រូតេអ៊ីនដែលមានសកម្មភាពបានខ្លាំងក្លា?", a: "ព្រោះអង់ស៊ីមមួយចំនួនតូច អាចបង្កើនល្បឿនប្រតិកម្មគីមីបានមួយចំនួនធំ membrane" },
+            { id: 31, q: "តើគេហៅឈ្មោះរបស់អង់ស៊ីមបានត្រឹមត្រូវដោយផ្អែកលើកត្តាអ្វីខ្លះ?", a: "- យថាប្រភេទនៃកាតាលីករដែលជំរុញល្បឿនប្រតិកម្ម\n- ឈ្មោះស៊ុបស្អាតដែលបញ្ចប់ដោយពាក្យ «អាស» membrane" },
+            { id: 32, q: "ចូរពណ៌នាពីលក្ខណៈរបស់អង់ស៊ីម?", a: "- ជាប្រូតេអ៊ីនមានសកម្មភាពខ្លាំងក្លា\n- ប្រែប្រួលតាមទម្រង់/នាទី សីតុណ្ហភាព pH និងកំហាប់ស៊ុបស្អាត\n- ជាកាតាលីករមានប្រតិកម្មបញ្ច្រាសទៅវិញទៅមក\n- អង់ស៊ីមខ្លះជាកូអង់ស៊ីម membrane" },
+            { id: 33, q: "ក. ចូរសរសេររូបមន្តទូទៅរបស់អាស៊ីតអាមីនេ។ ខ. រ៉ាឌីកាល់ R របស់អាឡានីនគឺ CH3 និងសេរីនគឺ CH2OH។ ចូរសរសេររូបមន្តគីមីនៃអាស៊ីតអាមីនេទាំងពីរ។ គ. ចូរសរសេររូបមន្តឌីប៉ិបទីតរវាងអាស៊ីតអាមីនេទាំងពីរ។", a: "ក. H2N-CH(R)-COOH\nខ. អាឡានីន៖ H2N-CH(CH3)-COOH | សេរីន៖ H2N-CH(CH2OH)-COOH\nគ. H2N-CH(CH3)-CO-NH-CH(CH2OH)-COOH membrane" },
+            { id: 34, q: "ក. តើអាស៊ីតអាមីនេពីរភ្ជាប់គ្នាដោយសារអ្វី? ចូរសរសេររូបមន្តស្ទើលាតនៃចំណងដែលភ្ជាប់នោះ។ ខ. ចូរសរសេររូបមន្តទូទៅរបស់អាស៊ីតអាមីនេព្រមទាំងលើកឧទាហរណ៍បញ្ជាក់។ គ. ចូរសរសេររូបមន្តទូទៅនៃឌីប៉ិបទីត។", a: "ក. ភ្ជាប់ដោយចំណងប៉ិបទីត (-CO-NH-)\nខ. រូបមន្តទូទៅ H2N-CH(R)-COOH\nគ. H2N-CH(R1)-CO-NH-CH(R2)-COOH membrane" },
             { id: 35, q: "ហេតុអ្វីបានជាតំណលំដាប់អាស៊ីតអាមីនេកំណត់ទម្រង់និងនាទីរបស់ប្រូតេអ៊ុន?", a: "ព្រោះប្រូតេអ៊ីនជាប៉ូលីមែនៃអាស៊ីតអាមីនេ ហើយការតម្រៀបតំណលំដាប់អាស៊ីតអាមីនេធ្វើឱ្យម៉ូលេគុលមានទម្រង់ខុសៗគ្នា ដែលទម្រង់នោះជាអ្នកកំណត់នាទី membrane" },
             { id: 36, q: "ក. តើនុយក្លេអូទីតជាអ្វី? តើវាផ្សំឡើងពីធាតុអ្វីខ្លះ? ខ. នុយក្លេអូទីតមានតែបួនប្រភេទ ហេតុអ្វីអាចបង្កើតម៉ូលេគុល ADN ខុសគ្នាច្រើន?", a: "ក. ជាម៉ូណូមែនៃ ADN ផ្សំពី៖ អាស៊ីតផូស្វ័រិច ១, ស្ករដេអុកស៊ីរីបូស ១, បាសអាស៊ូត ១។\nខ. ព្រោះកើតពីនុយក្លេអូទីតរាប់ម៉ឺនទៅរាប់លាន ដែលតម្រៀបគ្នាតាមតំណលំដាប់ ចំនួន និងប្រភេទខុសៗគ្នា membrane" },
-            { id: 37, q: "ក. នៅក្នុងម៉ូលេគុល ADN តើមានសម្ព័ន្ធអ្វីខ្លះ? តើសម្ព័ន្ធនីមួយៗកើតឡើងនៅកន្លែងណា? ខ. តើសម្ព័ន្ធណាដែលងាយដាច់ជាងគេ?", a: "ក. សម្ព័ន្ធកូវ៉ាឡង់រវាងអាស៊ីតផូស្វ័រិចនិងស្ករ, សម្ព័ន្ធអ៊ីដ្រូសែនរវាងបាសបំពេញគ្នា (A-T, C-G)។\nខ. សម្ព័ន្ធអ៊ីដ្រូសែនងាយដាច់ជាងគេ" },
-            { id: 38, q: "តើចលនការស្វ័យដំឡើងទ្វេ ADN មានសារៈសំខាន់ដូចម្តេចខ្លះ?", a: "រក្សាចំនួនក្រូម៉ូសូមឱ្យនៅដដែលពេលកោសិកាចែកខ្លួន ហើយធានាការបញ្ជូនព័ត៌មានសេនេទិចពីកោសិកាមេទៅកោសិកាកូន" },
+            { id: 37, q: "ក. នៅក្នុងម៉ូលេគុល ADN តើមានសម្ព័ន្ធអ្វីខ្លះ? តើសម្ព័ន្ធនីមួយៗកើតឡើងនៅកន្លែងណា? ខ. តើសម្ព័ន្ធណាដែលងាយដាច់ជាងគេ?", a: "ក. សម្ព័ន្ធកូវ៉ាឡង់រវាងអាស៊ីតផូស្វ័រិចនិងស្ករ, សម្ព័ន្ធអ៊ីដ្រូសែនរវាងបាសបំពេញគ្នា (A-T, C-G)។\nខ. សម្ព័ន្ធអ៊ីដ្រូសែនងាយដាច់ជាងគេ membrane" },
+            { id: 38, q: "តើចលនការស្វ័យដំឡើងទ្វេ ADN មានសារៈសំខាន់ដូចម្តេចខ្លះ?", a: "រក្សាចំនួនក្រូម៉ូសូមឱ្យនៅដដែលពេលកោសិកាចែកខ្លួន ហើយធានាការបញ្ជូនព័ត៌មានសេនេទិចពីកោសិកាមេទៅកោសិកាកូន membrane" },
             { id: 39, q: "ក្រោយពេលដំឡើងទ្វេហើយ ហេតុអ្វីបានជាម៉ូលេគុល ADN កូនដូចគ្នាបេះបិទទៅនឹងម៉ូលេគុល ADN មេ?", a: "ព្រោះច្រវាក់ទាំងពីរនៃ ADN មេធ្វើជាពុម្ពគំរូ ឯនុយក្លេអូទីតសេរីរត់ទៅបំពេញតាមគោលការណ៍បំពេញបាស (A-T, C-G) ធ្វើឱ្យ ADN កូននីមួយៗមានច្រវ៉ាក់ចាស់១ និងច្រវ៉ាក់ថ្មី១ ដូចមេបេះបិទ membrane" },
-            { id: 40, q: "ចូរប្រៀបធៀប ADN និងប្រូតេអ៊ីន?", a: "→ ដូចគ្នា៖ ជាម៉ាក្រូម៉ូលេគុល កើតពីម៉ូណូមែ និងមានតំណលំដាប់ជាក់លាក់。\n→ ខុសគ្នា៖ ADN (នុយក្លេអូទីត៤, ២ច្រវ៉ាក់, ម៉ាសធំ) vs ប្រូតេអ៊ីន (អាស៊ីតអាមីនេ២០, ច្រវ៉ាក់ទោល, ម៉ាសតូច)" },
-            { id: 41, q: "ចូរពណ៌នាពីនាទីរបស់ ARNt ក្នុងចលនការសំយោគប្រូតេអ៊ីន?", a: "ដឹកនាំអាស៊ីតអាមីនេពីស៊ីតូប្លាសទៅក្នុងរីបូសូម និងតម្រូវអង់ទីកូដុងជាមួយកូដុង ARNm ដើម្បីបកប្រែព័ត៌មានជាប្រូតេអ៊ីន" },
+            { id: 40, q: "ចូរប្រៀបធៀប ADN និងប្រូតេអ៊ីន?", a: "→ ដូចគ្នា៖ ជាម៉ាក្រូម៉ូលេគុល កើតពីម៉ូណូមែ និងមានតំណលំដាប់ជាក់លាក់。\n→ ខុសគ្នា៖ ADN (នុយក្លេអូទីត៤, ២ច្រវ៉ាក់, ម៉ាសធំ) vs ប្រូតេអ៊ីន (អាស៊ីតអាមីនេ២០, ច្រវ៉ាក់ទោល, ម៉ាសតូច) membrane" },
+            { id: 41, q: "ចូរពណ៌នាពីនាទីរបស់ ARNt ក្នុងចលនការសំយោគប្រូតេអ៊ីន?", a: "ដឹកនាំអាស៊ីតអាមីនេពីស៊ីតូប្លាសទៅក្នុងរីបូសូម និងតម្រូវអង់ទីកូដុងជាមួយកូដុង ARNm ដើម្បីបកប្រែព័ត៌មានជាប្រូតេអ៊ីន membrane" },
             { id: 42, q: "ចូរពណ៌នាពីនាទីរបស់ ADN, ARNm, ARNt, ARNr ក្នុងចលនការសំយោគប្រូតេអ៊ីន?", a: "- ADN៖ ផ្ទុកព័ត៌មានសេនេទិច\n- ARNm៖ ចម្លងក្រមតំណលំដាប់ពី ADN\n- ARNt៖ ដឹកនាំអាស៊ីតអាមីនេ\n- ARNr៖ ចូលរួមបង្កើតជារីបូសូម membrane" },
             { id: 43, q: "តើមានបាតុភូតអ្វីកើតឡើងនៅពេលដែលរីបូសូមលោតដល់កូដុងស្តុប?", a: "ចលនការសំយោគប្រូតេអ៊ីនត្រូវបានបញ្ចប់ ARNm, ARNt, រីបូសូម និងច្រវ៉ាក់ប៉ូលីប៉ិបទីតត្រូវបានបំបែកចេញពីគ្នា membrane" },
             { id: 44, q: "ហេតុអ្វីបានជាចាំបាច់មានការចម្លងក្រម ARNm?", a: "ព្រោះព័ត៌មានសេនេទិចស្ថិតនៅជានិច្ចក្នុងណៃយូ ឯការសំយោគប្រូតេអ៊ីនស្ថិតនៅក្នុងស៊ីតូប្លាស ទើបចាំបាច់មាន ARNm ទៅចម្លងក្រម membrane" },
-            { id: 45, q: "ចូររៀបរាប់ពីតួនាទីរបស់អង់ស៊ីម ARN ប៉ូលីមេរ៉ាស?", a: "ទទួលស្គាល់សញ្ញាសេនេទិចលើ ADN, បើកម៉ូលេគុល ADN ដោយផ្ដាច់សម្ព័ន្ធអ៊ីដ្រូសែន, ធ្វើប៉ូលីមែរកម្មរីបូនុយក្លេអូទីតសេរីរត់ទៅបំពេញតាមគោលការណ៍បំពេញបាស (A-U, T-A, C-G, G-C)" },
-            { id: 46, q: "ចូររកលក្ខណៈខុសគ្នារវាងការបង្កាត់ជិតនិងការបង្កាត់ឆ្ងាយ?", a: "• បង្កាត់ជិត៖ រវាងកូនកើតពីមេបាតែមួយ, កម្លាំងជីវិតខ្សោយ, បន្តពូជថយចុះ, អាចរក្សាពូជសុទ្ធ。\n• បង្កាត់ឆ្ងាយ៖ រវាងពូជ/ប្រភេទខុសគ្នា, អីប្រ៊ីតមានកម្លាំងជីវិតខ្លាំង, ធន់ជំងឺ, ទិន្នផលខ្ពស់ (ករណីមេបាខុសប្រភេទអាចអារ)" },
+            { id: 45, q: "ចូររៀបរាប់ពីតួនាទីរបស់អង់ស៊ីម ARN ប៉ូលីមេរ៉ាស?", a: "ទទួលស្គាល់សញ្ញាសេនេទិចលើ ADN, បើកម៉ូលេគុល ADN ដោយផ្ដាច់សម្ព័ន្ធអ៊ីដ្រូសែន, ធ្វើប៉ូលីមែរកម្មរីបូនុយក្លេអូទីតសេរីរត់ទៅបំពេញតាមគោលការណ៍បំពេញបាស (A-U, T-A, C-G, G-C) membrane" },
+            { id: 46, q: "ចូររកលក្ខណៈខុសគ្នារវាងការបង្កាត់ជិតនិងការបង្កាត់ឆ្ងាយ?", a: "• បង្កាត់ជិត៖ រវាងកូនកើតពីមេបាតែមួយ, កម្លាំងជីវិតខ្សោយ, បន្តពូជថយចុះ, អាចរក្សាពូជសុទ្ធ。\n• បង្កាត់ឆ្ងាយ៖ រវាងពូជ/ប្រភេទខុសគ្នា, អីប្រ៊ីតមានកម្លាំងជីវិតខ្លាំង, ធន់ជំងឺ, ទិន្នផលខ្ពស់ (ករណីមេបាខុសប្រភេទអាចអារ) membrane" },
             { id: 47, q: "តើវិស្វកម្មសេនេទិចផ្តល់ផលអាក្រក់ដល់មនុស្សជាតិដូចម្តេចខ្លះ?", a: "គ្រោះថ្នាក់បរិស្ថាន (បាត់បង់ជីវៈចម្រុះ), គ្រោះថ្នាក់សុខភាព (សារធាតុពុល/ធន់អង់ទីប៊ីយូទិច), ប៉ះពាល់សីលធម៌ និងសេដ្ឋកិច្ចកសិករ membrane" },
-            { id: 48, q: "ក. តើអ្នកវិទ្យាសាស្ត្របានផលិតសារធាតុគីមីអ្វីខ្លះសម្រាប់ជាប្រយោជន៍ដល់មនុស្សតាមរយៈបច្ចេកវិទ្យាជីវៈ? ខ. តើអង់ទីប៊ីយូទិចជាអ្វី?", a: "ក. ផលិតអាំងស៊ុយលីន, អាំងទែផេរ៉ូន, អាំងទែឡីគីន, អរម៉ូនលូតលាស់, អង់ទីប៊ីយូទិច, វ៉ាក់សាំង...\nខ. សារធាតុស៊ាំញ៉ាំផលិតដោយមីក្រូសារពាង្គកាយសម្រាប់ព្យាបាលជំងឺបង្កដោយបាក់តេរី" },
-            { id: 49, q: "តើផូស៊ីលជាអ្វី? ការកកើតផូស៊ីលមានប៉ុន្មានរបៀប? អ្វីខ្លះ?", a: "ផូស៊ីល ជាស្នាមឬសំណល់ភាវរស់ពីសម័យបុរាណ។ កកើត ៣ របៀប៖ ដំណើរក្លាយជាថ្ម, ពុម្ពក្រៅនិងពុម្ពក្នុង, និងការរក្សាទុកសារពាង្គកាយទាំងមូល" },
+            { id: 48, q: "ក. តើអ្នកវិទ្យាសាស្ត្របានផលិតសារធាតុគីមីអ្វីខ្លះសម្រាប់ជាប្រយោជន៍ដល់មនុស្សតាមរយៈបច្ចេកវិទ្យាជីវៈ? ខ. តើអង់ទីប៊ីយូទិចជាអ្វី?", a: "ក. ផលិតអាំងស៊ុយលីន, អាំងទែផេរ៉ូន, អាំងទែឡីគីន, អរម៉ូនលូតលាស់, អង់ទីប៊ីយូទិច, វ៉ាក់សាំង...\nខ. សារធាតុស៊ាំញ៉ាំផលិតដោយមីក្រូសារពាង្គកាយសម្រាប់ព្យាបាលជំងឺបង្កដោយបាក់តេរី membrane" },
+            { id: 49, q: "តើផូស៊ីលជាអ្វី? ការកកើតផូស៊ីលមានប៉ុន្មានរបៀប? អ្វីខ្លះ?", a: "ផូស៊ីល ជាស្នាមឬសំណល់ភាវរស់ពីសម័យបុរាណ។ កកើត ៣ របៀប៖ ដំណើរក្លាយជាថ្ម, ពុម្ពក្រៅនិងពុម្ពក្នុង, និងការរក្សាទុកសារពាង្គកាយទាំងមូល membrane" },
             { id: 50, q: "តើការសិក្សាពីផូស៊ីលមានសារប្រយោជន៍ដូចម្តេច?", a: "- ស្គាល់ពីប្រវត្តិនៃវិវត្តន៍របស់ភាវរស់\n- ស្គាល់ពីប្រវត្តិផែនដី និងអាកាសធាតុនាសម័យកាលនីមួយៗ membrane" },
-            { id: 51, q: "តើកត្តាអ្វីខ្លះដែលបណ្តាលឱ្យកើតភាវៈរស់ប្រភេទថ្មី? ចូររៀបរាប់?", a: "- កត្តារបាំងភូមិសាស្ត្រ (ភ្នំ, ដៃសមុទ្រ, មហាសមុទ្រ)\n- កត្តារបាំងជីវសាស្ត្រ (ទំហំប្រដាប់បន្តពូជ, រដូវបង្កកំណើត, ភាពទាក់ទាញដៃគូ)" },
+            { id: 51, q: "តើកត្តាអ្វីខ្លះដែលបណ្តាលឱ្យកើតភាវៈរស់ប្រភេទថ្មី? ចូររៀបរាប់?", a: "- កត្តារបាំងភូមិសាស្ត្រ (ភ្នំ, ដៃសមុទ្រ, មហាសមុទ្រ)\n- កត្តារបាំងជីវសាស្ត្រ (ទំហំប្រដាប់បន្តពូជ, រដូវបង្កកំណើត, ភាពទាក់ទាញដៃគូ) membrane" },
             { id: 52, q: "តើភាវរស់បន្សល់ទុកអ្វីខ្លះជាផូស៊ីល?", a: "គ្រោងឆ្អឹង, គម្របសារពាង្គកាយកប់ក្នុងសិលា, សំបក, ឬសារពាង្គកាយទាំងមូលកប់ក្នុងជ័រឈើ/ទឹកកក membrane" },
-            { id: 53, q: "ពេលឮទូរសព្ទរោទិ៍អ្នកលើកដៃឡើងដើម្បីឆ្លើយតប។ ក្នុងករណីនេះមានណឺរ៉ូនអ្វីខ្លះចូលរួម? ចូររៀបរាប់ពីនាទីណឺរ៉ូននីមួយៗ?", a: "- ណឺរ៉ូនវិញ្ញាណនាំ៖ ដឹកនាំព័ត៌មានពីឆួលវិញ្ញាណទៅខួរក្បាល\n- ណឺរ៉ូនភ្ជាប់៖ បញ្ជូនបន្តព័ត៌មាន\n- ណឺរ៉ូនចលករ៖ ដឹកនាំព័ត៌មានពីខួរក្បាលទៅសរីរាង្គប្រតិកម្ម (សាច់ដុំដៃ)" },
+            { id: 53, q: "ពេលឮទូរសព្ទរោទិ៍អ្នកលើកដៃឡើងដើម្បីឆ្លើយតប។ ក្នុងករណីនេះមានណឺរ៉ូនអ្វីខ្លះចូលរួម? ចូររៀបរាប់ពីនាទីណឺរ៉ូននីមួយៗ?", a: "- ណឺរ៉ូនវិញ្ញាណនាំ៖ ដឹកនាំព័ត៌មានពីឆួលវិញ្ញាណទៅខួរក្បាល\n- ណឺរ៉ូនភ្ជាប់៖ បញ្ជូនបន្តព័ត៌មាន\n- ណឺរ៉ូនចលករ៖ ដឹកនាំព័ត៌មានពីខួរក្បាលទៅសរីរាង្គប្រតិកម្ម (សាច់ដុំដៃ) membrane" },
             { id: 54, q: "ដូចម្តេចដែលហៅថាអាំងភ្លុចប្រសាទ? តើអាំងភ្លុចប្រសាទឆ្លងកាត់ស៊ីណាប់យ៉ាងដូចម្តេច?", a: "អាំងភ្លុចប្រសាទ គឺជាព័ត៌មានប្រសាទដែលដឹកនាំតាមបណ្តោយណឺរ៉ូន。\nឆ្លងកាត់ស៊ីណាប់ដោយចុងអាក់សូនបញ្ចេញសារធាតុគីមីសាយភាយឆ្លងស៊ីណាប់ ទៅបង្កើតអាំងភ្លុចប្រសាទថ្មីក្នុងដង់ឌ្រីតបន្ទាប់ membrane" },
             { id: 55, q: "តើប្រព័ន្ធប្រសាទមនុស្សមាននាទីអ្វីខ្លះ? ចូរពន្យល់ពីមុខងារនីមួយៗដោយលើកឧទាហរណ៍បញ្ជាក់?", a: "១. ទទួលព័ត៌មាន (ឧ. ដឹងថាសត្វហោះជិតត្រចៀក)\n២. ឆ្លើយតបនឹងព័ត៌មាន (ឧ. ដេញទះមូស)\n៣. តំហែរក្សាថេរលំនឹង (ឧ. រៀបចំខ្លួនទះមូស ឬញ៉ាំអាហារពេលឃ្លាន) membrane" },
             { id: 56, q: "ក. តើណឺរ៉ូនជាអ្វី? ខ. បើគិតលើនាទីរបស់វាតើគេចែកណឺរ៉ូនប៉ុន្មានបែប? អ្វីខ្លះ? តើណឺរ៉ូនបែបនីមួយៗមាននាទីធ្វើអ្វី?", a: "ក. ជាកោសិកាឯកទេសនៃប្រព័ន្ធប្រសាទ。\nខ. ចែកជា ៣៖ ណឺរ៉ូនវិញ្ញាណនាំ (នាំចូល), ណឺរ៉ូនចលករ (នាំចេញ), ណឺរ៉ូនភ្ជាប់ (បញ្ជូនរវាងណឺរ៉ូន) membrane" },
             { id: 57, q: "តើផ្នែកសំខាន់ៗនៃប្រព័ន្ធប្រសាទសត្វឆ្អឹងកងមានអ្វីខ្លះ?", a: "មាន ២ ផ្នែក៖ មជ្ឈមណ្ឌលប្រសាទ (ខួរក្បាល, ខួរឆ្អឹងខ្នង) និងបរិមណ្ឌលប្រសាទ (ផ្លូវប្រសាទវិញ្ញាណនាំ, ផ្លូវប្រសាទចលករ) membrane" },
-            { id: 58, q: "តើខួរក្បាលនិងខួរឆ្អឹងខ្នងមានទំនាក់ទំនងគ្នាយ៉ាងដូចម្តេច?", a: "ព័ត៌មានផ្នែកវិញ្ញាណនាំ និងចលករឆ្លងកាត់ពីខួរក្បាលទៅផ្នែកផ្សេងៗតាមខួរឆ្អឹងខ្នង ហើយសរសៃប្រសាទក្រោមកញ្ចឹងកត្រូវឆ្លងកាត់ខួរឆ្អឹងខ្នងទៅខួរក្បាល" },
+            { id: 58, q: "តើខួរក្បាលនិងខួរឆ្អឹងខ្នងមានទំនាក់ទំនងគ្នាយ៉ាងដូចម្តេច?", a: "ព័ត៌មានផ្នែកវិញ្ញាណនាំ និងចលករឆ្លងកាត់ពីខួរក្បាលទៅផ្នែកផ្សេងៗតាមខួរឆ្អឹងខ្នង ហើយសរសៃប្រសាទក្រោមកញ្ចឹងកត្រូវឆ្លងកាត់ខួរឆ្អឹងខ្នងទៅខួរក្បាល membrane" },
             { id: 59, q: "តើខួរឆ្អឹងខ្នងមានសារៈសំខាន់ដូចម្តេចខ្លះ?", a: "ភ្ជាប់សរសៃប្រសាទបរិមណ្ឌលទៅខួរក្បាល និងត្រួតពិនិត្យរ៉េផ្លិចស្វ័យប្រវត្តិមួយចំនួន membrane" },
-            { id: 60, q: "ចូរប្រៀបធៀប៖ ក. ណឺរ៉ូនវិញ្ញាណនាំនិងណឺរ៉ូនចលករ ខ. មជ្ឈមណ្ឌលប្រសាទនិងបរិមណ្ឌលប្រសាទ?", a: "ក. វិញ្ញាណនាំ (នាំព័ត៌មានចូល, ឯកប៉ូល) vs ចលករ (នាំបញ្ជាចេញ, ពហុប៉ូល)\nខ. មជ្ឈមណ្ឌល (ខួរក្បាល+ខួរឆ្អឹងខ្នង) vs បរិមណ្ឌល (សរសៃប្រសាទលលាដ៍១២គូ + ឆ្អឹងខ្នង៣១គូ)" },
+            { id: 60, q: "ចូរប្រៀបធៀប៖ ក. ណឺរ៉ូនវិញ្ញាណនាំនិងណឺរ៉ូនចលករ ខ. មជ្ឈមណ្ឌលប្រសាទនិងបរិមណ្ឌលប្រសាទ?", a: "ក. វិញ្ញាណនាំ (នាំព័ត៌មានចូល, ឯកប៉ូល) vs ចលករ (នាំបញ្ជាចេញ, ពហុប៉ូល)\nខ. មជ្ឈមណ្ឌល (ខួរក្បាល+ខួរឆ្អឹងខ្នង) vs បរិមណ្ឌល (សរសៃប្រសាទលលាដ៍១២គូ + ឆ្អឹងខ្នង៣១គូ) membrane" },
             { id: 61, q: "ចូរប្រៀបធៀបប្រព័ន្ធប្រសាទសត្វឆ្អឹងកងនិងឥតឆ្អឹងកង?", a: "• ឥតឆ្អឹងកង៖ សរីរាង្គវិញ្ញាណតិច, ខួរក្បាលតូច, គ្មានអឌ្ឍគោលខួរនិងខួរតូច。\n• មានឆ្អឹងកង៖ សរីរាង្គវិញ្ញាណច្រើន, ខួរក្បាលធំស្មុគស្មាញ, មានអឌ្ឍគោលខួរនិងខួរតូច membrane" },
             { id: 62, q: "តើប្រូតេអ៊ីនជាអ្វី? តើប្រូតេអ៊ីនមាននាទីដូចម្តេច?", a: "ជាប៉ូលីមែនៃអាស៊ីតអាមីនេ។ មាននាទីជាកាតាលីករ, ទម្រង់, អ្នកការពារ, អ្នកដឹកនាំ, អ្នកធ្វើចលនា, និងតម្រូវ (អរម៉ូន) membrane" },
             { id: 63, q: "តើលក្ខខណ្ឌអ្វីខ្លះដែលធ្វើឱ្យប្រូតេអ៊ីនបាត់បង់គុណភាពបាន?", a: "អាស៊ីត/បាសខ្លាំង, អង់គធាតុរំលាយ, លោហៈធ្ងន់, កំហាប់អំបិល, សាប៊ូ, អ៊ុយរេ, បម្រែបម្រួលសីតុណ្ហភាព, pH, និងចលនាមេកានិច membrane" }
@@ -1531,7 +1542,8 @@
         // INIT
         updateStats();
         renderCard();
-        renderPdfPage();
+        updatePdfPageDropdown(totalPdfPages);
+        switchPdfViewMode('pdf');
     </script>
 </body>
 </html>
